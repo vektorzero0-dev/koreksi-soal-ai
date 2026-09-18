@@ -25,22 +25,29 @@ st.set_page_config(
 )
 
 # ---------------------------------------------------------
-# CUSTOM CSS: ANIMASI BACKGROUND BERGERAK & ESTETIKA INSTANSI
+# CUSTOM CSS: ANIMASI BACKGROUND BERGERAK DINAMIS & WARNA KONTRAST TINGGI
 # ---------------------------------------------------------
 st.markdown(
     """
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
-    /* Global Deep Royal Background & Animated Glow */
+    /* Global Dynamic Animated Background */
     .stApp {
-        background: linear-gradient(135deg, #090d16 0%, #0f172a 50%, #1e1b4b 100%);
-        background-attachment: fixed;
+        background: linear-gradient(125deg, #030712 0%, #0f172a 35%, #1e1b4b 70%, #064e3b 100%);
+        background-size: 400% 400%;
+        animation: gradientAnimation 18s ease infinite;
         font-family: 'Plus Jakarta Sans', sans-serif;
         color: #f8fafc;
     }
 
-    /* Efek Animasi Partikel Bergerak di Background */
+    @keyframes gradientAnimation {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    /* Efek Lapisan Jaring Grid Neon Bergerak & Glowing Orbs */
     .stApp::before {
         content: '';
         position: fixed;
@@ -49,24 +56,26 @@ st.markdown(
         width: 200%;
         height: 200%;
         background-image: 
-            radial-gradient(circle, rgba(217, 119, 6, 0.08) 1px, transparent 1px),
-            radial-gradient(circle, rgba(59, 130, 246, 0.06) 1px, transparent 1px);
-        background-size: 50px 50px;
-        background-position: 0 0, 25px 25px;
-        animation: backgroundMove 25s linear infinite;
+            radial-gradient(circle, rgba(251, 191, 36, 0.15) 1.5px, transparent 1.5px),
+            radial-gradient(circle, rgba(56, 189, 248, 0.12) 2px, transparent 2px),
+            linear-gradient(rgba(139, 92, 246, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(139, 92, 246, 0.05) 1px, transparent 1px);
+        background-size: 60px 60px, 90px 90px, 45px 45px, 45px 45px;
+        animation: gridMove 20s linear infinite;
         z-index: 0;
         pointer-events: none;
     }
 
-    @keyframes backgroundMove {
-        0% { transform: translate(0, 0); }
-        100% { transform: translate(50px, 50px); }
+    @keyframes gridMove {
+        0% { transform: translate(0, 0) rotate(0deg); }
+        100% { transform: translate(60px, 60px) rotate(3deg); }
     }
 
     /* Sidebar Akademik */
     section[data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #090d16 0%, #0f172a 100%) !important;
-        border-right: 1px solid rgba(217, 119, 6, 0.25);
+        background: rgba(3, 7, 18, 0.95) !important;
+        border-right: 1.5px solid rgba(251, 191, 36, 0.3);
+        backdrop-filter: blur(16px);
     }
     section[data-testid="stSidebar"] .stMarkdown, 
     section[data-testid="stSidebar"] label,
@@ -76,16 +85,17 @@ st.markdown(
 
     /* Hero Banner Instansi Pendidikan */
     .hero-banner {
-        background: linear-gradient(135deg, #1e3a8a 0%, #1e293b 50%, #090d16 100%);
+        background: linear-gradient(135deg, rgba(30, 58, 138, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
+        backdrop-filter: blur(12px);
         padding: 32px 24px;
         border-radius: 20px;
         color: #ffffff;
         margin-bottom: 24px;
-        box-shadow: 0 20px 40px -15px rgba(30, 58, 138, 0.5);
+        box-shadow: 0 20px 40px -15px rgba(30, 58, 138, 0.7);
         position: relative;
         overflow: hidden;
-        border-left: 6px solid #d97706;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        border-left: 6px solid #fbbf24;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
         z-index: 1;
     }
     .hero-title {
@@ -105,12 +115,12 @@ st.markdown(
 
     /* Kartu Dashboard Akademik */
     .dashboard-card {
-        background: rgba(15, 23, 42, 0.9);
-        backdrop-filter: blur(20px);
+        background: rgba(15, 23, 42, 0.88);
+        backdrop-filter: blur(24px);
         padding: 24px;
         border-radius: 20px;
-        border: 1px solid rgba(217, 119, 6, 0.3);
-        box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.7);
+        border: 1.5px solid rgba(251, 191, 36, 0.35);
+        box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.8);
         margin-bottom: 20px;
         position: relative;
         z-index: 1;
@@ -134,7 +144,7 @@ st.markdown(
 
     /* Label Formulir */
     label, .stTextInput label, .stTextArea label, .stSelectbox label, .stRadio label {
-        color: #e2e8f0 !important;
+        color: #f1f5f9 !important;
         font-weight: 700 !important;
         font-size: 0.88rem !important;
         margin-bottom: 6px !important;
@@ -147,31 +157,32 @@ st.markdown(
         font-weight: 600 !important;
         font-size: 0.95rem !important;
         border-radius: 12px !important;
-        border: 1.5px solid #334155 !important;
+        border: 1.5px solid #475569 !important;
         padding: 12px 14px !important;
     }
     .stTextInput input:focus, .stTextArea textarea:focus {
-        border-color: #d97706 !important;
-        box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.25) !important;
+        border-color: #fbbf24 !important;
+        box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.3) !important;
         background-color: #030712 !important;
     }
 
     /* Tombol Utama Emas Akademik */
     .stButton>button {
         width: 100%;
-        background: linear-gradient(135deg, #b45309 0%, #d97706 100%);
-        color: #ffffff !important;
+        background: linear-gradient(135deg, #d97706 0%, #fbbf24 100%);
+        color: #030712 !important;
         font-weight: 800 !important;
         border-radius: 12px !important;
         padding: 0.85rem 1rem !important;
         border: none !important;
         font-size: 0.95rem !important;
-        box-shadow: 0 6px 20px rgba(180, 83, 9, 0.4) !important;
+        box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4) !important;
         transition: all 0.25s ease !important;
     }
     .stButton>button:hover {
-        background: linear-gradient(135deg, #d97706 0%, #fbbf24 100%) !important;
+        background: linear-gradient(135deg, #fbbf24 0%, #fef08a 100%) !important;
         transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(251, 191, 36, 0.6) !important;
     }
 
     /* Badge Ikon Akademik */
@@ -185,9 +196,9 @@ st.markdown(
         font-weight: 800;
         letter-spacing: 0.8px;
         text-transform: uppercase;
-        background: rgba(217, 119, 6, 0.15);
-        color: #fde68a;
-        border: 1px solid rgba(217, 119, 6, 0.35);
+        background: rgba(251, 191, 36, 0.2);
+        color: #fef08a;
+        border: 1px solid rgba(251, 191, 36, 0.4);
         margin-bottom: 12px;
     }
 
@@ -196,9 +207,9 @@ st.markdown(
         text-align: center;
         padding: 20px;
         font-size: 0.8rem;
-        color: #94a3b8;
-        background: rgba(15, 23, 42, 0.6);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: #cbd5e1;
+        background: rgba(15, 23, 42, 0.75);
+        border: 1px solid rgba(251, 191, 36, 0.2);
         border-radius: 16px;
         margin-top: 30px;
         margin-bottom: 20px;
