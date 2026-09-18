@@ -18,160 +18,166 @@ import streamlit as st
 # KONFIGURASI HALAMAN STREAMLIT
 # ---------------------------------------------------------
 st.set_page_config(
-    page_title="Portal Asisten Akademik & Asesmen AI",
-    page_icon="🎓",
+    page_title="Portal Asisten Akademik & Asesmen AI [Hacker Edition]",
+    page_icon="💻",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
 # ---------------------------------------------------------
-# CUSTOM CSS: DESAIN MEWAH, MODERN, KEREN & RAPIH (ED-TECH SAAS)
+# CUSTOM CSS: TEMA HACKER ELITE / CYBERPUNK GREEN MATRIX
 # ---------------------------------------------------------
 st.markdown(
     """
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
 
-    /* Global Styling */
+    /* Global Cyber Dark Background */
     .stApp {
-        background: radial-gradient(circle at top right, #f8fafc 0%, #f1f5f9 100%);
+        background: #030712;
+        background-image: 
+            radial-gradient(circle at 10% 20%, rgba(16, 185, 129, 0.05) 0%, transparent 40%),
+            radial-gradient(circle at 90% 80%, rgba(5, 150, 105, 0.04) 0%, transparent 40%);
         font-family: 'Plus Jakarta Sans', sans-serif;
-        color: #0f172a;
+        color: #f3f4f6;
     }
 
-    /* Sidebar Mewah Bergaya Obsidian */
+    /* Sidebar Gelap Cyber */
     section[data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #0b0f19 0%, #0f172a 100%) !important;
-        border-right: 1px solid rgba(255, 255, 255, 0.08);
+        background: #0b0f19 !important;
+        border-right: 1px solid rgba(16, 185, 129, 0.2);
     }
     section[data-testid="stSidebar"] .stMarkdown, 
     section[data-testid="stSidebar"] label,
     section[data-testid="stSidebar"] span {
-        color: #f8fafc !important;
+        color: #e5e7eb !important;
     }
 
-    /* Hero Banner Mewah & Elegan */
+    /* Hero Banner Hacker Style */
     .hero-banner {
-        background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #1d4ed8 100%);
+        background: linear-gradient(135deg, #064e3b 0%, #065f46 50%, #0f172a 100%);
         padding: 40px 48px;
-        border-radius: 28px;
+        border-radius: 24px;
         color: #ffffff;
         margin-bottom: 32px;
-        box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+        box-shadow: 0 20px 40px -15px rgba(16, 185, 129, 0.2);
         position: relative;
         overflow: hidden;
-        border: 1px solid rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(16, 185, 129, 0.3);
     }
     .hero-banner::before {
         content: '';
         position: absolute;
         top: -80px;
         right: -80px;
-        width: 240px;
-        height: 240px;
-        background: rgba(59, 130, 246, 0.2);
+        width: 220px;
+        height: 220px;
+        background: rgba(16, 185, 129, 0.15);
         border-radius: 50%;
-        filter: blur(30px);
+        filter: blur(35px);
         pointer-events: none;
     }
     .hero-title {
         font-size: 2.25rem;
         font-weight: 800;
         letter-spacing: -0.8px;
-        color: #ffffff !important;
+        color: #34d399 !important;
         margin: 0;
+        font-family: 'JetBrains Mono', monospace;
     }
     .hero-subtitle {
-        font-size: 1rem;
-        color: #cbd5e1 !important;
+        font-size: 0.98rem;
+        color: #d1d5db !important;
         margin-top: 10px;
         font-weight: 400;
         max-width: 700px;
         line-height: 1.6;
     }
 
-    /* Kartu Dashboard Glassmorphic Modern */
+    /* Kartu Dashboard Glassmorphism Gelap */
     .dashboard-card {
-        background: rgba(255, 255, 255, 0.9);
+        background: rgba(15, 23, 42, 0.85);
         backdrop-filter: blur(16px);
         padding: 36px;
         border-radius: 24px;
-        border: 1px solid rgba(226, 232, 240, 0.8);
-        box-shadow: 0 12px 35px -10px rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(16, 185, 129, 0.2);
+        box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.5);
         margin-bottom: 28px;
         transition: all 0.3s ease;
     }
     .dashboard-card:hover {
-        border-color: rgba(37, 99, 235, 0.3);
-        box-shadow: 0 20px 40px -12px rgba(37, 99, 235, 0.08);
+        border-color: rgba(16, 185, 129, 0.5);
+        box-shadow: 0 20px 40px -10px rgba(16, 185, 129, 0.15);
     }
 
     /* Judul Bagian dalam Kartu */
     .section-title {
         font-size: 1.4rem;
         font-weight: 700;
-        color: #0f172a;
+        color: #f9fafb;
         margin-bottom: 6px;
         letter-spacing: -0.3px;
     }
     .section-desc {
         font-size: 0.9rem;
-        color: #64748b;
+        color: #9ca3af;
         margin-bottom: 28px;
     }
 
     /* Label Formulir & Kontras Tinggi */
     label, .stTextInput label, .stTextArea label, .stSelectbox label, .stRadio label {
-        color: #1e293b !important;
+        color: #d1d5db !important;
         font-weight: 700 !important;
         font-size: 0.9rem !important;
         letter-spacing: -0.2px;
         margin-bottom: 8px !important;
     }
 
-    /* Input & Textarea Super Jelas */
+    /* Input & Textarea ala Terminal / Hacker */
     .stTextInput input, .stTextArea textarea {
-        background-color: #ffffff !important;
-        color: #0f172a !important;
+        background-color: #030712 !important;
+        color: #34d399 !important;
+        font-family: 'JetBrains Mono', monospace !important;
         font-weight: 600 !important;
         font-size: 0.95rem !important;
-        border-radius: 14px !important;
-        border: 1.5px solid #cbd5e1 !important;
+        border-radius: 12px !important;
+        border: 1.5px solid #1f2937 !important;
         padding: 14px 18px !important;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02) !important;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6) !important;
         transition: all 0.2s ease;
     }
     .stTextInput input:focus, .stTextArea textarea:focus {
-        border-color: #2563eb !important;
-        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15) !important;
-        background-color: #ffffff !important;
+        border-color: #10b981 !important;
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25), inset 0 2px 4px rgba(0, 0, 0, 0.6) !important;
+        background-color: #030712 !important;
     }
     .stTextInput input::placeholder, .stTextArea textarea::placeholder {
-        color: #94a3b8 !important;
+        color: #4b5563 !important;
         font-weight: 400 !important;
         opacity: 1 !important;
     }
 
-    /* Tombol Utama Mewah (Gradient Glow) */
+    /* Tombol Utama Hacker Glow (Hijau Neon) */
     .stButton>button {
         width: 100%;
-        background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
-        color: #ffffff !important;
-        font-weight: 700 !important;
-        border-radius: 14px !important;
+        background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+        color: #030712 !important;
+        font-weight: 800 !important;
+        border-radius: 12px !important;
         padding: 0.9rem 1.5rem !important;
         border: none !important;
         font-size: 1rem !important;
-        box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35) !important;
+        box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4) !important;
         transition: all 0.25s ease !important;
+        letter-spacing: 0.5px;
     }
     .stButton>button:hover {
-        background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%) !important;
-        box-shadow: 0 10px 25px rgba(37, 99, 235, 0.45) !important;
+        background: linear-gradient(135deg, #10b981 0%, #34d399 100%) !important;
+        box-shadow: 0 6px 25px rgba(16, 185, 129, 0.6) !important;
         transform: translateY(-2px);
     }
 
-    /* Badge Indikator Mewah */
+    /* Badge Indikator Cyber */
     .status-badge {
         display: inline-flex;
         align-items: center;
@@ -179,29 +185,30 @@ st.markdown(
         border-radius: 9999px;
         font-size: 0.78rem;
         font-weight: 800;
-        letter-spacing: 0.5px;
+        letter-spacing: 1px;
         text-transform: uppercase;
-        background: #eff6ff;
-        color: #1d4ed8;
-        border: 1px solid #bfdbfe;
+        background: rgba(16, 185, 129, 0.1);
+        color: #34d399;
+        border: 1px solid rgba(16, 185, 129, 0.3);
         margin-bottom: 16px;
+        font-family: 'JetBrains Mono', monospace;
     }
 
-    /* Footer Eksekutif */
+    /* Footer Cyber */
     .footer-container {
         text-align: center;
         padding: 28px;
         font-size: 0.85rem;
-        color: #64748b;
-        background: rgba(255, 255, 255, 0.8);
-        border: 1px solid #e2e8f0;
+        color: #9ca3af;
+        background: rgba(15, 23, 42, 0.6);
+        border: 1px solid rgba(16, 185, 129, 0.15);
         border-radius: 20px;
         margin-top: 50px;
         margin-bottom: 24px;
         font-weight: 500;
     }
     .footer-container a {
-        color: #2563eb;
+        color: #34d399;
         text-decoration: none;
         font-weight: 700;
     }
@@ -314,13 +321,13 @@ raw_key = st.secrets.get("GEMINI_API_KEY", "") or st.secrets.get(
 GEMINI_API_KEY = str(raw_key).strip().strip('"').strip("'")
 
 # ---------------------------------------------------------
-# NAVIGASI SIDEBAR EXECUTIVE
+# NAVIGASI SIDEBAR CYBER
 # ---------------------------------------------------------
 with st.sidebar:
-  st.markdown("### 🎓 Academic AI Studio")
+  st.markdown("### 💻 Matrix AI Studio")
   st.markdown(
-      "<p style='color: #94a3b8; font-size: 0.8rem; margin-top: -10px;'>Executive"
-      " Education Edition</p>",
+      "<p style='color: #34d399; font-size: 0.78rem; margin-top: -10px; font-family:"
+      " monospace;'>SECURE_TERMINAL_V3.5</p>",
       unsafe_allow_html=True,
   )
   st.markdown("---")
@@ -346,16 +353,16 @@ with st.sidebar:
     if input_manual:
       GEMINI_API_KEY = input_manual.strip().strip('"').strip("'")
   else:
-    st.success("🔒 Terhubung & Aman")
+    st.success("🔒 Enkripsi Aktif")
 
   st.markdown("---")
   st.caption("Engine: **Gemini 3.5 Flash**")
-  st.caption("UI Design: **Ultra-Modern Executive**")
+  st.caption("Theme: **Cyberpunk Green Matrix**")
 
 if not GEMINI_API_KEY:
   st.warning(
       "Mohon masukkan Gemini API Key di panel sebelah kiri untuk mengakses"
-      " portal."
+      " terminal."
   )
   st.stop()
 
@@ -384,8 +391,8 @@ if "soal_hasil" not in st.session_state:
 st.markdown(
     """
     <div class="hero-banner">
-        <h1 class="hero-title">Portal Asisten Akademik & Asesmen AI</h1>
-        <p class="hero-subtitle">Platform Cerdas Terintegrasi untuk Menyusun Perangkat Pembelajaran, Naskah Soal Asesmen Standar Nasional, dan Penilaian Objektif Berkualitas Tinggi.</p>
+        <h1 class="hero-title">>_ Portal Asisten Akademik & Asesmen AI</h1>
+        <p class="hero-subtitle">Sistem Terminal Kecerdasan Buatan Terintegrasi untuk Menyusun Perangkat Pembelajaran, Naskah Soal Asesmen Standar Nasional, dan Penilaian Objektif.</p>
     </div>
     """,
     unsafe_allow_html=True,
@@ -397,7 +404,7 @@ st.markdown(
 if menu_pilihan == "📖 Generator Modul Ajar":
   st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
   st.markdown(
-      '<div class="status-badge">PERANGKAT PEMBELAJARAN</div>',
+      '<div class="status-badge">MODUL_PEMBELAJARAN.SYS</div>',
       unsafe_allow_html=True,
   )
   st.markdown(
@@ -405,7 +412,7 @@ if menu_pilihan == "📖 Generator Modul Ajar":
       unsafe_allow_html=True,
   )
   st.markdown(
-      '<div class="section-desc">Lengkapi formulir di bawah ini untuk merancang'
+      '<div class="section-desc">Lengkapi parameter di bawah ini untuk merancang'
       ' Modul Ajar formal berstandar Kurikulum Merdeka.</div>',
       unsafe_allow_html=True,
   )
@@ -440,7 +447,7 @@ if menu_pilihan == "📖 Generator Modul Ajar":
     )
 
   st.markdown("<br>", unsafe_allow_html=True)
-  if st.button("🚀 Buat Modul Ajar Sekarang", type="primary"):
+  if st.button("⚡ Eksekusi Pembuatan Modul Ajar", type="primary"):
     with st.spinner("Sistem Gemini sedang merancang Modul Ajar..."):
       try:
         prompt_modul = f"""
@@ -479,7 +486,7 @@ if menu_pilihan == "📖 Generator Modul Ajar":
 elif menu_pilihan == "📝 Generator Soal Asesmen":
   st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
   st.markdown(
-      '<div class="status-badge">ASESMEN & EVALUASI</div>',
+      '<div class="status-badge">ASESMEN_EVALUASI.SYS</div>',
       unsafe_allow_html=True,
   )
   st.markdown(
@@ -511,7 +518,7 @@ elif menu_pilihan == "📝 Generator Soal Asesmen":
     )
 
   st.markdown("<br>", unsafe_allow_html=True)
-  if st.button("🚀 Susun Naskah Soal Asesmen", type="primary"):
+  if st.button("⚡ Eksekusi Naskah Soal Asesmen", type="primary"):
     with st.spinner("Sistem Gemini sedang menyusun naskah asesmen..."):
       try:
         prompt_soal = f"""
@@ -548,7 +555,7 @@ elif menu_pilihan == "📝 Generator Soal Asesmen":
 elif menu_pilihan == "⚙️ Set Kunci Acuan":
   st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
   st.markdown(
-      '<div class="status-badge">KONFIGURASI PENILAIAN</div>',
+      '<div class="status-badge">CONFIG_ANSWER_KEY.SYS</div>',
       unsafe_allow_html=True,
   )
   st.markdown(
@@ -597,7 +604,7 @@ elif menu_pilihan == "⚙️ Set Kunci Acuan":
 elif menu_pilihan == "🔍 Koreksi Siswa":
   st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
   st.markdown(
-      '<div class="status-badge">KOREKSI OTOMATIS</div>', unsafe_allow_html=True
+      '<div class="status-badge">AUTO_GRADING.SYS</div>', unsafe_allow_html=True
   )
   st.markdown(
       '<div class="section-title">🔍 Koreksi Lembar Jawaban Asesmen Siswa</div>',
@@ -633,7 +640,7 @@ elif menu_pilihan == "🔍 Koreksi Siswa":
       )
 
     st.markdown("<br>", unsafe_allow_html=True)
-    if st.button("🚀 Jalankan Analisis & Koreksi AI", type="primary"):
+    if st.button("⚡ Eksekusi Analisis & Koreksi AI", type="primary"):
       if not nama_siswa:
         st.error("Masukkan identitas atau nama siswa!")
       else:
@@ -690,7 +697,7 @@ elif menu_pilihan == "🔍 Koreksi Siswa":
 elif menu_pilihan == "📊 Rekap Nilai":
   st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
   st.markdown(
-      '<div class="status-badge">REKAPITULASI DOKUMEN</div>',
+      '<div class="status-badge">DATABASE_RECAP.SYS</div>',
       unsafe_allow_html=True,
   )
   st.markdown(
@@ -721,7 +728,7 @@ elif menu_pilihan == "📊 Rekap Nilai":
 st.markdown(
     """
     <div class="footer-container">
-        <p>Sistem Portal Akademik Terintegrasi | Developed by <b>Zeeo</b><br>
+        <p>Sistem Portal Akademik Terintegrasi [Secure Cyber Edition] | Developed by <b>Zeeo</b><br>
         WhatsApp Support: <a href="https://wa.me/6282371729760" target="_blank">082371729760</a><br>
         © 2026 All Rights Reserved</p>
     </div>
