@@ -25,24 +25,25 @@ st.set_page_config(
 )
 
 # ---------------------------------------------------------
-# CUSTOM CSS: INSTANSI PENDIDIKAN MODERN, MEWAH & BERKELAS
+# CUSTOM CSS: TEMA DARK LUXURY ACADEMIC & ARTISTIC GLOW
 # ---------------------------------------------------------
 st.markdown(
     """
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
-    /* Global Platinum Background */
+    /* Global Dark Artistic Background */
     .stApp {
-        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        background: linear-gradient(135deg, #090d16 0%, #0f172a 50%, #111827 100%);
+        background-attachment: fixed;
         font-family: 'Plus Jakarta Sans', sans-serif;
-        color: #0f172a;
+        color: #f1f5f9;
     }
 
-    /* Sidebar Institusi Formal & Elegan */
+    /* Sidebar Elegan Kelas Atas */
     section[data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #0f172a 0%, #1e3a8a 100%) !important;
-        border-right: 1px solid #cbd5e1;
+        background: linear-gradient(180deg, #090d16 0%, #0f172a 100%) !important;
+        border-right: 1px solid rgba(245, 158, 11, 0.2);
     }
     section[data-testid="stSidebar"] .stMarkdown, 
     section[data-testid="stSidebar"] label,
@@ -50,28 +51,29 @@ st.markdown(
         color: #f8fafc !important;
     }
 
-    /* Hero Banner Mewah Ala Instansi Pendidikan */
+    /* Hero Banner Mewah Berseni Tinggi */
     .hero-banner {
-        background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 50%, #0f172a 100%);
+        background: linear-gradient(135deg, #1e293b 0%, #1e3a8a 50%, #0f172a 100%);
         padding: 42px 48px;
         border-radius: 24px;
         color: #ffffff;
         margin-bottom: 32px;
-        box-shadow: 0 20px 40px -15px rgba(30, 58, 138, 0.3);
+        box-shadow: 0 20px 40px -15px rgba(30, 58, 138, 0.5);
         position: relative;
         overflow: hidden;
         border-left: 8px solid #f59e0b;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
     .hero-banner::after {
         content: '';
         position: absolute;
         top: -60px;
         right: -60px;
-        width: 200px;
-        height: 200px;
-        background: rgba(245, 158, 11, 0.15);
+        width: 220px;
+        height: 220px;
+        background: rgba(245, 158, 11, 0.2);
         border-radius: 50%;
-        filter: blur(30px);
+        filter: blur(40px);
         pointer-events: none;
     }
     .hero-title {
@@ -83,90 +85,91 @@ st.markdown(
     }
     .hero-subtitle {
         font-size: 1rem;
-        color: #e2e8f0 !important;
+        color: #cbd5e1 !important;
         margin-top: 10px;
         font-weight: 400;
         max-width: 750px;
         line-height: 1.6;
     }
 
-    /* Kartu Dashboard Eksklusif */
+    /* Kartu Dashboard Glassmorphism Elegan */
     .dashboard-card {
-        background: #ffffff;
+        background: rgba(15, 23, 42, 0.85);
+        backdrop-filter: blur(16px);
         padding: 36px;
         border-radius: 24px;
-        border: 1px solid #e2e8f0;
-        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.6);
         margin-bottom: 28px;
         transition: all 0.3s ease;
     }
     .dashboard-card:hover {
-        border-color: #93c5fd;
-        box-shadow: 0 15px 35px -10px rgba(30, 58, 138, 0.08);
+        border-color: rgba(245, 158, 11, 0.4);
+        box-shadow: 0 20px 40px -10px rgba(30, 58, 138, 0.3);
     }
 
     /* Judul Bagian dalam Kartu */
     .section-title {
         font-size: 1.4rem;
         font-weight: 700;
-        color: #1e3a8a;
+        color: #f8fafc;
         margin-bottom: 6px;
         letter-spacing: -0.3px;
     }
     .section-desc {
         font-size: 0.92rem;
-        color: #64748b;
+        color: #94a3b8;
         margin-bottom: 28px;
     }
 
     /* Label Formulir & Kontras Tinggi */
     label, .stTextInput label, .stTextArea label, .stSelectbox label, .stRadio label {
-        color: #334155 !important;
+        color: #e2e8f0 !important;
         font-weight: 700 !important;
         font-size: 0.9rem !important;
         letter-spacing: -0.2px;
         margin-bottom: 8px !important;
     }
 
-    /* Input & Textarea Bersih dan Jelas */
+    /* Input & Textarea Gelap & Kontras Terang */
     .stTextInput input, .stTextArea textarea {
-        background-color: #f8fafc !important;
-        color: #0f172a !important;
+        background-color: #0b0f19 !important;
+        color: #f8fafc !important;
         font-weight: 600 !important;
         font-size: 0.95rem !important;
         border-radius: 12px !important;
-        border: 1.5px solid #cbd5e1 !important;
+        border: 1.5px solid #334155 !important;
         padding: 14px 18px !important;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02) !important;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5) !important;
         transition: all 0.2s ease;
     }
     .stTextInput input:focus, .stTextArea textarea:focus {
-        border-color: #1e3a8a !important;
-        box-shadow: 0 0 0 4px rgba(30, 58, 138, 0.1) !important;
-        background-color: #ffffff !important;
+        border-color: #f59e0b !important;
+        box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.2), inset 0 2px 4px rgba(0, 0, 0, 0.5) !important;
+        background-color: #0b0f19 !important;
     }
     .stTextInput input::placeholder, .stTextArea textarea::placeholder {
-        color: #94a3b8 !important;
+        color: #64748b !important;
         font-weight: 400 !important;
         opacity: 1 !important;
     }
 
-    /* Tombol Utama Mewah (Royal Blue & Gold Accent) */
+    /* Tombol Utama Mewah (Royal Navy & Gold Accent) */
     .stButton>button {
         width: 100%;
-        background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 100%);
-        color: #ffffff !important;
-        font-weight: 700 !important;
+        background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
+        color: #0f172a !important;
+        font-weight: 800 !important;
         border-radius: 12px !important;
         padding: 0.9rem 1.5rem !important;
         border: none !important;
         font-size: 1rem !important;
-        box-shadow: 0 4px 15px rgba(30, 58, 138, 0.25) !important;
+        box-shadow: 0 4px 20px rgba(245, 158, 11, 0.35) !important;
         transition: all 0.25s ease !important;
     }
     .stButton>button:hover {
-        background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%) !important;
-        box-shadow: 0 6px 20px rgba(30, 58, 138, 0.35) !important;
+        background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%) !important;
+        box-shadow: 0 6px 25px rgba(245, 158, 11, 0.5) !important;
         transform: translateY(-2px);
     }
 
@@ -180,9 +183,9 @@ st.markdown(
         font-weight: 800;
         letter-spacing: 0.8px;
         text-transform: uppercase;
-        background: #fef3c7;
-        color: #b45309;
-        border: 1px solid #fde68a;
+        background: rgba(245, 158, 11, 0.15);
+        color: #fbbf24;
+        border: 1px solid rgba(245, 158, 11, 0.3);
         margin-bottom: 16px;
     }
 
@@ -191,16 +194,16 @@ st.markdown(
         text-align: center;
         padding: 28px;
         font-size: 0.85rem;
-        color: #64748b;
-        background: #ffffff;
-        border: 1px solid #e2e8f0;
+        color: #94a3b8;
+        background: rgba(15, 23, 42, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.08);
         border-radius: 20px;
         margin-top: 50px;
         margin-bottom: 24px;
         font-weight: 500;
     }
     .footer-container a {
-        color: #1e3a8a;
+        color: #fbbf24;
         text-decoration: none;
         font-weight: 700;
     }
@@ -318,7 +321,7 @@ GEMINI_API_KEY = str(raw_key).strip().strip('"').strip("'")
 with st.sidebar:
   st.markdown("### 🏛️ Portal Akademik")
   st.markdown(
-      "<p style='color: #cbd5e1; font-size: 0.8rem; margin-top:"
+      "<p style='color: #fbbf24; font-size: 0.8rem; margin-top:"
       " -10px;'>Instansi Pendidikan Formal</p>",
       unsafe_allow_html=True,
   )
@@ -348,7 +351,6 @@ with st.sidebar:
     st.success("🔒 Sistem Aktif & Aman")
 
   st.markdown("---")
-  st.caption("Engine: **Gemini 3.5 Flash**")
   st.caption("Edisi: **Instansi Modern Elite**")
 
 if not GEMINI_API_KEY:
