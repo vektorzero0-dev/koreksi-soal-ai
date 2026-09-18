@@ -12,7 +12,7 @@ except ImportError:
 import pandas as pd
 import streamlit as st
 
-# Konfigurasi Halaman & Tema Modern
+# Konfigurasi Halaman & Tema Bersih & Profesional
 st.set_page_config(
     page_title="AI Smart Exam Grader Pro",
     page_icon="🎓",
@@ -20,62 +20,51 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# Custom Styling CSS: Efek Glow, Gradiasi, Kotak-kotak Modern & Footer
+# Custom Styling CSS: Bersih, Rapi, Profesional, Kontras Nyaman
 st.markdown(
     """
     <style>
-    /* Global Styling & Background */
+    /* Global Background Standar Profesional */
     .stApp {
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        background-color: #f8fafc;
     }
     
-    /* Header Utama dengan Gradiasi */
+    /* Header Utama */
     .main-header {
-        font-size: 2.5rem;
-        background: linear-gradient(90deg, #1e3a8a, #3b82f6);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        font-size: 2.3rem;
+        color: #1e3a8a;
         font-weight: 800;
         margin-bottom: 0px;
-        text-shadow: 0px 2px 4px rgba(0,0,0,0.1);
     }
     .sub-header {
-        font-size: 1.1rem;
-        color: #4b5563;
+        font-size: 1.05rem;
+        color: #475569;
         margin-bottom: 25px;
-        font-weight: 500;
+        font-weight: 400;
     }
 
-    /* Kotak-kotak Kartu (Card Layout) dengan Efek Glow */
+    /* Kotak-kotak Kartu (Card Layout) Bersih */
     .card-box {
         background: #ffffff;
         padding: 25px;
-        border-radius: 16px;
-        border: 1px solid rgba(229, 231, 235, 0.8);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         margin-bottom: 20px;
-        transition: all 0.3s ease-in-out;
-    }
-    .card-box:hover {
-        box-shadow: 0 12px 30px rgba(59, 130, 246, 0.15);
-        border-color: #3b82f6;
     }
 
-    /* Tombol Utama dengan Gradiasi */
+    /* Tombol Utama */
     .stButton>button {
-        background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+        background-color: #2563eb;
         color: white;
         font-weight: 600;
-        border-radius: 10px;
-        padding: 0.6rem 1.2rem;
+        border-radius: 8px;
+        padding: 0.5rem 1rem;
         border: none;
-        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
         transition: all 0.2s ease;
     }
     .stButton>button:hover {
-        background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
-        box-shadow: 0 6px 16px rgba(37, 99, 235, 0.5);
-        transform: translateY(-2px);
+        background-color: #1d4ed8;
     }
 
     /* Footer Profesional */
@@ -84,14 +73,12 @@ st.markdown(
         left: 0;
         bottom: 0;
         width: 100%;
-        background: rgba(255, 255, 255, 0.9);
-        backdrop-filter: blur(10px);
-        color: #1e293b;
+        background-color: #ffffff;
+        color: #334155;
         text-align: center;
-        padding: 12px;
-        font-size: 0.9rem;
-        border-top: 1px solid #cbd5e1;
-        box-shadow: 0 -4px 10px rgba(0,0,0,0.03);
+        padding: 10px;
+        font-size: 0.85rem;
+        border-top: 1px solid #e2e8f0;
         z-index: 1000;
     }
     </style>
@@ -395,7 +382,6 @@ with tab4:
   st.markdown('<div class="card-box">', unsafe_allow_html=True)
   st.header("🔍 Koreksi Lembar Jawaban Siswa (AI Vision & Dokumen)")
 
-  # Validasi apakah kunci sudah diatur
   if (
       not st.session_state.kunci_pg
       and not st.session_state.kunci_isian
@@ -449,7 +435,6 @@ with tab4:
             client = genai.Client(api_key=GEMINI_API_KEY)
             contents_payload = []
 
-            # Gabungkan master kunci terpisah ke dalam prompt acuan koreksi
             master_kunci_gabungan = f"""
             - KUNCI PILIHAN GANDA:
             {st.session_state.kunci_pg if st.session_state.kunci_pg else "Tidak ada"}
