@@ -21,7 +21,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-# Custom Styling CSS
+# Custom Styling CSS: Desain Instansi Pendidikan Formal, Modern, Bersih, dan Profesional
 st.markdown(
     """
     <style>
@@ -106,15 +106,24 @@ st.markdown(
 
 def buat_file_docx(teks_konten):
   doc = Document()
-  for line in teks_konten.split("\n"):
-    if line.startswith("# "):
-      doc.add_heading(line.replace("# ", ""), level=1)
-    elif line.startswith("## "):
-      doc.add_heading(line.replace("## ", ""), level=2)
-    elif line.startswith("### "):
-      doc.add_heading(line.replace("### ", ""), level=3)
+  # Bersihkan tag HTML <br> atau <br/> agar menjadi newline di dokumen Word
+  teks_bersih = (
+      teks_konten.replace("<br>", "\n")
+      .replace("<br/>", "\n")
+      .replace("<br />", "\n")
+  )
+
+  for line in teks_bersih.split("\n"):
+    line_stripped = line.strip()
+    if line_stripped.startswith("# "):
+      doc.add_heading(line_stripped.replace("# ", ""), level=1)
+    elif line_stripped.startswith("## "):
+      doc.add_heading(line_stripped.replace("## ", ""), level=2)
+    elif line_stripped.startswith("### "):
+      doc.add_heading(line_stripped.replace("### ", ""), level=3)
     else:
       doc.add_paragraph(line)
+
   buffer = BytesIO()
   doc.save(buffer)
   buffer.seek(0)
@@ -227,9 +236,10 @@ if menu_pilihan == "📖 1. Generator Modul Ajar":
                 - Kelas: {fase_kelas}, Kepala Sekolah: {nama_ks}
                 - Topik: {topik}, Waktu: {alokasi_waktu}
                 Sertakan komponen Identitas Instansi, Profil Pelajar Pancasila, Tujuan Pembelajaran, Kegiatan Pembelajaran, dan Tabel Rubrik Penilaian.
+                PENTING: Jangan gunakan tag HTML seperti <br> pada bagian penandatanganan atau teks lainnya. Gunakan format teks baris baru biasa.
                 """
         response = client.models.generate_content(
-            model="gemini-3.5-flash", contents=prompt_modul
+            model="gemini-3.6-flash", contents=prompt_modul
         )
         st.session_state.modul_hasil = response.text
         st.success("Modul Ajar berhasil disusun!")
@@ -277,6 +287,7 @@ elif menu_pilihan == "📝 2. Generator Soal & Kunci":
                 - Guru: {s_guru}, Sekolah: {s_sekolah}, Mapel: {s_mapel}
                 - Kurikulum: {s_kur}, Kelas: {s_kelas}, Materi: {s_materi}
                 - Komposisi: {s_komposisi}
+                PENTING: Jangan gunakan tag HTML seperti <br> pada bagian penandatanganan atau teks lainnya. Gunakan format teks baris baru biasa.
                 """
         response = client.models.generate_content(
             model="gemini-3.6-flash", contents=prompt_soal
