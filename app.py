@@ -18,32 +18,61 @@ import streamlit as st
 # KONFIGURASI HALAMAN (RESPONSIF ANDROID & DESKTOP)
 # ---------------------------------------------------------
 st.set_page_config(
-    page_title="Portal Akademik & Asesmen Elite",
-    page_icon="✨",
+    page_title="Portal Akademik & Asesmen Instansi Pendidikan",
+    page_icon="🏛️",
     layout="centered",
     initial_sidebar_state="collapsed",
 )
 
 # ---------------------------------------------------------
-# CUSTOM CSS: SENI VISUAL LUXURY CYBER-VELVET & PROFESIONAL
+# CUSTOM CSS: ANIMASI BACKGROUND BERGERAK & ESTETIKA INSTANSI
 # ---------------------------------------------------------
 st.markdown(
     """
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
-    /* Global Dark Art Background */
+    /* Global Deep Royal Background & Animated Glow */
     .stApp {
-        background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #090d16 60%, #030712 100%);
+        background: linear-gradient(135deg, #090d16 0%, #0f172a 50%, #1e1b4b 100%);
         background-attachment: fixed;
         font-family: 'Plus Jakarta Sans', sans-serif;
         color: #f8fafc;
+        position: relative;
+        overflow-x: hidden;
     }
 
-    /* Sidebar Artsy & Elegan */
+    /* Efek Animasi Partikel Bergerak di Background */
+    .stApp::before {
+        content: '';
+        position: fixed;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background-image: 
+            radial-gradient(circle, rgba(217, 119, 6, 0.08) 1px, transparent 1px),
+            radial-gradient(circle, rgba(59, 130, 246, 0.06) 1px, transparent 1px);
+        background-size: 50px 50px;
+        background-position: 0 0, 25px 25px;
+        animation: backgroundMove 30s linear infinite;
+        z-index: -1;
+        pointer-events: none;
+    }
+
+    @keyframes backgroundMove {
+        0% {
+            transform: translate(0, 0);
+        }
+        100% {
+            transform: translate(50px, 50px);
+        }
+    }
+
+    /* Sidebar Akademik */
     section[data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #090d16 0%, #111827 100%) !important;
-        border-right: 1px solid rgba(139, 92, 246, 0.2);
+        background: linear-gradient(180deg, #090d16 0%, #0f172a 100%) !important;
+        border-right: 1px solid rgba(217, 119, 6, 0.25);
     }
     section[data-testid="stSidebar"] .stMarkdown, 
     section[data-testid="stSidebar"] label,
@@ -51,67 +80,68 @@ st.markdown(
         color: #f3f4f6 !important;
     }
 
-    /* Hero Banner Seni Visual Tinggi */
+    /* Hero Banner Instansi Pendidikan */
     .hero-banner {
-        background: linear-gradient(135deg, #312e81 0%, #4c1d95 50%, #0f172a 100%);
-        padding: 30px 24px;
+        background: linear-gradient(135deg, #1e3a8a 0%, #1e293b 50%, #090d16 100%);
+        padding: 32px 24px;
         border-radius: 20px;
         color: #ffffff;
         margin-bottom: 24px;
-        box-shadow: 0 20px 40px -15px rgba(109, 40, 217, 0.4);
+        box-shadow: 0 20px 40px -15px rgba(30, 58, 138, 0.5);
         position: relative;
         overflow: hidden;
-        border: 1px solid rgba(167, 139, 250, 0.3);
+        border-left: 6px solid #d97706;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
     .hero-banner::before {
-        content: '';
+        content: '🏛️';
         position: absolute;
-        top: -50px;
-        right: -50px;
-        width: 150px;
-        height: 150px;
-        background: rgba(6, 182, 212, 0.25);
-        border-radius: 50%;
-        filter: blur(35px);
+        right: 16px;
+        bottom: -10px;
+        font-size: 5rem;
+        opacity: 0.12;
         pointer-events: none;
     }
     .hero-title {
-        font-size: 1.6rem;
+        font-size: 1.55rem;
         font-weight: 800;
         letter-spacing: -0.5px;
-        color: #c084fc !important;
+        color: #fbbf24 !important;
         margin: 0;
     }
     .hero-subtitle {
-        font-size: 0.88rem;
+        font-size: 0.86rem;
         color: #cbd5e1 !important;
         margin-top: 8px;
         font-weight: 400;
         line-height: 1.5;
     }
 
-    /* Kartu Dashboard Glassmorphism Berpendar */
+    /* Kartu Dashboard Akademik */
     .dashboard-card {
-        background: rgba(15, 23, 42, 0.85);
+        background: rgba(15, 23, 42, 0.88);
         backdrop-filter: blur(20px);
         padding: 24px;
         border-radius: 20px;
-        border: 1px solid rgba(139, 92, 246, 0.25);
+        border: 1px solid rgba(217, 119, 6, 0.3);
         box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.7);
         margin-bottom: 20px;
         transition: all 0.3s ease;
     }
     .dashboard-card:hover {
-        border-color: rgba(6, 182, 212, 0.5);
-        box-shadow: 0 20px 40px -10px rgba(109, 40, 217, 0.3);
+        border-color: rgba(251, 191, 36, 0.6);
+        box-shadow: 0 20px 40px -10px rgba(217, 119, 6, 0.2);
     }
 
-    /* Judul Bagian dalam Kartu */
+    /* Judul Bagian dengan Ikon */
     .section-title {
         font-size: 1.25rem;
         font-weight: 700;
-        color: #f3f4f6;
+        color: #f8fafc;
         margin-bottom: 4px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
     }
     .section-desc {
         font-size: 0.86rem;
@@ -119,7 +149,7 @@ st.markdown(
         margin-bottom: 20px;
     }
 
-    /* Label Formulir Responsif */
+    /* Label Formulir */
     label, .stTextInput label, .stTextArea label, .stSelectbox label, .stRadio label {
         color: #e2e8f0 !important;
         font-weight: 700 !important;
@@ -127,10 +157,10 @@ st.markdown(
         margin-bottom: 6px !important;
     }
 
-    /* Input & Textarea Nyaman & Kontras Terang */
+    /* Input & Textarea */
     .stTextInput input, .stTextArea textarea {
         background-color: #030712 !important;
-        color: #38bdf8 !important;
+        color: #fbbf24 !important;
         font-weight: 600 !important;
         font-size: 0.95rem !important;
         border-radius: 12px !important;
@@ -139,8 +169,8 @@ st.markdown(
         box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6) !important;
     }
     .stTextInput input:focus, .stTextArea textarea:focus {
-        border-color: #a855f7 !important;
-        box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.25), inset 0 2px 4px rgba(0, 0, 0, 0.6) !important;
+        border-color: #d97706 !important;
+        box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.25), inset 0 2px 4px rgba(0, 0, 0, 0.6) !important;
         background-color: #030712 !important;
     }
     .stTextInput input::placeholder, .stTextArea textarea::placeholder {
@@ -148,38 +178,39 @@ st.markdown(
         opacity: 1 !important;
     }
 
-    /* Tombol Utama Gradien Cyber */
+    /* Tombol Utama Emas Akademik */
     .stButton>button {
         width: 100%;
-        background: linear-gradient(135deg, #7c3aed 0%, #06b6d4 100%);
+        background: linear-gradient(135deg, #b45309 0%, #d97706 100%);
         color: #ffffff !important;
         font-weight: 800 !important;
         border-radius: 12px !important;
         padding: 0.85rem 1rem !important;
         border: none !important;
         font-size: 0.95rem !important;
-        box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4) !important;
+        box-shadow: 0 6px 20px rgba(180, 83, 9, 0.4) !important;
         transition: all 0.25s ease !important;
     }
     .stButton>button:hover {
-        background: linear-gradient(135deg, #8b5cf6 0%, #22d3ee 100%) !important;
-        box-shadow: 0 8px 25px rgba(6, 182, 212, 0.6) !important;
+        background: linear-gradient(135deg, #d97706 0%, #fbbf24 100%) !important;
+        box-shadow: 0 8px 25px rgba(217, 119, 6, 0.6) !important;
         transform: translateY(-2px);
     }
 
-    /* Badge Estetik */
+    /* Badge Ikon Akademik */
     .status-badge {
         display: inline-flex;
         align-items: center;
+        gap: 6px;
         padding: 5px 14px;
         border-radius: 9999px;
         font-size: 0.72rem;
         font-weight: 800;
         letter-spacing: 0.8px;
         text-transform: uppercase;
-        background: rgba(168, 85, 247, 0.15);
-        color: #d8b4fe;
-        border: 1px solid rgba(168, 85, 247, 0.35);
+        background: rgba(217, 119, 6, 0.15);
+        color: #fde68a;
+        border: 1px solid rgba(217, 119, 6, 0.35);
         margin-bottom: 12px;
     }
 
@@ -197,7 +228,7 @@ st.markdown(
         font-weight: 500;
     }
     .footer-container a {
-        color: #38bdf8;
+        color: #fbbf24;
         text-decoration: none;
         font-weight: 700;
     }
@@ -208,12 +239,11 @@ st.markdown(
 
 
 # ---------------------------------------------------------
-# FUNGSI PEMBENTUK DOKUMEN WORD (.DOCX) DENGAN PARSER TABEL PRESISI
+# FUNGSI PEMBENTUK DOKUMEN WORD (.DOCX) DENGAN PARSER TABEL
 # ---------------------------------------------------------
 def buat_file_docx(teks_konten):
   doc = Document()
 
-  # Bersihkan tag HTML mentah
   teks_bersih = re.sub(
       r"<\s*br\s*/?>", "\n", teks_konten, flags=re.IGNORECASE
   )
@@ -225,7 +255,6 @@ def buat_file_docx(teks_konten):
   def flush_table():
     nonlocal table_rows
     if table_rows:
-      # Saring baris pemisah markdown (seperti |---|---|)
       filtered_rows = [
           row
           for row in table_rows
@@ -248,8 +277,6 @@ def buat_file_docx(teks_konten):
 
   for line in lines:
     stripped = line.strip()
-
-    # Deteksi baris tabel markdown yang diawali dan diakhiri karakter pipa (|)
     if stripped.startswith("|") and stripped.endswith("|"):
       cells = [c.strip() for c in stripped.split("|")[1:-1]]
       table_rows.append(cells)
@@ -260,7 +287,6 @@ def buat_file_docx(teks_konten):
     if not stripped:
       continue
 
-    # Format Dokumen (Heading & Penomoran)
     if stripped.startswith("# "):
       doc.add_heading(stripped.replace("# ", "").strip(), level=1)
     elif stripped.startswith("## "):
@@ -272,7 +298,7 @@ def buat_file_docx(teks_konten):
     else:
       doc.add_paragraph(stripped)
 
-  flush_table()  # Pastikan tabel terakhir ikut diproses
+  flush_table()
   buffer = BytesIO()
   doc.save(buffer)
   buffer.seek(0)
@@ -319,10 +345,10 @@ GEMINI_API_KEY = str(raw_key).strip().strip('"').strip("'")
 # NAVIGASI SIDEBAR
 # ---------------------------------------------------------
 with st.sidebar:
-  st.markdown("### ✨ Elite Academic AI")
+  st.markdown("### 🏛️ Portal Akademik Resmi")
   st.markdown(
-      "<p style='color: #c084fc; font-size: 0.78rem; margin-top:"
-      " -10px;'>Mobile & Desktop Optimized</p>",
+      "<p style='color: #fbbf24; font-size: 0.78rem; margin-top:"
+      " -10px;'>Instansi Pendidikan Formal</p>",
       unsafe_allow_html=True,
   )
   st.markdown("---")
@@ -382,8 +408,8 @@ if "soal_hasil" not in st.session_state:
 st.markdown(
     """
     <div class="hero-banner">
-        <h1 class="hero-title">Portal Akademik & Asesmen Elite</h1>
-        <p class="hero-subtitle">Sistem Kecerdasan Buatan Terintegrasi untuk Penyusunan Perangkat Pembelajaran, Naskah Soal Asesmen, dan Penilaian Objektif.</p>
+        <h1 class="hero-title">🏛️ Portal Asisten Akademik & Asesmen</h1>
+        <p class="hero-subtitle">Sistem Terintegrasi Resmi Instansi Pendidikan untuk Penyusunan Perangkat Pembelajaran, Naskah Asesmen, dan Evaluasi Objektif.</p>
     </div>
     """,
     unsafe_allow_html=True,
@@ -395,7 +421,7 @@ st.markdown(
 if menu_pilihan == "📖 Generator Modul Ajar":
   st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
   st.markdown(
-      '<div class="status-badge">PERANGKAT PEMBELAJARAN</div>',
+      '<div class="status-badge">📜 Perangkat Pembelajaran</div>',
       unsafe_allow_html=True,
   )
   st.markdown(
@@ -409,32 +435,33 @@ if menu_pilihan == "📖 Generator Modul Ajar":
   )
 
   nama_guru = st.text_input(
-      "Nama Guru & Gelar", placeholder="Contoh: Ahmad Fauzi, S.Pd."
+      "👤 Nama Guru & Gelar", placeholder="Contoh: Ahmad Fauzi, S.Pd."
   )
   nama_sekolah = st.text_input(
-      "Nama Instansi / Sekolah", placeholder="Contoh: SMP Negeri 1 Nusantara"
+      "🏫 Nama Instansi / Sekolah", placeholder="Contoh: SMP Negeri 1 Nusantara"
   )
   mapel = st.text_input(
-      "Mata Pelajaran", placeholder="Contoh: Ilmu Pengetahuan Alam (IPA)"
+      "📚 Mata Pelajaran", placeholder="Contoh: Ilmu Pengetahuan Alam (IPA)"
   )
   kurikulum_aktif = st.text_input(
-      "Kurikulum", placeholder="Contoh: Kurikulum Merdeka"
+      "📑 Kurikulum", placeholder="Contoh: Kurikulum Merdeka"
   )
   fase_kelas = st.text_input(
-      "Fase / Kelas", placeholder="Contoh: Fase D / Kelas VII"
+      "🎓 Fase / Kelas", placeholder="Contoh: Fase D / Kelas VII"
   )
   nama_ks = st.text_input(
-      "Nama Kepala Sekolah", placeholder="Contoh: Dra. Hj. Siti Aminah, M.Pd."
+      "✍️ Nama Kepala Sekolah",
+      placeholder="Contoh: Dra. Hj. Siti Aminah, M.Pd.",
   )
   topik = st.text_input(
-      "Topik / Materi Pokok", placeholder="Contoh: Sistem Pencernaan Manusia"
+      "💡 Topik / Materi Pokok", placeholder="Contoh: Sistem Pencernaan Manusia"
   )
   alokasi_waktu = st.text_input(
-      "Alokasi Waktu", placeholder="Contoh: 2 Pertemuan (4 x 40 Menit)"
+      "⏱️ Alokasi Waktu", placeholder="Contoh: 2 Pertemuan (4 x 40 Menit)"
   )
 
   st.markdown("<br>", unsafe_allow_html=True)
-  if st.button("✨ Buat Modul Ajar Sekarang", type="primary"):
+  if st.button("🚀 Buat Modul Ajar Sekarang", type="primary"):
     with st.spinner("Sistem Gemini sedang merancang Modul Ajar..."):
       try:
         prompt_modul = f"""
@@ -473,7 +500,7 @@ if menu_pilihan == "📖 Generator Modul Ajar":
 elif menu_pilihan == "📝 Generator Soal Asesmen":
   st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
   st.markdown(
-      '<div class="status-badge">ASESMEN & EVALUASI</div>',
+      '<div class="status-badge">📋 Asesmen & Evaluasi</div>',
       unsafe_allow_html=True,
   )
   st.markdown(
@@ -487,23 +514,25 @@ elif menu_pilihan == "📝 Generator Soal Asesmen":
       unsafe_allow_html=True,
   )
 
-  s_guru = st.text_input("Nama Pembuat Asesmen", placeholder="Ahmad Fauzi, S.Pd.")
-  s_sekolah = st.text_input(
-      "Instansi / Sekolah", placeholder="SMP Negeri 1 Nusantara"
+  s_guru = st.text_input(
+      "👤 Nama Pembuat Asesmen", placeholder="Ahmad Fauzi, S.Pd."
   )
-  s_mapel = st.text_input("Mata Pelajaran", placeholder="Matematika")
-  s_kur = st.text_input("Kurikulum", placeholder="Kurikulum Merdeka")
-  s_kelas = st.text_input("Kelas / Semester", placeholder="Kelas VII / Ganjil")
+  s_sekolah = st.text_input(
+      "🏫 Instansi / Sekolah", placeholder="SMP Negeri 1 Nusantara"
+  )
+  s_mapel = st.text_input("📚 Mata Pelajaran", placeholder="Matematika")
+  s_kur = st.text_input("📑 Kurikulum", placeholder="Kurikulum Merdeka")
+  s_kelas = st.text_input("🎓 Kelas / Semester", placeholder="Kelas VII / Ganjil")
   s_materi = st.text_input(
-      "Materi Asesmen", placeholder="Persamaan Linear Satu Variabel"
+      "💡 Materi Asesmen", placeholder="Persamaan Linear Satu Variabel"
   )
   s_komposisi = st.text_input(
-      "Komposisi Soal Asesmen",
+      "📊 Komposisi Soal Asesmen",
       placeholder="5 Pilihan Ganda, 2 Isian Singkat, 1 Essai",
   )
 
   st.markdown("<br>", unsafe_allow_html=True)
-  if st.button("✨ Susun Naskah Soal Asesmen", type="primary"):
+  if st.button("🚀 Susun Naskah Soal Asesmen", type="primary"):
     with st.spinner("Sistem Gemini sedang menyusun naskah asesmen..."):
       try:
         prompt_soal = f"""
@@ -546,7 +575,7 @@ elif menu_pilihan == "📝 Generator Soal Asesmen":
 elif menu_pilihan == "⚙️ Set Kunci Acuan":
   st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
   st.markdown(
-      '<div class="status-badge">KONFIGURASI PENILAIAN</div>',
+      '<div class="status-badge">🎛️ Konfigurasi Penilaian</div>',
       unsafe_allow_html=True,
   )
   st.markdown(
@@ -560,19 +589,19 @@ elif menu_pilihan == "⚙️ Set Kunci Acuan":
   )
 
   kunci_pg_input = st.text_area(
-      "Kunci Pilihan Ganda",
+      "🎯 Kunci Pilihan Ganda",
       value=st.session_state.kunci_pg,
       placeholder="Contoh: 1.A, 2.B, 3.C, 4.D, 5.B",
       height=100,
   )
   kunci_isian_input = st.text_area(
-      "Kunci Isian Singkat & Keyword Jawaban",
+      "📝 Kunci Isian Singkat & Keyword Jawaban",
       value=st.session_state.kunci_isian,
       placeholder="Contoh: 1. y = 6; 2. x = 5",
       height=100,
   )
   kunci_essai_input = st.text_area(
-      "Rubrik Penilaian & Kunci Essai",
+      "📋 Rubrik Penilaian & Kunci Essai",
       value=st.session_state.kunci_essai,
       placeholder=(
           "Contoh: Soal 1: Model matematika 8x + 12 = 52 (Skor 10), x = 5 (Skor"
@@ -595,7 +624,8 @@ elif menu_pilihan == "⚙️ Set Kunci Acuan":
 elif menu_pilihan == "🔍 Koreksi Siswa":
   st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
   st.markdown(
-      '<div class="status-badge">KOREKSI OTOMATIS</div>', unsafe_allow_html=True
+      '<div class="status-badge">🔍 Verifikasi & Grading</div>',
+      unsafe_allow_html=True,
   )
   st.markdown(
       '<div class="section-title">🔍 Koreksi Lembar Jawaban Asesmen Siswa</div>',
@@ -610,23 +640,23 @@ elif menu_pilihan == "🔍 Koreksi Siswa":
     st.warning("⚠️ Harap simpan Kunci Jawaban terlebih dahulu pada Menu 3!")
   else:
     nama_siswa = st.text_input(
-        "Identitas Siswa", placeholder="Masukkan Nama Lengkap / NISN Siswa"
+        "👤 Identitas Siswa", placeholder="Masukkan Nama Lengkap / NISN Siswa"
     )
     metode_siswa = st.radio(
-        "Format Berkas Jawaban:",
+        "📂 Format Berkas Jawaban:",
         ["Unggah Foto / Scan", "Unggah Dokumen (PDF/Word)", "Ketik Teks"],
     )
 
     file_img, file_doc, teks_manual = None, None, ""
     if "Foto" in metode_siswa:
       file_img = st.file_uploader(
-          "Unggah berkas foto/scan", type=["jpg", "png", "jpeg"]
+          "📸 Unggah berkas foto/scan", type=["jpg", "png", "jpeg"]
       )
     elif "Dokumen" in metode_siswa:
-      file_doc = st.file_uploader("Unggah berkas dokumen", type=["pdf", "docx"])
+      file_doc = st.file_uploader("📎 Unggah berkas dokumen", type=["pdf", "docx"])
     else:
       teks_manual = st.text_area(
-          "Masukkan teks jawaban siswa",
+          "✏️ Masukkan teks jawaban siswa",
           placeholder="Ketik atau tempel lembar jawaban siswa di sini...",
       )
 
@@ -676,7 +706,7 @@ elif menu_pilihan == "🔍 Koreksi Siswa":
                 f"Koreksi Selesai! Siswa **{nama_siswa}** mendapat Nilai:"
                 f" **{skor}**"
             )
-            with st.expander("Lihat Rincian Analisis Penilaian"):
+            with st.expander("📊 Lihat Rincian Analisis Penilaian"):
               st.markdown(hasil)
           except Exception as e:
             st.error(f"Error: {e}")
@@ -688,7 +718,7 @@ elif menu_pilihan == "🔍 Koreksi Siswa":
 elif menu_pilihan == "📊 Rekap Nilai":
   st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
   st.markdown(
-      '<div class="status-badge">REKAPITULASI DOKUMEN</div>',
+      '<div class="status-badge">📈 Rekapitulasi Data</div>',
       unsafe_allow_html=True,
   )
   st.markdown(
@@ -719,7 +749,7 @@ elif menu_pilihan == "📊 Rekap Nilai":
 st.markdown(
     """
     <div class="footer-container">
-        <p>Portal Akademik Elite | Developed by <b>Zeeo</b><br>
+        <p>🏛️ Portal Akademik Resmi Instansi Pendidikan | Developed by <b>Zeeo</b><br>
         WhatsApp Support: <a href="https://wa.me/6282371729760" target="_blank">082371729760</a><br>
         © 2026 All Rights Reserved</p>
     </div>
