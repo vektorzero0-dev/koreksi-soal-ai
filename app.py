@@ -12,73 +12,100 @@ except ImportError:
 import pandas as pd
 import streamlit as st
 
-# Konfigurasi Halaman & Tema Bersih & Profesional
+# Konfigurasi Halaman & Tema Profesional
 st.set_page_config(
-    page_title="AI Smart Exam Grader Pro",
+    page_title="Platform Pintar Guru AI Pro",
     page_icon="🎓",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
-# Custom Styling CSS: Bersih, Rapi, Profesional, Kontras Nyaman
+# Custom Styling CSS: Modern, Clean, Solid Color, Tanpa Gradiasi, dengan Efek Animasi Halus
 st.markdown(
     """
     <style>
-    /* Global Background Standar Profesional */
+    /* Global Background & Font */
     .stApp {
-        background-color: #f8fafc;
+        background-color: #f4f6f9;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     }
     
-    /* Header Utama */
+    /* Header Utama Clean & Modern dengan Animasi Masuk */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
     .main-header {
-        font-size: 2.3rem;
-        color: #1e3a8a;
+        font-size: 2.4rem;
+        color: #0f172a;
         font-weight: 800;
+        letter-spacing: -0.5px;
         margin-bottom: 0px;
+        animation: fadeIn 0.6s ease-out;
     }
     .sub-header {
         font-size: 1.05rem;
-        color: #475569;
+        color: #64748b;
         margin-bottom: 25px;
         font-weight: 400;
+        animation: fadeIn 0.8s ease-out;
     }
 
-    /* Kotak-kotak Kartu (Card Layout) Bersih */
+    /* Kotak-kotak Kartu (Card Layout) dengan Efek Animasi Hover & Transisi */
     .card-box {
         background: #ffffff;
-        padding: 25px;
+        padding: 28px;
         border-radius: 12px;
         border: 1px solid #e2e8f0;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.03);
         margin-bottom: 20px;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        animation: fadeIn 0.5s ease-out;
+    }
+    .card-box:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+        border-color: #cbd5e1;
     }
 
-    /* Tombol Utama */
+    /* Tombol Interaktif dengan Animasi Halus (Tanpa Gradiasi) */
     .stButton>button {
-        background-color: #2563eb;
-        color: white;
+        background-color: #0f172a;
+        color: #ffffff;
         font-weight: 600;
         border-radius: 8px;
-        padding: 0.5rem 1rem;
+        padding: 0.55rem 1.2rem;
         border: none;
-        transition: all 0.2s ease;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     }
     .stButton>button:hover {
-        background-color: #1d4ed8;
+        background-color: #1e293b;
+        color: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
     }
 
-    /* Footer Profesional */
+    /* Styling Sidebar Profesional */
+    section[data-testid="stSidebar"] {
+        background-color: #ffffff;
+        border-right: 1px solid #e2e8f0;
+    }
+
+    /* Footer Profesional Fixed dengan Animasi */
     .footer {
         position: fixed;
         left: 0;
         bottom: 0;
         width: 100%;
         background-color: #ffffff;
-        color: #334155;
+        color: #475569;
         text-align: center;
         padding: 10px;
         font-size: 0.85rem;
         border-top: 1px solid #e2e8f0;
+        box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.02);
         z-index: 1000;
     }
     </style>
@@ -110,7 +137,7 @@ GEMINI_API_KEY = st.secrets.get("GEMINI_API_KEY", "")
 
 with st.sidebar:
   st.image(
-      "https://img.icons8.com/color/96/artificial-intelligence.png", width=70
+      "https://img.icons8.com/color/96/artificial-intelligence.png", width=65
   )
   st.title("Panel Guru AI Pro")
   st.markdown("---")
