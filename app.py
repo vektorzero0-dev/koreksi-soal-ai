@@ -14,38 +14,84 @@ import streamlit as st
 
 # Konfigurasi Halaman & Tema Modern
 st.set_page_config(
-    page_title="Platform Pintar Guru AI Pro",
+    page_title="AI Smart Exam Grader Pro",
     page_icon="🎓",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
-# Custom Styling CSS untuk Tampilan, Kartu, & Footer
+# Custom Styling CSS: Efek Glow, Gradiasi, Kotak-kotak Modern & Footer
 st.markdown(
     """
     <style>
+    /* Global Styling & Background */
+    .stApp {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+    
+    /* Header Utama dengan Gradiasi */
     .main-header {
-        font-size: 2.2rem;
-        color: #1E3A8A;
-        font-weight: 700;
+        font-size: 2.5rem;
+        background: linear-gradient(90deg, #1e3a8a, #3b82f6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 800;
         margin-bottom: 0px;
+        text-shadow: 0px 2px 4px rgba(0,0,0,0.1);
     }
     .sub-header {
         font-size: 1.1rem;
-        color: #4B5563;
+        color: #4b5563;
         margin-bottom: 25px;
+        font-weight: 500;
     }
+
+    /* Kotak-kotak Kartu (Card Layout) dengan Efek Glow */
+    .card-box {
+        background: #ffffff;
+        padding: 25px;
+        border-radius: 16px;
+        border: 1px solid rgba(229, 231, 235, 0.8);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+        margin-bottom: 20px;
+        transition: all 0.3s ease-in-out;
+    }
+    .card-box:hover {
+        box-shadow: 0 12px 30px rgba(59, 130, 246, 0.15);
+        border-color: #3b82f6;
+    }
+
+    /* Tombol Utama dengan Gradiasi */
+    .stButton>button {
+        background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+        color: white;
+        font-weight: 600;
+        border-radius: 10px;
+        padding: 0.6rem 1.2rem;
+        border: none;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        transition: all 0.2s ease;
+    }
+    .stButton>button:hover {
+        background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+        box-shadow: 0 6px 16px rgba(37, 99, 235, 0.5);
+        transform: translateY(-2px);
+    }
+
+    /* Footer Profesional */
     .footer {
         position: fixed;
         left: 0;
         bottom: 0;
         width: 100%;
-        background-color: #F8FAFC;
-        color: #475569;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        color: #1e293b;
         text-align: center;
-        padding: 10px;
+        padding: 12px;
         font-size: 0.9rem;
-        border-top: 1px solid #E2E8F0;
+        border-top: 1px solid #cbd5e1;
+        box-shadow: 0 -4px 10px rgba(0,0,0,0.03);
         z-index: 1000;
     }
     </style>
@@ -77,7 +123,7 @@ GEMINI_API_KEY = st.secrets.get("GEMINI_API_KEY", "")
 
 with st.sidebar:
   st.image(
-      "https://img.icons8.com/color/96/artificial-intelligence.png", width=80
+      "https://img.icons8.com/color/96/artificial-intelligence.png", width=70
   )
   st.title("Panel Guru AI Pro")
   st.markdown("---")
@@ -90,9 +136,9 @@ with st.sidebar:
     st.success("🔒 API Key Terhubung Aman")
   st.markdown("---")
   st.markdown(
-      "**Fitur Aplikasi:**\n1. Generator Modul Ajar (Lengkap Identitas & Download"
-      " Word)\n2. Generator Soal & Kunci (Lengkap Identitas & Download"
-      " Word)\n3. Set Kunci Acuan\n4. Koreksi Lembar Siswa\n5. Rekap Nilai Kelas"
+      "**Fitur Sistem:**\n1. Generator Modul Ajar\n2. Generator Soal &\n"
+      "   Kunci\n3. Set Kunci Terpisah (PG, Isian, Essai)\n4. Koreksi Cerdas AI\n5."
+      " Rekap Nilai Kelas"
   )
 
 if not GEMINI_API_KEY:
@@ -100,8 +146,12 @@ if not GEMINI_API_KEY:
   st.stop()
 
 # Inisialisasi State Session
-if "kunci_master" not in st.session_state:
-  st.session_state.kunci_master = ""
+if "kunci_pg" not in st.session_state:
+  st.session_state.kunci_pg = ""
+if "kunci_isian" not in st.session_state:
+  st.session_state.kunci_isian = ""
+if "kunci_essai" not in st.session_state:
+  st.session_state.kunci_essai = ""
 if "rekap_nilai" not in st.session_state:
   st.session_state.rekap_nilai = []
 if "modul_hasil" not in st.session_state:
@@ -115,8 +165,8 @@ st.markdown(
     unsafe_allow_html=True,
 )
 st.markdown(
-    '<p class="sub-header">Solusi lengkap administrasi pembelajaran, pembuatan'
-    " soal, dan koreksi otomatis berstandar profesional.</p>",
+    '<p class="sub-header">Solusi administrasi pembelajaran modern, generator'
+    " soal terstruktur, dan koreksi otomatis berstandar AI.</p>",
     unsafe_allow_html=True,
 )
 
@@ -124,7 +174,7 @@ st.markdown(
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "📖 1. Generator Modul Ajar",
     "📝 2. Generator Soal & Kunci",
-    "⚙️ 3. Set Kunci Acuan Koreksi",
+    "⚙️ 3. Set Kunci Jawaban Terpisah",
     "🔍 4. Koreksi Lembar Siswa",
     "📊 5. Rekap Nilai Kelas",
 ])
@@ -132,18 +182,15 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 
 # --- TAB 1: GENERATOR MODUL AJAR ---
 with tab1:
+  st.markdown('<div class="card-box">', unsafe_allow_html=True)
   st.header("📖 Generator Modul Ajar / RPP Lengkap")
-  st.markdown(
-      "Isi identitas lengkap di bawah untuk menghasilkan perangkat"
-      " pembelajaran profesional."
-  )
+  st.markdown("Isi identitas lengkap untuk menghasilkan perangkat ajar formal.")
 
   col_m1, col_m2 = st.columns(2)
   with col_m1:
     nama_guru = st.text_input("Nama Guru & Gelar", "Ahmad Fauzi, S.Pd.")
     nama_sekolah = st.text_input("Nama Sekolah", "SMP Negeri 1 Nusantara")
     mapel = st.text_input("Mata Pelajaran", "Ilmu Pengetahuan Alam (IPA)")
-
     pilihan_kurikulum = st.selectbox(
         "Pilih Kurikulum",
         [
@@ -166,14 +213,12 @@ with tab1:
     topik = st.text_input("Topik / Materi Pokok", "Sistem Pencernaan Manusia")
     alokasi_waktu = st.text_input("Alokasi Waktu", "2 Pertemuan (4 x 40 Menit)")
 
-  if st.button("🚀 Buat Modul Ajar / RPP Sekarang", type="primary"):
-    with st.spinner(
-        "AI sedang merancang Modul Ajar profesional dan rapi..."
-    ):
+  if st.button("🚀 Buat Modul Ajar Sekarang", type="primary"):
+    with st.spinner("AI sedang merancang Modul Ajar profesional..."):
       try:
         client = genai.Client(api_key=GEMINI_API_KEY)
         prompt_modul = f"""
-                Buatkan Modul Ajar / RPP yang lengkap, terstruktur, profesional, dan rapi tanpa teks kode mentah untuk:
+                Buatkan Modul Ajar / RPP lengkap, terstruktur, profesional, dan rapi tanpa teks kode mentah untuk:
                 - Nama Guru: {nama_guru}
                 - Nama Sekolah: {nama_sekolah}
                 - Mata Pelajaran: {mapel}
@@ -183,16 +228,7 @@ with tab1:
                 - Topik: {topik}
                 - Alokasi Waktu: {alokasi_waktu}
 
-                Sertakan komponen formal secara lengkap:
-                1. IDENTITAS SEKOLAH & INFORMASI UMUM (cantumkan nama guru, sekolah, kepala sekolah, kurikulum)
-                2. Kompetensi Awal & Profil Pelajar Pancasila
-                3. Sarana Prasarana & Target Peserta Didik
-                4. Model & Metode Pembelajaran
-                5. Tujuan Pembelajaran (berdasarkan Capaian Pembelajaran)
-                6. Pemahaman Bermakna & Pertanyaan Pemantik
-                7. Kegiatan Pembelajaran (Pendahuluan, Inti dengan sintaks jelas, Penutup)
-                8. Asesmen / Penilaian (Formatif, Sumatif, lengkap dengan Rubrik Penilaian dalam bentuk tabel markdown)
-                9. Pengayaan dan Remedial serta Lembar Kerja Peserta Didik (LKPD)
+                Sertakan komponen formal: Identitas, Profil Pelajar Pancasila, Tujuan Pembelajaran, Kegiatan Pembelajaran, Asesmen & Rubrik Penilaian (Tabel).
                 """
         response = client.models.generate_content(
             model="gemini-2.5-flash", contents=prompt_modul
@@ -204,10 +240,8 @@ with tab1:
 
   if st.session_state.modul_hasil:
     st.markdown("---")
-    st.subheader("📄 Pratinjau Hasil Modul Ajar")
+    st.subheader("📄 Pratinjau Modul Ajar")
     st.markdown(st.session_state.modul_hasil)
-
-    # Tombol Download Word
     file_docx_modul = buat_file_docx(st.session_state.modul_hasil)
     st.download_button(
         label="📥 Unduh Modul Ajar (Format .DOCX / Word)",
@@ -215,12 +249,16 @@ with tab1:
         file_name=f"Modul_Ajar_{mapel}_{topik}.docx",
         mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     )
+  st.markdown("</div>", unsafe_allow_html=True)
 
 
 # --- TAB 2: GENERATOR SOAL & KUNCI JAWABAN ---
 with tab2:
+  st.markdown('<div class="card-box">', unsafe_allow_html=True)
   st.header("📝 Generator Paket Soal & Kunci Jawaban Lengkap")
-  st.markdown("Hasilkan paket soal ujian formal beserta rubrik dan pedoman penskoran.")
+  st.markdown(
+      "Hasilkan paket soal ujian formal beserta rubrik dan pedoman penskoran."
+  )
 
   col_s1, col_s2 = st.columns(2)
   with col_s1:
@@ -283,11 +321,7 @@ with tab2:
                 - Komposisi: {s_komposisi}
                 - Tingkat Kesulitan: {s_kesulitan}
 
-                Struktur Output:
-                1. Header / KOP Ujian resmi (Nama Sekolah, Mata Pelajaran, Kelas, Hari/Tanggal, Waktu)
-                2. Petunjuk Pengerjaan Soal
-                3. Naskah Soal (Pilihan Ganda bernomor 1-dst, Uraian, dan Essai)
-                4. Kunci Jawaban & Pedoman Penskoran / Bobot Nilai per Bagian (dalam bentuk Tabel Markdown yang rapi)
+                Struktur Output: KOP Ujian, Petunjuk Pengerjaan, Naskah Soal (PG, Uraian, Essai), dan Kunci Jawaban serta Pedoman Penskoran (Tabel Markdown).
                 """
         response = client.models.generate_content(
             model="gemini-2.5-flash", contents=prompt_soal
@@ -301,8 +335,6 @@ with tab2:
     st.markdown("---")
     st.subheader("📄 Pratinjau Paket Soal & Kunci Jawaban")
     st.markdown(st.session_state.soal_hasil)
-
-    # Tombol Download Word
     file_docx_soal = buat_file_docx(st.session_state.soal_hasil)
     st.download_button(
         label="📥 Unduh Paket Soal & Kunci (Format .DOCX / Word)",
@@ -310,37 +342,68 @@ with tab2:
         file_name=f"Paket_Soal_Kunci_{s_mapel}_{s_materi}.docx",
         mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     )
+  st.markdown("</div>", unsafe_allow_html=True)
 
 
-# --- TAB 3: SET KUNCI ACUAN KOREKSI ---
+# --- TAB 3: SET KUNCI JAWABAN TERPISAH ---
 with tab3:
-  st.header("⚙️ Tentukan Kunci Jawaban Acuan Koreksi")
+  st.markdown('<div class="card-box">', unsafe_allow_html=True)
+  st.header("⚙️ Set Kunci Jawaban Terpisah (Acuan Koreksi)")
   st.markdown(
-      "Salin kunci jawaban dari Tab 2 atau ketik acuan penilaian untuk sistem"
-      " koreksi siswa."
+      "Pisahkan kunci jawaban berdasarkan jenis soal agar AI dapat membaca dan"
+      " mengoreksi dengan presisi tinggi."
   )
 
-  teks_kunci_input = st.text_area(
-      "Tempel/Ketik Kunci Jawaban & Rubrik Acuan Lengkap:",
-      value=st.session_state.kunci_master,
-      height=200,
-  )
+  col_k1, col_k2 = st.columns(2)
 
-  if st.button("Simpan Kunci Acuan Koreksi", type="primary"):
-    if not teks_kunci_input.strip():
-      st.warning("Kunci jawaban tidak boleh kosong!")
-    else:
-      st.session_state.kunci_master = teks_kunci_input
-      st.success("Kunci acuan berhasil disimpan untuk sistem koreksi!")
+  with col_k1:
+    st.subheader("📌 1. Kunci Pilihan Ganda")
+    kunci_pg_input = st.text_area(
+        "Masukkan Kunci PG (Contoh: 1.A, 2.C, 3.B, dst)",
+        value=st.session_state.kunci_pg,
+        height=120,
+    )
+
+    st.subheader("📌 2. Kunci Isian Singkat")
+    kunci_isian_input = st.text_area(
+        "Masukkan Kunci Isian Singkat & Kata Kunci Utama",
+        value=st.session_state.kunci_isian,
+        height=120,
+    )
+
+  with col_k2:
+    st.subheader("📌 3. Rubrik & Kunci Essai")
+    kunci_essai_input = st.text_area(
+        "Masukkan Rubrik/Kunci Essai & Bobot Penilaian",
+        value=st.session_state.kunci_essai,
+        height=275,
+    )
+
+  if st.button("Simpan Seluruh Kunci Jawaban", type="primary"):
+    st.session_state.kunci_pg = kunci_pg_input
+    st.session_state.kunci_isian = kunci_isian_input
+    st.session_state.kunci_essai = kunci_essai_input
+    st.success(
+        "Semua kategori kunci jawaban (PG, Isian, Essai) berhasil disimpan dan"
+        " disinkronkan ke sistem koreksi!"
+    )
+  st.markdown("</div>", unsafe_allow_html=True)
 
 
 # --- TAB 4: KOREKSI LEMBAR SISWA ---
 with tab4:
+  st.markdown('<div class="card-box">', unsafe_allow_html=True)
   st.header("🔍 Koreksi Lembar Jawaban Siswa (AI Vision & Dokumen)")
 
-  if not st.session_state.kunci_master:
+  # Validasi apakah kunci sudah diatur
+  if (
+      not st.session_state.kunci_pg
+      and not st.session_state.kunci_isian
+      and not st.session_state.kunci_essai
+  ):
     st.warning(
-        "⚠️ Harap simpan Kunci Jawaban Acuan terlebih dahulu pada Tab 3!"
+        "⚠️ Harap atur dan simpan minimal salah satu Kunci Jawaban di Tab 3"
+        " terlebih dahulu!"
     )
   else:
     nama_siswa = st.text_input("Nama Lengkap / Nomor Peserta Siswa")
@@ -374,25 +437,41 @@ with tab4:
     else:
       teks_siswa_manual = st.text_area("Ketik teks jawaban siswa di sini:")
 
-    if st.button("Proses Koreksi Sekarang", type="primary"):
+    if st.button("Proses Koreksi Komprehensif Sekarang", type="primary"):
       if not nama_siswa:
         st.error("Mohon masukkan nama siswa!")
       else:
-        with st.spinner("AI sedang menganalisis dan mengoreksi jawaban..."):
+        with st.spinner(
+            "AI sedang mencocokkan lembar jawaban dengan seluruh kategori"
+            " kunci..."
+        ):
           try:
             client = genai.Client(api_key=GEMINI_API_KEY)
             contents_payload = []
 
+            # Gabungkan master kunci terpisah ke dalam prompt acuan koreksi
+            master_kunci_gabungan = f"""
+            - KUNCI PILIHAN GANDA:
+            {st.session_state.kunci_pg if st.session_state.kunci_pg else "Tidak ada"}
+
+            - KUNCI ISIAN SINGKAT:
+            {st.session_state.kunci_isian if st.session_state.kunci_isian else "Tidak ada"}
+
+            - RUBRIK & KUNCI ESSAI:
+            {st.session_state.kunci_essai if st.session_state.kunci_essai else "Tidak ada"}
+            """
+
             prompt_instruksi = f"""
-            Anda adalah guru profesional yang sangat teliti dan objektif. 
-            Koreksi jawaban siswa berdasarkan KUNCI JAWABAN ACUAN BERIKUT secara rapi (gunakan format Markdown & tabel, tanpa teks kode mentah):
-            {st.session_state.kunci_master}
+            Anda adalah guru profesional yang sangat teliti, objektif, dan adil. 
+            Tugas Anda adalah mengoreksi lembar jawaban siswa secara menyeluruh (mencakup Pilihan Ganda, Isian Singkat, dan Essai) berdasarkan KUNCI JAWABAN TERPISAH BERIKUT:
+            
+            {master_kunci_gabungan}
             
             INSTRUKSI FORMAT OUTPUT:
             Baris pertama WAJIB menuliskan persis format ini agar terbaca sistem:
-            NILAI_AKHIR: [Angka total nilai skala 0 sampai 100]
+            NILAI_AKHIR: [Angka total nilai akhir skala 0 sampai 100]
             
-            Setelah baris itu, berikan rincian ulasan, poin kesalahan, dan evaluasi mendalam per nomor soal dalam format Markdown yang rapi.
+            Setelah baris itu, berikan rincian evaluasi terstruktur dalam format Markdown (Tabel atau list per bagian: Pilihan Ganda, Isian Singkat, dan Essai), beserta ulasan atau poin perbaikan untuk siswa.
             """
             contents_payload.append(prompt_instruksi)
 
@@ -437,10 +516,12 @@ with tab4:
 
           except Exception as e:
             st.error(f"Terjadi kesalahan saat memproses: {e}")
+  st.markdown("</div>", unsafe_allow_html=True)
 
 
 # --- TAB 5: REKAP NILAI KELAS ---
 with tab5:
+  st.markdown('<div class="card-box">', unsafe_allow_html=True)
   st.header("📊 Rekapitulasi Nilai Kelas")
 
   if len(st.session_state.rekap_nilai) == 0:
@@ -465,6 +546,7 @@ with tab5:
     if st.button("🗑️ Hapus Semua Data Rekap"):
       st.session_state.rekap_nilai = []
       st.rerun()
+  st.markdown("</div>", unsafe_allow_html=True)
 
 # --- FOOTER APLIKASI ---
 st.markdown(
