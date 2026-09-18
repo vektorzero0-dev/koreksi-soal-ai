@@ -210,9 +210,10 @@ if menu_pilihan == "📖 1. Generator Modul Ajar":
   alokasi_waktu = st.text_input("Alokasi Waktu", "2 Pertemuan (4 x 40 Menit)")
 
   if st.button("🚀 Proses Pembuatan Modul Ajar", type="primary"):
-    with st.spinner("Sistem sedang merancang Modul Ajar..."):
+    with st.spinner(
+        "Sistem Gemini 3.5 Flash sedang merancang Modul Ajar..."
+    ):
       try:
-        # DIPERBAIKI: Mengirim api_key secara eksplisit ke client
         client = genai.Client(api_key=GEMINI_API_KEY)
         prompt_modul = f"""
                 Buatkan Modul Ajar / RPP formal, sangat terstruktur, dan profesional untuk instansi pendidikan:
@@ -223,7 +224,7 @@ if menu_pilihan == "📖 1. Generator Modul Ajar":
                 Sertakan komponen Identitas Instansi, Profil Pelajar Pancasila, Tujuan Pembelajaran, Kegiatan Pembelajaran, dan Tabel Rubrik Penilaian.
                 """
         response = client.models.generate_content(
-            model="gemini-2.5-flash", contents=prompt_modul
+            model="gemini-3.5-flash", contents=prompt_modul
         )
         st.session_state.modul_hasil = response.text
         st.success("Modul Ajar berhasil disusun!")
@@ -264,9 +265,10 @@ elif menu_pilihan == "📝 2. Generator Soal & Kunci":
   )
 
   if st.button("🚀 Proses Pembuatan Paket Soal", type="primary"):
-    with st.spinner("Sistem sedang menyusun naskah ujian..."):
+    with st.spinner(
+        "Sistem Gemini 3.5 Flash sedang menyusun naskah ujian..."
+    ):
       try:
-        # DIPERBAIKI: Mengirim api_key secara eksplisit ke client
         client = genai.Client(api_key=GEMINI_API_KEY)
         prompt_soal = f"""
                 Buatkan naskah soal ujian resmi instansi pendidikan lengkap dengan Kop Ujian, Petunjuk, Naskah Soal, Kunci Jawaban, & Rubrik Penilaian (Tabel) untuk:
@@ -275,7 +277,7 @@ elif menu_pilihan == "📝 2. Generator Soal & Kunci":
                 - Komposisi: {s_komposisi}
                 """
         response = client.models.generate_content(
-            model="gemini-2.5-flash", contents=prompt_soal
+            model="gemini-3.5-flash", contents=prompt_soal
         )
         st.session_state.soal_hasil = response.text
         st.success("Paket soal berhasil disusun!")
@@ -355,9 +357,10 @@ elif menu_pilihan == "🔍 4. Koreksi Siswa":
       if not nama_siswa:
         st.error("Masukkan nama atau identitas siswa!")
       else:
-        with st.spinner("Sistem sedang menganalisis jawaban..."):
+        with st.spinner(
+            "Sistem Gemini 3.5 Flash sedang menganalisis jawaban..."
+        ):
           try:
-            # DIPERBAIKI: Mengirim api_key secara eksplisit ke client
             client = genai.Client(api_key=GEMINI_API_KEY)
             payload = [f"""
                         Koreksi lembar jawaban siswa berdasarkan acuan berikut:
@@ -382,7 +385,7 @@ elif menu_pilihan == "🔍 4. Koreksi Siswa":
               payload.append(f"Jawaban Siswa: {teks_manual}")
 
             resp = client.models.generate_content(
-                model="gemini-2.5-flash", contents=payload
+                model="gemini-3.5-flash", contents=payload
             )
             hasil = resp.text
 
