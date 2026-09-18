@@ -18,166 +18,159 @@ import streamlit as st
 # KONFIGURASI HALAMAN STREAMLIT
 # ---------------------------------------------------------
 st.set_page_config(
-    page_title="Portal Asisten Akademik & Asesmen AI [Hacker Edition]",
-    page_icon="💻",
+    page_title="Portal Akademik & Asesmen Instansi Pendidikan",
+    page_icon="🏛️",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
 # ---------------------------------------------------------
-# CUSTOM CSS: TEMA HACKER ELITE / CYBERPUNK GREEN MATRIX
+# CUSTOM CSS: INSTANSI PENDIDIKAN MODERN, MEWAH & BERKELAS
 # ---------------------------------------------------------
 st.markdown(
     """
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
-    /* Global Cyber Dark Background */
+    /* Global Platinum Background */
     .stApp {
-        background: #030712;
-        background-image: 
-            radial-gradient(circle at 10% 20%, rgba(16, 185, 129, 0.05) 0%, transparent 40%),
-            radial-gradient(circle at 90% 80%, rgba(5, 150, 105, 0.04) 0%, transparent 40%);
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
         font-family: 'Plus Jakarta Sans', sans-serif;
-        color: #f3f4f6;
+        color: #0f172a;
     }
 
-    /* Sidebar Gelap Cyber */
+    /* Sidebar Institusi Formal & Elegan */
     section[data-testid="stSidebar"] {
-        background: #0b0f19 !important;
-        border-right: 1px solid rgba(16, 185, 129, 0.2);
+        background: linear-gradient(180deg, #0f172a 0%, #1e3a8a 100%) !important;
+        border-right: 1px solid #cbd5e1;
     }
     section[data-testid="stSidebar"] .stMarkdown, 
     section[data-testid="stSidebar"] label,
     section[data-testid="stSidebar"] span {
-        color: #e5e7eb !important;
+        color: #f8fafc !important;
     }
 
-    /* Hero Banner Hacker Style */
+    /* Hero Banner Mewah Ala Instansi Pendidikan */
     .hero-banner {
-        background: linear-gradient(135deg, #064e3b 0%, #065f46 50%, #0f172a 100%);
-        padding: 40px 48px;
+        background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 50%, #0f172a 100%);
+        padding: 42px 48px;
         border-radius: 24px;
         color: #ffffff;
         margin-bottom: 32px;
-        box-shadow: 0 20px 40px -15px rgba(16, 185, 129, 0.2);
+        box-shadow: 0 20px 40px -15px rgba(30, 58, 138, 0.3);
         position: relative;
         overflow: hidden;
-        border: 1px solid rgba(16, 185, 129, 0.3);
+        border-left: 8px solid #f59e0b;
     }
-    .hero-banner::before {
+    .hero-banner::after {
         content: '';
         position: absolute;
-        top: -80px;
-        right: -80px;
-        width: 220px;
-        height: 220px;
-        background: rgba(16, 185, 129, 0.15);
+        top: -60px;
+        right: -60px;
+        width: 200px;
+        height: 200px;
+        background: rgba(245, 158, 11, 0.15);
         border-radius: 50%;
-        filter: blur(35px);
+        filter: blur(30px);
         pointer-events: none;
     }
     .hero-title {
-        font-size: 2.25rem;
+        font-size: 2.2rem;
         font-weight: 800;
-        letter-spacing: -0.8px;
-        color: #34d399 !important;
+        letter-spacing: -0.5px;
+        color: #ffffff !important;
         margin: 0;
-        font-family: 'JetBrains Mono', monospace;
     }
     .hero-subtitle {
-        font-size: 0.98rem;
-        color: #d1d5db !important;
+        font-size: 1rem;
+        color: #e2e8f0 !important;
         margin-top: 10px;
         font-weight: 400;
-        max-width: 700px;
+        max-width: 750px;
         line-height: 1.6;
     }
 
-    /* Kartu Dashboard Glassmorphism Gelap */
+    /* Kartu Dashboard Eksklusif */
     .dashboard-card {
-        background: rgba(15, 23, 42, 0.85);
-        backdrop-filter: blur(16px);
+        background: #ffffff;
         padding: 36px;
         border-radius: 24px;
-        border: 1px solid rgba(16, 185, 129, 0.2);
-        box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.5);
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
         margin-bottom: 28px;
         transition: all 0.3s ease;
     }
     .dashboard-card:hover {
-        border-color: rgba(16, 185, 129, 0.5);
-        box-shadow: 0 20px 40px -10px rgba(16, 185, 129, 0.15);
+        border-color: #93c5fd;
+        box-shadow: 0 15px 35px -10px rgba(30, 58, 138, 0.08);
     }
 
     /* Judul Bagian dalam Kartu */
     .section-title {
         font-size: 1.4rem;
         font-weight: 700;
-        color: #f9fafb;
+        color: #1e3a8a;
         margin-bottom: 6px;
         letter-spacing: -0.3px;
     }
     .section-desc {
-        font-size: 0.9rem;
-        color: #9ca3af;
+        font-size: 0.92rem;
+        color: #64748b;
         margin-bottom: 28px;
     }
 
     /* Label Formulir & Kontras Tinggi */
     label, .stTextInput label, .stTextArea label, .stSelectbox label, .stRadio label {
-        color: #d1d5db !important;
+        color: #334155 !important;
         font-weight: 700 !important;
         font-size: 0.9rem !important;
         letter-spacing: -0.2px;
         margin-bottom: 8px !important;
     }
 
-    /* Input & Textarea ala Terminal / Hacker */
+    /* Input & Textarea Bersih dan Jelas */
     .stTextInput input, .stTextArea textarea {
-        background-color: #030712 !important;
-        color: #34d399 !important;
-        font-family: 'JetBrains Mono', monospace !important;
+        background-color: #f8fafc !important;
+        color: #0f172a !important;
         font-weight: 600 !important;
         font-size: 0.95rem !important;
         border-radius: 12px !important;
-        border: 1.5px solid #1f2937 !important;
+        border: 1.5px solid #cbd5e1 !important;
         padding: 14px 18px !important;
-        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6) !important;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02) !important;
         transition: all 0.2s ease;
     }
     .stTextInput input:focus, .stTextArea textarea:focus {
-        border-color: #10b981 !important;
-        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25), inset 0 2px 4px rgba(0, 0, 0, 0.6) !important;
-        background-color: #030712 !important;
+        border-color: #1e3a8a !important;
+        box-shadow: 0 0 0 4px rgba(30, 58, 138, 0.1) !important;
+        background-color: #ffffff !important;
     }
     .stTextInput input::placeholder, .stTextArea textarea::placeholder {
-        color: #4b5563 !important;
+        color: #94a3b8 !important;
         font-weight: 400 !important;
         opacity: 1 !important;
     }
 
-    /* Tombol Utama Hacker Glow (Hijau Neon) */
+    /* Tombol Utama Mewah (Royal Blue & Gold Accent) */
     .stButton>button {
         width: 100%;
-        background: linear-gradient(135deg, #059669 0%, #10b981 100%);
-        color: #030712 !important;
-        font-weight: 800 !important;
+        background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 100%);
+        color: #ffffff !important;
+        font-weight: 700 !important;
         border-radius: 12px !important;
         padding: 0.9rem 1.5rem !important;
         border: none !important;
         font-size: 1rem !important;
-        box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4) !important;
+        box-shadow: 0 4px 15px rgba(30, 58, 138, 0.25) !important;
         transition: all 0.25s ease !important;
-        letter-spacing: 0.5px;
     }
     .stButton>button:hover {
-        background: linear-gradient(135deg, #10b981 0%, #34d399 100%) !important;
-        box-shadow: 0 6px 25px rgba(16, 185, 129, 0.6) !important;
+        background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%) !important;
+        box-shadow: 0 6px 20px rgba(30, 58, 138, 0.35) !important;
         transform: translateY(-2px);
     }
 
-    /* Badge Indikator Cyber */
+    /* Badge Akademik Eksklusif */
     .status-badge {
         display: inline-flex;
         align-items: center;
@@ -185,30 +178,29 @@ st.markdown(
         border-radius: 9999px;
         font-size: 0.78rem;
         font-weight: 800;
-        letter-spacing: 1px;
+        letter-spacing: 0.8px;
         text-transform: uppercase;
-        background: rgba(16, 185, 129, 0.1);
-        color: #34d399;
-        border: 1px solid rgba(16, 185, 129, 0.3);
+        background: #fef3c7;
+        color: #b45309;
+        border: 1px solid #fde68a;
         margin-bottom: 16px;
-        font-family: 'JetBrains Mono', monospace;
     }
 
-    /* Footer Cyber */
+    /* Footer Institusi */
     .footer-container {
         text-align: center;
         padding: 28px;
         font-size: 0.85rem;
-        color: #9ca3af;
-        background: rgba(15, 23, 42, 0.6);
-        border: 1px solid rgba(16, 185, 129, 0.15);
+        color: #64748b;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
         border-radius: 20px;
         margin-top: 50px;
         margin-bottom: 24px;
         font-weight: 500;
     }
     .footer-container a {
-        color: #34d399;
+        color: #1e3a8a;
         text-decoration: none;
         font-weight: 700;
     }
@@ -321,13 +313,13 @@ raw_key = st.secrets.get("GEMINI_API_KEY", "") or st.secrets.get(
 GEMINI_API_KEY = str(raw_key).strip().strip('"').strip("'")
 
 # ---------------------------------------------------------
-# NAVIGASI SIDEBAR CYBER
+# NAVIGASI SIDEBAR INSTITUSI
 # ---------------------------------------------------------
 with st.sidebar:
-  st.markdown("### 💻 Matrix AI Studio")
+  st.markdown("### 🏛️ Portal Akademik")
   st.markdown(
-      "<p style='color: #34d399; font-size: 0.78rem; margin-top: -10px; font-family:"
-      " monospace;'>SECURE_TERMINAL_V3.5</p>",
+      "<p style='color: #cbd5e1; font-size: 0.8rem; margin-top:"
+      " -10px;'>Instansi Pendidikan Formal</p>",
       unsafe_allow_html=True,
   )
   st.markdown("---")
@@ -345,7 +337,7 @@ with st.sidebar:
   )
 
   st.markdown("---")
-  st.markdown("### 🔑 Status API Key")
+  st.markdown("### 🔑 Status Koneksi")
 
   if not GEMINI_API_KEY:
     st.warning("⚠️ Belum terhubung")
@@ -353,16 +345,16 @@ with st.sidebar:
     if input_manual:
       GEMINI_API_KEY = input_manual.strip().strip('"').strip("'")
   else:
-    st.success("🔒 Enkripsi Aktif")
+    st.success("🔒 Sistem Aktif & Aman")
 
   st.markdown("---")
   st.caption("Engine: **Gemini 3.5 Flash**")
-  st.caption("Theme: **Cyberpunk Green Matrix**")
+  st.caption("Edisi: **Instansi Modern Elite**")
 
 if not GEMINI_API_KEY:
   st.warning(
       "Mohon masukkan Gemini API Key di panel sebelah kiri untuk mengakses"
-      " terminal."
+      " portal instansi."
   )
   st.stop()
 
@@ -391,8 +383,8 @@ if "soal_hasil" not in st.session_state:
 st.markdown(
     """
     <div class="hero-banner">
-        <h1 class="hero-title">>_ Portal Asisten Akademik & Asesmen AI</h1>
-        <p class="hero-subtitle">Sistem Terminal Kecerdasan Buatan Terintegrasi untuk Menyusun Perangkat Pembelajaran, Naskah Soal Asesmen Standar Nasional, dan Penilaian Objektif.</p>
+        <h1 class="hero-title">Portal Asisten Akademik & Asesmen Instansi</h1>
+        <p class="hero-subtitle">Sistem Terintegrasi Kecerdasan Buatan untuk Penyusunan Perangkat Pembelajaran Formal, Naskah Soal Asesmen Standar Nasional, dan Penilaian Objektif.</p>
     </div>
     """,
     unsafe_allow_html=True,
@@ -404,7 +396,7 @@ st.markdown(
 if menu_pilihan == "📖 Generator Modul Ajar":
   st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
   st.markdown(
-      '<div class="status-badge">MODUL_PEMBELAJARAN.SYS</div>',
+      '<div class="status-badge">PERANGKAT PEMBELAJARAN</div>',
       unsafe_allow_html=True,
   )
   st.markdown(
@@ -412,7 +404,7 @@ if menu_pilihan == "📖 Generator Modul Ajar":
       unsafe_allow_html=True,
   )
   st.markdown(
-      '<div class="section-desc">Lengkapi parameter di bawah ini untuk merancang'
+      '<div class="section-desc">Lengkapi formulir di bawah ini untuk merancang'
       ' Modul Ajar formal berstandar Kurikulum Merdeka.</div>',
       unsafe_allow_html=True,
   )
@@ -447,7 +439,7 @@ if menu_pilihan == "📖 Generator Modul Ajar":
     )
 
   st.markdown("<br>", unsafe_allow_html=True)
-  if st.button("⚡ Eksekusi Pembuatan Modul Ajar", type="primary"):
+  if st.button("🚀 Buat Modul Ajar Sekarang", type="primary"):
     with st.spinner("Sistem Gemini sedang merancang Modul Ajar..."):
       try:
         prompt_modul = f"""
@@ -486,7 +478,7 @@ if menu_pilihan == "📖 Generator Modul Ajar":
 elif menu_pilihan == "📝 Generator Soal Asesmen":
   st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
   st.markdown(
-      '<div class="status-badge">ASESMEN_EVALUASI.SYS</div>',
+      '<div class="status-badge">ASESMEN & EVALUASI</div>',
       unsafe_allow_html=True,
   )
   st.markdown(
@@ -495,7 +487,7 @@ elif menu_pilihan == "📝 Generator Soal Asesmen":
   )
   st.markdown(
       '<div class="section-desc">Penyusunan naskah soal asesmen resmi lengkap'
-      ' dengan KOP, kisi-kisi, kunci jawaban, dan rubrik bobot nilai.</div>',
+      ' dengan KOP institusi, kisi-kisi, kunci jawaban, dan rubrik bobot nilai.</div>',
       unsafe_allow_html=True,
   )
 
@@ -518,7 +510,7 @@ elif menu_pilihan == "📝 Generator Soal Asesmen":
     )
 
   st.markdown("<br>", unsafe_allow_html=True)
-  if st.button("⚡ Eksekusi Naskah Soal Asesmen", type="primary"):
+  if st.button("🚀 Susun Naskah Soal Asesmen", type="primary"):
     with st.spinner("Sistem Gemini sedang menyusun naskah asesmen..."):
       try:
         prompt_soal = f"""
@@ -555,7 +547,7 @@ elif menu_pilihan == "📝 Generator Soal Asesmen":
 elif menu_pilihan == "⚙️ Set Kunci Acuan":
   st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
   st.markdown(
-      '<div class="status-badge">CONFIG_ANSWER_KEY.SYS</div>',
+      '<div class="status-badge">KONFIGURASI PENILAIAN</div>',
       unsafe_allow_html=True,
   )
   st.markdown(
@@ -604,7 +596,7 @@ elif menu_pilihan == "⚙️ Set Kunci Acuan":
 elif menu_pilihan == "🔍 Koreksi Siswa":
   st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
   st.markdown(
-      '<div class="status-badge">AUTO_GRADING.SYS</div>', unsafe_allow_html=True
+      '<div class="status-badge">KOREKSI OTOMATIS</div>', unsafe_allow_html=True
   )
   st.markdown(
       '<div class="section-title">🔍 Koreksi Lembar Jawaban Asesmen Siswa</div>',
@@ -640,7 +632,7 @@ elif menu_pilihan == "🔍 Koreksi Siswa":
       )
 
     st.markdown("<br>", unsafe_allow_html=True)
-    if st.button("⚡ Eksekusi Analisis & Koreksi AI", type="primary"):
+    if st.button("🚀 Jalankan Analisis & Koreksi AI", type="primary"):
       if not nama_siswa:
         st.error("Masukkan identitas atau nama siswa!")
       else:
@@ -697,7 +689,7 @@ elif menu_pilihan == "🔍 Koreksi Siswa":
 elif menu_pilihan == "📊 Rekap Nilai":
   st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
   st.markdown(
-      '<div class="status-badge">DATABASE_RECAP.SYS</div>',
+      '<div class="status-badge">REKAPITULASI DOKUMEN</div>',
       unsafe_allow_html=True,
   )
   st.markdown(
@@ -728,7 +720,7 @@ elif menu_pilihan == "📊 Rekap Nilai":
 st.markdown(
     """
     <div class="footer-container">
-        <p>Sistem Portal Akademik Terintegrasi [Secure Cyber Edition] | Developed by <b>Zeeo</b><br>
+        <p>Sistem Portal Akademik Instansi Pendidikan | Developed by <b>Zeeo</b><br>
         WhatsApp Support: <a href="https://wa.me/6282371729760" target="_blank">082371729760</a><br>
         © 2026 All Rights Reserved</p>
     </div>
