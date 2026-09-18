@@ -685,7 +685,7 @@ elif menu_pilihan == "🔍 Koreksi Siswa":
               payload.append(f"Jawaban Siswa: {teks_manual}")
 
             resp = generate_content_with_retry(
-                client, "gemini-3.5-flash", contents=payload
+                client, "gemini-3.1-flash", contents=payload
             )
             hasil = resp.text
 
