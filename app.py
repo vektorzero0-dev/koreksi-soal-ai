@@ -120,7 +120,7 @@ def buat_file_docx(teks_konten):
   return buffer
 
 
-# AMBIL API KEY DARI SECRETS ATAU INPUT MANUAL
+# AMBIL & BERSIHKAN TOKEN AQ. DARI SECRETS ATAU INPUT MANUAL
 raw_key = st.secrets.get("GEMINI_API_KEY", "") or st.secrets.get(
     "GOOGLE_API_KEY", ""
 )
@@ -141,7 +141,7 @@ with st.expander("🔑 Pengaturan API Key & Keamanan", expanded=not GEMINI_API_K
   if not GEMINI_API_KEY:
     st.warning("⚠️ API Key belum terdeteksi di Secrets.")
     input_manual = st.text_input(
-        "Masukkan Gemini API Key", type="password", key="sidebar_key"
+        "Masukkan Token Gemini (AQ...)", type="password", key="sidebar_key"
     )
     if input_manual:
       GEMINI_API_KEY = input_manual.strip().strip('"').strip("'")
@@ -149,12 +149,13 @@ with st.expander("🔑 Pengaturan API Key & Keamanan", expanded=not GEMINI_API_K
     st.success("🔒 Sistem Keamanan Aktif & Terhubung")
 
 if not GEMINI_API_KEY:
-  st.warning("Mohon masukkan Google Gemini API Key untuk mulai menggunakan sistem.")
+  st.warning("Mohon masukkan Token Gemini Anda untuk mulai menggunakan sistem.")
   st.stop()
 
-# Konfigurasi menggunakan SDK klasik yang stabil
+# Konfigurasi SDK Klasik untuk Token AQ.
 try:
   genai.configure(api_key=GEMINI_API_KEY)
+  # Gunakan model stabil
   model = genai.GenerativeModel("gemini-1.5-flash")
 except Exception as e:
   st.error(f"Gagal konfigurasi API: {e}")
