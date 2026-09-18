@@ -1,7 +1,6 @@
 from io import BytesIO
 from docx import Document
 from google import genai
-from google.genai import types
 from PIL import Image
 pypdf_available = True
 try:
