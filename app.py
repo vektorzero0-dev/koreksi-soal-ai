@@ -22,82 +22,131 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-# Custom Styling CSS: Desain Instansi Pendidikan Formal, Modern, Bersih, dan Profesional
+# Custom Styling CSS: Modern, Elegan, Seni Estetik, dan Profesional (EdTech UI)
 st.markdown(
     """
     <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
     .stApp {
-        background-color: #f1f5f9;
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
         color: #0f172a;
-        font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+        font-family: 'Plus Jakarta Sans', sans-serif;
     }
+
+    /* Header Estetik dengan Aksen Seni Geometris Halus */
     .instansi-header {
-        background-color: #1e3a8a;
+        background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
         color: #ffffff;
-        padding: 24px 28px;
-        border-radius: 12px;
-        margin-bottom: 24px;
-        border-left: 6px solid #3b82f6;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        padding: 32px 36px;
+        border-radius: 20px;
+        margin-bottom: 28px;
+        box-shadow: 0 10px 25px -5px rgba(30, 58, 138, 0.2);
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .instansi-header::after {
+        content: '';
+        position: absolute;
+        top: -50px;
+        right: -50px;
+        width: 150px;
+        height: 150px;
+        background: rgba(59, 130, 246, 0.15);
+        border-radius: 50%;
+        z-index: 1;
     }
     .instansi-title {
-        font-size: 1.5rem;
-        font-weight: 700;
+        font-size: 1.75rem;
+        font-weight: 800;
         color: #ffffff !important;
         margin: 0;
-        letter-spacing: -0.3px;
+        letter-spacing: -0.5px;
+        position: relative;
+        z-index: 2;
     }
     .instansi-subtitle {
-        font-size: 0.9rem;
-        color: #cbd5e1 !important;
-        margin-top: 6px;
+        font-size: 0.95rem;
+        color: #93c5fd !important;
+        margin-top: 8px;
         font-weight: 400;
-        line-height: 1.4;
+        line-height: 1.5;
+        position: relative;
+        z-index: 2;
     }
+
+    /* Card Box Modern dengan Efek Glassmorphism Ringan */
     .card-box {
-        background: #ffffff;
-        padding: 24px;
-        border-radius: 12px;
-        border: 1px solid #cbd5e1;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
-        margin-bottom: 20px;
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(12px);
+        padding: 28px;
+        border-radius: 20px;
+        border: 1px solid rgba(203, 213, 225, 0.6);
+        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.04);
+        margin-bottom: 24px;
+        transition: all 0.3s ease;
     }
+    .card-box:hover {
+        border-color: rgba(59, 130, 246, 0.4);
+        box-shadow: 0 15px 35px -10px rgba(30, 58, 138, 0.08);
+    }
+
+    /* Typography & Label Profesional */
     label, .stTextInput label, .stTextArea label, .stSelectbox label, .stRadio label {
-        color: #1e293b !important;
+        color: #334155 !important;
         font-weight: 600 !important;
-        font-size: 0.95rem !important;
+        font-size: 0.9rem !important;
+        letter-spacing: -0.2px;
     }
+
+    /* Input & Select Customization */
+    .stTextInput input, .stTextArea textarea, .stSelectbox div[data-baseweb="select"] {
+        border-radius: 12px !important;
+        border-color: #cbd5e1 !important;
+        background-color: #ffffff !important;
+    }
+    .stTextInput input:focus, .stTextArea textarea:focus {
+        border-color: #2563eb !important;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
+    }
+
+    /* Tombol Interaktif Premium */
     .stButton>button {
         width: 100%;
-        background-color: #1e3a8a;
+        background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
         color: #ffffff;
-        font-weight: 600;
-        border-radius: 8px;
-        padding: 0.7rem 1rem;
+        font-weight: 700;
+        border-radius: 12px;
+        padding: 0.75rem 1.25rem;
         border: none;
         font-size: 0.95rem;
-        transition: background-color 0.2s ease;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+        transition: all 0.25s ease;
     }
     .stButton>button:hover {
-        background-color: #1d4ed8;
-        color: #ffffff;
+        background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%);
+        box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+        transform: translateY(-1px);
     }
+
+    /* Footer Estetik */
     .footer {
         text-align: center;
-        padding: 16px;
-        font-size: 0.82rem;
+        padding: 20px;
+        font-size: 0.85rem;
         color: #64748b;
-        background-color: #ffffff;
-        border: 1px solid #cbd5e1;
-        border-radius: 8px;
-        margin-top: 30px;
+        background: rgba(255, 255, 255, 0.6);
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        margin-top: 40px;
         margin-bottom: 20px;
         font-weight: 500;
     }
     .footer a {
-        color: #1e3a8a;
+        color: #2563eb;
         text-decoration: none;
-        font-weight: 600;
+        font-weight: 700;
     }
     </style>
 """,
@@ -108,7 +157,7 @@ st.markdown(
 def buat_file_docx(teks_konten):
   doc = Document()
 
-  # Bersihkan tag HTML mentah yang tidak sengaja terbawa
+  # Bersihkan tag HTML mentah secara total
   teks_bersih = re.sub(
       r"<\s*br\s*/?>", "\n", teks_konten, flags=re.IGNORECASE
   )
@@ -120,7 +169,6 @@ def buat_file_docx(teks_konten):
   def flush_table():
     nonlocal table_rows
     if table_rows:
-      # Filter baris pemisah markdown (seperti |---|---|)
       filtered_rows = [
           row
           for row in table_rows
@@ -144,7 +192,7 @@ def buat_file_docx(teks_konten):
   for line in lines:
     stripped = line.strip()
 
-    # Deteksi baris tabel markdown (mengandung karakter |)
+    # Deteksi tabel markdown bersimbol pipa (|)
     if stripped.startswith("|") and stripped.endswith("|"):
       cells = [c.strip() for c in stripped.split("|")[1:-1]]
       table_rows.append(cells)
@@ -155,26 +203,41 @@ def buat_file_docx(teks_konten):
     if not stripped:
       continue
 
-    # Format Heading & Penomoran Dokumen Formal
+    # Format Dokumen Formal (Heading, List, Paragraf Bersih)
     if stripped.startswith("# "):
       doc.add_heading(stripped.replace("# ", "").strip(), level=1)
     elif stripped.startswith("## "):
       doc.add_heading(stripped.replace("## ", "").strip(), level=2)
     elif stripped.startswith("### "):
       doc.add_heading(stripped.replace("### ", "").strip(), level=3)
-    elif re.match(
-        r"^(\d+[\.\)]|[a-zA-Z][\.\)]|\•|\-)\s+", stripped
-    ):  # Deteksi List / Penomoran
+    elif re.match(r"^(\d+[\.\)]|[a-zA-Z][\.\)]|\•|\-)\s+", stripped):
       doc.add_paragraph(stripped, style="List Bullet")
     else:
       doc.add_paragraph(stripped)
 
-  flush_table()  # Tangkap tabel jika berada di baris akhir dokumen
+  flush_table()
 
   buffer = BytesIO()
   doc.save(buffer)
   buffer.seek(0)
   return buffer
+
+
+# Fungsi Auto-Retry untuk Mengatasi Error 503 (Server Sibuk)
+def generate_content_with_retry(
+    client, model_name, contents, max_retries=3, delay=3
+):
+  import time
+
+  for attempt in range(max_retries):
+    try:
+      return client.models.generate_content(model=model_name, contents=contents)
+    except Exception as e:
+      if "503" in str(e) or "UNAVAILABLE" in str(e):
+        if attempt < max_retries - 1:
+          time.sleep(delay * (attempt + 1))
+          continue
+      raise e
 
 
 # Bersihkan environment variabel agar SDK tidak salah jalur
@@ -285,8 +348,8 @@ if menu_pilihan == "📖 1. Generator Modul Ajar":
                 Sertakan komponen Identitas Instansi, Profil Pelajar Pancasila, Tujuan Pembelajaran, Kegiatan Pembelajaran, serta Tabel Rubrik Penilaian dalam bentuk tabel markdown standar (menggunakan garis vertikal |).
                 PENTING: Gunakan teks bersih murni tanpa tag HTML sama sekali (seperti <br> atau <p>).
                 """
-        response = client.models.generate_content(
-            model="gemini-3.5-flash", contents=prompt_modul
+        response = generate_content_with_retry(
+            client, "gemini-3.5-flash", prompt_modul
         )
         st.session_state.modul_hasil = response.text
         st.success("Modul Ajar berhasil disusun!")
@@ -336,8 +399,8 @@ elif menu_pilihan == "📝 2. Generator Soal & Kunci":
                 - Komposisi: {s_komposisi}
                 PENTING: Gunakan teks bersih murni tanpa tag HTML sama sekali (seperti <br> atau <p>).
                 """
-        response = client.models.generate_content(
-            model="gemini-3.6-flash", contents=prompt_soal
+        response = generate_content_with_retry(
+            client, "gemini-3.5-flash", prompt_soal
         )
         st.session_state.soal_hasil = response.text
         st.success("Paket soal berhasil disusun!")
@@ -441,8 +504,8 @@ elif menu_pilihan == "🔍 4. Koreksi Siswa":
             elif teks_manual:
               payload.append(f"Jawaban Siswa: {teks_manual}")
 
-            resp = client.models.generate_content(
-                model="gemini-3.6-flash", contents=payload
+            resp = generate_content_with_retry(
+                client, "gemini-3.5-flash", contents=payload
             )
             hasil = resp.text
 
