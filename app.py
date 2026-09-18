@@ -16,75 +16,78 @@ import streamlit as st
 st.set_page_config(
     page_title="Sistem Akademik & Asisten Guru AI",
     page_icon="🏛️",
-    layout="centered",  # Menggunakan centered agar otomatis menyesuaikan layar HP/Android
-    initial_sidebar_state="collapsed",  # Sidebar tertutup otomatis di HP agar layar lapang
+    layout="centered",
+    initial_sidebar_state="collapsed",
 )
 
-# Custom Styling CSS: Ramah Android, Background Non-Putih (Warm Soft Gray), Tombol Besar
+# Custom Styling CSS: Background Kuning Bumblebee, Kontras Tinggi, Ramah Android
 st.markdown(
     """
     <style>
-    /* Global Background Lembut (Tidak Putih Polos, Tidak Silau) */
+    /* Global Background Kuning Bumblebee */
     .stApp {
-        background-color: #e2e8f0;
-        color: #0f172a;
+        background-color: #ffd700;
+        color: #111111;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
     
-    /* Header Instansi Responsif HP */
+    /* Header Instansi dengan Aksen Hitam & Kuning Khas */
     .instansi-header {
-        background-color: #1e3a8a;
-        color: #ffffff;
+        background-color: #111111;
+        color: #ffd700;
         padding: 20px;
         border-radius: 10px;
         margin-bottom: 20px;
-        border-left: 5px solid #3b82f6;
+        border-left: 6px solid #ffd700;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.15);
     }
     .instansi-title {
         font-size: 1.4rem;
-        font-weight: 700;
-        color: #ffffff !important;
+        font-weight: 800;
+        color: #ffd700 !important;
         margin: 0;
         line-height: 1.3;
     }
     .instansi-subtitle {
         font-size: 0.85rem;
-        color: #cbd5e1 !important;
+        color: #ffffff !important;
         margin-top: 6px;
         font-weight: 400;
     }
 
-    /* Kotak Kartu Konten Mobile Friendly */
+    /* Kotak Kartu Konten (Putih Bersih agar teks sangat kontras dengan background kuning) */
     .card-box {
         background: #ffffff;
         padding: 20px;
         border-radius: 10px;
-        border: 1px solid #cbd5e1;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+        border: 2px solid #111111;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         margin-bottom: 20px;
     }
 
     /* Label Input Jelas & Tebal */
     label, .stTextInput label, .stTextArea label, .stSelectbox label, .stRadio label {
-        color: #1e293b !important;
-        font-weight: 600 !important;
+        color: #111111 !important;
+        font-weight: 700 !important;
         font-size: 0.95rem !important;
     }
 
-    /* Tombol Lebar dan Nyaman Disentuh di HP */
+    /* Tombol Lebar Khas Bumblebee (Hitam dengan teks Kuning) */
     .stButton>button {
         width: 100%;
-        background-color: #1e3a8a;
-        color: #ffffff;
-        font-weight: 600;
+        background-color: #111111;
+        color: #ffd700;
+        font-weight: 700;
         border-radius: 8px;
         padding: 0.7rem 1rem;
-        border: none;
+        border: 2px solid #111111;
         font-size: 1rem;
+        transition: all 0.2s ease;
     }
     .stButton>button:hover {
-        background-color: #1d4ed8;
+        background-color: #333333;
         color: #ffffff;
+        border-color: #000000;
     }
 
     /* Footer Responsif */
@@ -92,16 +95,18 @@ st.markdown(
         text-align: center;
         padding: 15px;
         font-size: 0.8rem;
-        color: #475569;
-        background-color: #cbd5e1;
+        color: #111111;
+        background-color: #ffcc00;
+        border: 2px solid #111111;
         border-radius: 8px;
         margin-top: 30px;
         margin-bottom: 20px;
+        font-weight: 600;
     }
     .footer a {
-        color: #1e3a8a;
-        text-decoration: none;
-        font-weight: 600;
+        color: #000000;
+        text-decoration: underline;
+        font-weight: 700;
     }
     </style>
 """,
@@ -129,11 +134,11 @@ def buat_file_docx(teks_konten):
 # AMBIL API KEY DARI SECRETS ATAU INPUT MANUAL
 GEMINI_API_KEY = st.secrets.get("GEMINI_API_KEY", "")
 
-# --- NAVIGASI UTAMA RAMAH ANDROID (MENGGUNAKAN SELECTBOX DI ATAS) ---
+# --- HEADER UTAMA ---
 st.markdown(
     """
     <div class="instansi-header">
-        <h1 class="instansi-title">🏛️ PORTAL ASISTEN AKADEMIK AI</h1>
+        <h1 class="instansi-title">🐝 PORTAL ASISTEN AKADEMIK AI</h1>
         <p class="instansi-subtitle">Sistem Pintar Guru Profesional & Administrasi Pembelajaran.</p>
     </div>
     """,
@@ -169,7 +174,7 @@ if "modul_hasil" not in st.session_state:
 if "soal_hasil" not in st.session_state:
   st.session_state.soal_hasil = ""
 
-# Menu Navigasi Dropdown (Sangat praktis untuk layar HP / Android)
+# Menu Navigasi Dropdown
 st.markdown("### 📌 Pilih Menu Layanan:")
 menu_pilihan = st.selectbox(
     "Navigasi Utama",
