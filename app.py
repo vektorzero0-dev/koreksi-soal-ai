@@ -281,8 +281,13 @@ def buat_file_docx(teks_konten):
       doc.add_heading(stripped.replace("## ", "").strip(), level=2)
     elif stripped.startswith("### "):
       doc.add_heading(stripped.replace("### ", "").strip(), level=3)
-    elif re.match(r"^(\d+[\.\)]|[a-zA-Z][\.\)]|\•|\-|\*)\s+", stripped):
-      doc.add_paragraph(stripped, style="List Bullet")
+    elif re.match(
+        r"^([a-zA-Z][\.\)]|\•|\-|\*)", stripped
+    ):  # Pilihan Ganda / Sub-item
+      p = doc.add_paragraph(stripped, style="List Bullet")
+      p.paragraph_format.left_indent = docx.shared.Inches(0.4)
+    elif re.match(r"^\d+[\.\)]", stripped):  # Nomor Soal Utama
+      doc.add_paragraph(stripped)
     else:
       doc.add_paragraph(stripped)
 
@@ -450,7 +455,9 @@ if menu_pilihan == "📖 Generator Modul Ajar":
 
   st.markdown("<br>", unsafe_allow_html=True)
   if st.button("🚀 Buat Modul Ajar Sekarang", type="primary"):
-    with st.spinner("Sistem Gemini sedang merancang Modul Ajar..."):
+    with st.spinner(
+        "Sistem AI Akademik sedang merancang Modul Ajar formal..."
+    ):
       try:
         prompt_modul = f"""
                 Buatkan Modul Ajar / RPP formal, sangat terstruktur, dan profesional untuk instansi pendidikan:
@@ -521,10 +528,10 @@ elif menu_pilihan == "📝 Generator Soal Asesmen":
 
   st.markdown("<br>", unsafe_allow_html=True)
   if st.button("🚀 Susun Naskah Soal Asesmen", type="primary"):
-    with st.spinner("Sistem Gemini sedang menyusun naskah asesmen..."):
+    with st.spinner("Sistem Asesor Pintar sedang menyusun naskah asesmen..."):
       try:
         prompt_soal = f"""
-                Buatkan naskah soal asesmen resmi instansi pendidikan lengkap dengan Kop Soal, Petunjuk, Naskah Soal Asesmen (setiap nomor soal menggunakan penomoran tegas seperti 1., 2., 3. dan pilihan ganda menggunakan A., B., C., D.), Kunci Jawaban, & Tabel Rubrik Penilaian.
+                Buatkan naskah soal asesmen resmi instansi pendidikan lengkap dengan Kop Soal, Petunjuk, Naskah Soal Asesmen (setiap nomor soal menggunakan penomoran tegas seperti 1., 2., 3. dan pilihan ganda ditulis tepat di bawah pertanyaan dengan format terindentasi A., B., C., D.), Kunci Jawaban, & Tabel Rubrik Penilaian.
                 PENTING UNTUK TABEL: Buat tabel rubrik penilaian menggunakan format tabel markdown standar dengan garis vertikal (|), contoh:
                 | Jenis Soal | Jumlah Soal | Bobot per Soal | Skor Maksimal |
                 | :--- | :--- | :--- | :--- |
@@ -577,9 +584,9 @@ elif menu_pilihan == "⚙️ Set Kunci Acuan":
   )
 
   kunci_pg_input = st.text_area(
-      "🎯 Kunci Pilihan Ganda",
+      "🎯 Kunci Pilihan Ganda (Cukup ketik huruf abjadnya saja secara berurutan, contoh: A,B,C,D,A atau ABCD)",
       value=st.session_state.kunci_pg,
-      placeholder="Contoh: 1.A, 2.B, 3.C, 4.D, 5.B",
+      placeholder="Contoh: A B C D A B C D A B",
       height=100,
   )
   kunci_isian_input = st.text_area(
@@ -653,13 +660,13 @@ elif menu_pilihan == "🔍 Koreksi Siswa":
       if not nama_siswa:
         st.error("Masukkan identitas atau nama siswa!")
       else:
-        with st.spinner("Sistem Gemini sedang menganalisis lembar asesmen..."):
+        with st.spinner("Sistem Asesor Pintar sedang menganalisis asesmen..."):
           try:
             payload = [f"""
                         Koreksi lembar jawaban siswa berdasarkan acuan berikut:
-                        - Kunci PG: {st.session_state.kunci_pg}
-                        - Kunci Isian: {st.session_state.kunci_isian}
-                        - Kunci Essai: {st.session_state.kunci_essai}
+                        - Kunci Pilihan Ganda (Hanya huruf abjad jawaban benar): {st.session_state.kunci_pg}
+                        - Kunci Isian Singkat: {st.session_state.kunci_isian}
+                        - Rubrik Kunci Essai: {st.session_state.kunci_essai}
                         
                         Format baris pertama WAJIB persis seperti ini:
                         NILAI_AKHIR: [Angka total nilai 0-100]
