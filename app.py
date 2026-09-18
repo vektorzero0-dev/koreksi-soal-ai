@@ -20,52 +20,53 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# Custom Styling CSS: Warna Solid Profesional, Kontras Tinggi, Bebas Bentrok
+# Custom Styling CSS: Perombakan Total, Sidebar Navigasi Modern, Kontras Sempurna
 st.markdown(
     """
     <style>
-    /* Global Background Standar Profesional */
+    /* Global Background Bersih & Profesional */
     .stApp {
-        background-color: #f8fafc;
+        background-color: #f1f5f9;
         color: #0f172a;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
     
-    /* Header Instansi dengan Warna Solid (Navy) agar Teks Jelas Terbaca */
+    /* Header Instansi Modern */
     .instansi-header {
         background-color: #1e3a8a;
         color: #ffffff;
-        padding: 25px 30px;
-        border-radius: 10px;
+        padding: 24px 30px;
+        border-radius: 12px;
         margin-bottom: 25px;
-        border-bottom: 4px solid #3b82f6;
+        border-left: 6px solid #3b82f6;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
     }
     .instansi-title {
-        font-size: 2rem;
+        font-size: 1.8rem;
         font-weight: 700;
         color: #ffffff !important;
         margin: 0;
     }
     .instansi-subtitle {
-        font-size: 1rem;
-        color: #e2e8f0 !important;
-        margin-top: 6px;
+        font-size: 0.95rem;
+        color: #cbd5e1 !important;
+        margin-top: 5px;
         font-weight: 400;
     }
 
-    /* Kotak Kartu Konten Modern (Card Layout) */
+    /* Kotak Kartu Konten (Card Layout) */
     .card-box {
         background: #ffffff;
-        padding: 25px;
-        border-radius: 10px;
-        border: 1px solid #cbd5e1;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        padding: 28px;
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
         margin-bottom: 20px;
     }
 
-    /* Memastikan Label Input Jelas dan Tidak Buram */
+    /* Label Input Jelas & Kontras */
     label, .stTextInput label, .stTextArea label, .stSelectbox label, .stRadio label {
-        color: #334155 !important;
+        color: #1e293b !important;
         font-weight: 600 !important;
     }
 
@@ -74,22 +75,24 @@ st.markdown(
         background-color: #1e3a8a;
         color: #ffffff;
         font-weight: 600;
-        border-radius: 6px;
-        padding: 0.5rem 1.2rem;
+        border-radius: 8px;
+        padding: 0.55rem 1.2rem;
         border: none;
+        transition: background-color 0.2s;
     }
     .stButton>button:hover {
         background-color: #1d4ed8;
         color: #ffffff;
     }
 
-    /* Sidebar */
+    /* Styling Sidebar Profesional */
     section[data-testid="stSidebar"] {
         background-color: #ffffff;
-        border-right: 1px solid #cbd5e1;
+        border-right: 1px solid #e2e8f0;
+        padding-top: 10px;
     }
 
-    /* Footer */
+    /* Footer Korporat */
     .footer {
         position: fixed;
         left: 0;
@@ -100,8 +103,9 @@ st.markdown(
         text-align: center;
         padding: 10px;
         font-size: 0.85rem;
-        border-top: 1px solid #cbd5e1;
+        border-top: 1px solid #e2e8f0;
         z-index: 1000;
+        box-shadow: 0 -2px 5px rgba(0,0,0,0.02);
     }
     .footer a {
         color: #1e3a8a;
@@ -134,10 +138,12 @@ def buat_file_docx(teks_konten):
 # AMBIL API KEY DARI SECRETS ATAU INPUT MANUAL
 GEMINI_API_KEY = st.secrets.get("GEMINI_API_KEY", "")
 
+# --- SIDEBAR NAVIGASI MODERN ---
 with st.sidebar:
-  st.image("https://img.icons8.com/color/96/school.png", width=60)
-  st.title("Panel Akademik AI")
+  st.image("https://img.icons8.com/color/96/school.png", width=55)
+  st.markdown("### **PORTAL AKADEMIK AI**")
   st.markdown("---")
+
   if not GEMINI_API_KEY:
     st.warning("⚠️ API Key belum diatur di Secrets.")
     GEMINI_API_KEY = st.text_input(
@@ -145,10 +151,25 @@ with st.sidebar:
     )
   else:
     st.success("🔒 Sistem Keamanan Aktif")
+
   st.markdown("---")
-  st.markdown(
-      "**Modul Layanan:**\n1. Generator Modul Ajar\n2. Generator Soal & Kunci\n3."
-      " Set Kunci Acuan\n4. Koreksi Lembar Siswa\n5. Rekapitulasi Nilai"
+  st.markdown("#### **Navigasi Menu Utama:**")
+  menu_pilihan = st.radio(
+      "Pilih Modul Layanan:",
+      [
+          "📖 Generator Modul Ajar",
+          "📝 Generator Soal & Kunci",
+          "⚙️ Set Kunci Acuan",
+          "🔍 Koreksi Siswa",
+          "📊 Rekap Nilai",
+      ],
+      label_visibility="collapsed",
+  )
+
+  st.markdown("---")
+  st.info(
+      "💡 **Info:** Seluruh fitur dirancang khusus untuk mendukung administrasi"
+      " guru secara profesional."
   )
 
 if not GEMINI_API_KEY:
@@ -162,33 +183,27 @@ if "kunci_isian" not in st.session_state:
 if "kunci_essai" not in st.session_state:
   st.session_state.kunci_essai = ""
 if "rekap_nilai" not in st.session_state:
-  st.session_state.rekap_nilai = ""
+  st.session_state.rekap_nilai = []
 if "modul_hasil" not in st.session_state:
   st.session_state.modul_hasil = ""
 if "soal_hasil" not in st.session_state:
   st.session_state.soal_hasil = ""
 
-# Header Instansi Pendidikan dengan Warna Solid yang Jelas & Kontras
+# Header Instansi Pendidikan
 st.markdown(
     """
     <div class="instansi-header">
-        <h1 class="instansi-title">🏛️ PORTAL ASISTEN AKADEMIK & GURU PROFESIONAL</h1>
-        <p class="instansi-subtitle">Sistem Terintegrasi Kecerdasan Buatan untuk Penyusunan Perangkat Pembelajaran, Bank Soal, dan Penilaian Objektif.</p>
+        <h1 class="instansi-title">🏛️ SISTEM ASISTEN AKADEMIK & GURU PROFESIONAL</h1>
+        <p class="instansi-subtitle">Platform Terintegrasi Kecerdasan Buatan untuk Penyusunan Perangkat Pembelajaran, Bank Soal, dan Penilaian Objektif.</p>
     </div>
     """,
     unsafe_allow_html=True,
 )
 
-tab1, tab2, tab3, tab4, tab5 = st.tabs([
-    "📖 1. Generator Modul Ajar",
-    "📝 2. Generator Soal & Kunci",
-    "⚙️ 3. Set Kunci Acuan",
-    "🔍 4. Koreksi Siswa",
-    "📊 5. Rekap Nilai",
-])
+# --- KONTROL TAMPILAN BERDASARKAN MENU SIDEBAR ---
 
-# --- TAB 1: MODUL AJAR ---
-with tab1:
+# 1. MODUL AJAR
+if menu_pilihan == "📖 Generator Modul Ajar":
   st.markdown('<div class="card-box">', unsafe_allow_html=True)
   st.header("📖 Generator Modul Ajar / RPP Formal")
   st.markdown(
@@ -240,8 +255,8 @@ with tab1:
     )
   st.markdown("</div>", unsafe_allow_html=True)
 
-# --- TAB 2: SOAL & KUNCI ---
-with tab2:
+# 2. SOAL & KUNCI
+elif menu_pilihan == "📝 Generator Soal & Kunci":
   st.markdown('<div class="card-box">', unsafe_allow_html=True)
   st.header("📝 Generator Paket Soal & Kunci Jawaban Resmi")
   st.markdown(
@@ -300,8 +315,8 @@ with tab2:
     )
   st.markdown("</div>", unsafe_allow_html=True)
 
-# --- TAB 3: SET KUNCI TERPISAH ---
-with tab3:
+# 3. SET KUNCI ACUAN
+elif menu_pilihan == "⚙️ Set Kunci Acuan":
   st.markdown('<div class="card-box">', unsafe_allow_html=True)
   st.header("⚙️ Konfigurasi Kunci Jawaban Acuan Penilaian")
   st.markdown(
@@ -334,8 +349,8 @@ with tab3:
     st.success("Parameter kunci jawaban berhasil disimpan dalam memori sistem!")
   st.markdown("</div>", unsafe_allow_html=True)
 
-# --- TAB 4: KOREKSI SISWA ---
-with tab4:
+# 4. KOREKSI SISWA
+elif menu_pilihan == "🔍 Koreksi Siswa":
   st.markdown('<div class="card-box">', unsafe_allow_html=True)
   st.header("🔍 Sistem Koreksi Lembar Jawaban Siswa (AI Vision & Dokumen)")
   if (
@@ -344,7 +359,8 @@ with tab4:
       and not st.session_state.kunci_essai
   ):
     st.warning(
-        "⚠️ Harap tentukan dan simpan Kunci Jawaban terlebih dahulu di Tab 3!"
+        "⚠️ Harap tentukan dan simpan Kunci Jawaban terlebih dahulu di menu 'Set"
+        " Kunci Acuan'!"
     )
   else:
     nama_siswa = st.text_input("Nama Lengkap / Nomor Induk Siswa")
@@ -421,8 +437,8 @@ with tab4:
             st.error(f"Terjadi kendala sistem: {e}")
   st.markdown("</div>", unsafe_allow_html=True)
 
-# --- TAB 5: REKAP NILAI ---
-with tab5:
+# 5. REKAP NILAI
+elif menu_pilihan == "📊 Rekap Nilai":
   st.markdown('<div class="card-box">', unsafe_allow_html=True)
   st.header("📊 Rekapitulasi Nilai Akademik Kelas")
   if len(st.session_state.rekap_nilai) == 0:
