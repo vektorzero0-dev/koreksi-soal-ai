@@ -1,6 +1,6 @@
-google-genai>=1.0.0
 streamlit
-pandas
-python-docx
-pypdf
+google-generativeai
 pillow
+python-docx
+pandas
+pypdf
