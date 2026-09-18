@@ -1,4 +1,5 @@
 from io import BytesIO
+import os
 from docx import Document
 import google.generativeai as genai
 from PIL import Image
@@ -120,7 +121,17 @@ def buat_file_docx(teks_konten):
   return buffer
 
 
-# AMBIL & BERSIHKAN TOKEN AQ. DARI SECRETS ATAU INPUT MANUAL
+# Bersihkan environment variabel agar SDK tidak salah mendeteksi jalur Vertex AI
+for var in [
+    "GOOGLE_GENAI_USE_VERTEXAI",
+    "VERTEXAI_PROJECT",
+    "VERTEXAI_LOCATION",
+    "GOOGLE_CLOUD_PROJECT",
+]:
+  if var in os.environ:
+    del os.environ[var]
+
+# Ambil dan bersihkan token API (mendukung token berawalan AQ. maupun AIza)
 raw_key = st.secrets.get("GEMINI_API_KEY", "") or st.secrets.get(
     "GOOGLE_API_KEY", ""
 )
@@ -141,7 +152,7 @@ with st.expander("🔑 Pengaturan API Key & Keamanan", expanded=not GEMINI_API_K
   if not GEMINI_API_KEY:
     st.warning("⚠️ API Key belum terdeteksi di Secrets.")
     input_manual = st.text_input(
-        "Masukkan Token Gemini (AQ...)", type="password", key="sidebar_key"
+        "Masukkan Token Gemini Anda", type="password", key="sidebar_key"
     )
     if input_manual:
       GEMINI_API_KEY = input_manual.strip().strip('"').strip("'")
@@ -152,10 +163,9 @@ if not GEMINI_API_KEY:
   st.warning("Mohon masukkan Token Gemini Anda untuk mulai menggunakan sistem.")
   st.stop()
 
-# Konfigurasi SDK Klasik untuk Token AQ.
+# Konfigurasi SDK Klasik Google Generative AI
 try:
   genai.configure(api_key=GEMINI_API_KEY)
-  # Gunakan model stabil
   model = genai.GenerativeModel("gemini-1.5-flash")
 except Exception as e:
   st.error(f"Gagal konfigurasi API: {e}")
