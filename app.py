@@ -1,6 +1,7 @@
 from io import BytesIO
 import os
 import re
+import docx
 from docx import Document
 from google import genai
 from PIL import Image
@@ -281,12 +282,10 @@ def buat_file_docx(teks_konten):
       doc.add_heading(stripped.replace("## ", "").strip(), level=2)
     elif stripped.startswith("### "):
       doc.add_heading(stripped.replace("### ", "").strip(), level=3)
-    elif re.match(
-        r"^([a-zA-Z][\.\)]|\•|\-|\*)", stripped
-    ):  # Pilihan Ganda / Sub-item
+    elif re.match(r"^([a-zA-Z][\.\)]|\•|\-|\*)", stripped):
       p = doc.add_paragraph(stripped, style="List Bullet")
       p.paragraph_format.left_indent = docx.shared.Inches(0.4)
-    elif re.match(r"^\d+[\.\)]", stripped):  # Nomor Soal Utama
+    elif re.match(r"^\d+[\.\)]", stripped):
       doc.add_paragraph(stripped)
     else:
       doc.add_paragraph(stripped)
@@ -584,7 +583,8 @@ elif menu_pilihan == "⚙️ Set Kunci Acuan":
   )
 
   kunci_pg_input = st.text_area(
-      "🎯 Kunci Pilihan Ganda (Cukup ketik huruf abjadnya saja secara berurutan, contoh: A,B,C,D,A atau ABCD)",
+      "🎯 Kunci Pilihan Ganda (Cukup ketik huruf abjadnya saja secara berurutan,"
+      " contoh: A,B,C,D,A atau ABCD)",
       value=st.session_state.kunci_pg,
       placeholder="Contoh: A B C D A B C D A B",
       height=100,
