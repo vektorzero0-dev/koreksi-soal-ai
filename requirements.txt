@@ -1,6 +1,6 @@
+google-genai>=1.0.0
 streamlit
 pandas
-google-genai
-pillow
 python-docx
 pypdf
+pillow
