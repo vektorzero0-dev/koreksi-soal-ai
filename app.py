@@ -1,7 +1,6 @@
 from io import BytesIO
-import os
 from docx import Document
-from google import genai
+import google.generativeai as genai
 from PIL import Image
 
 pypdf_available = True
@@ -21,7 +20,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-# Custom Styling CSS: Desain Instansi Pendidikan Formal, Modern, Bersih, dan Profesional
+# Custom Styling CSS
 st.markdown(
     """
     <style>
@@ -121,17 +120,7 @@ def buat_file_docx(teks_konten):
   return buffer
 
 
-# --- PEMBERSIHAN ENVIRONMENT VARIABEL AGAR SDK TIDAK TERTUKAR KE VERTEX AI ---
-for var in [
-    "GOOGLE_GENAI_USE_VERTEXAI",
-    "VERTEXAI_PROJECT",
-    "VERTEXAI_LOCATION",
-    "GOOGLE_CLOUD_PROJECT",
-]:
-  if var in os.environ:
-    del os.environ[var]
-
-# AMBIL & BERSIHKAN API KEY DARI SECRETS ATAU INPUT MANUAL
+# AMBIL API KEY DARI SECRETS ATAU INPUT MANUAL
 raw_key = st.secrets.get("GEMINI_API_KEY", "") or st.secrets.get(
     "GOOGLE_API_KEY", ""
 )
@@ -160,16 +149,15 @@ with st.expander("🔑 Pengaturan API Key & Keamanan", expanded=not GEMINI_API_K
     st.success("🔒 Sistem Keamanan Aktif & Terhubung")
 
 if not GEMINI_API_KEY:
-  st.warning(
-      "Mohon masukkan Google Gemini API Key di menu di atas atau atur Secrets."
-  )
+  st.warning("Mohon masukkan Google Gemini API Key untuk mulai menggunakan sistem.")
   st.stop()
 
-# Inisialisasi Klien Gemini secara aman & eksplisit
+# Konfigurasi menggunakan SDK klasik yang stabil
 try:
-  client = genai.Client(api_key=GEMINI_API_KEY)
+  genai.configure(api_key=GEMINI_API_KEY)
+  model = genai.GenerativeModel("gemini-1.5-flash")
 except Exception as e:
-  st.error(f"Gagal inisialisasi Client AI: {e}")
+  st.error(f"Gagal konfigurasi API: {e}")
   st.stop()
 
 if "kunci_pg" not in st.session_state:
@@ -230,9 +218,7 @@ if menu_pilihan == "📖 1. Generator Modul Ajar":
                 - Topik: {topik}, Waktu: {alokasi_waktu}
                 Sertakan komponen Identitas Instansi, Profil Pelajar Pancasila, Tujuan Pembelajaran, Kegiatan Pembelajaran, dan Tabel Rubrik Penilaian.
                 """
-        response = client.models.generate_content(
-            model="gemini-2.5-flash", contents=prompt_modul
-        )
+        response = model.generate_content(prompt_modul)
         st.session_state.modul_hasil = response.text
         st.success("Modul Ajar berhasil disusun!")
       except Exception as e:
@@ -280,9 +266,7 @@ elif menu_pilihan == "📝 2. Generator Soal & Kunci":
                 - Kurikulum: {s_kur}, Kelas: {s_kelas}, Materi: {s_materi}
                 - Komposisi: {s_komposisi}
                 """
-        response = client.models.generate_content(
-            model="gemini-2.5-flash", contents=prompt_soal
-        )
+        response = model.generate_content(prompt_soal)
         st.session_state.soal_hasil = response.text
         st.success("Paket soal berhasil disusun!")
       except Exception as e:
@@ -385,9 +369,7 @@ elif menu_pilihan == "🔍 4. Koreksi Siswa":
             elif teks_manual:
               payload.append(f"Jawaban Siswa: {teks_manual}")
 
-            resp = client.models.generate_content(
-                model="gemini-2.5-flash", contents=payload
-            )
+            resp = model.generate_content(payload)
             hasil = resp.text
 
             import re
