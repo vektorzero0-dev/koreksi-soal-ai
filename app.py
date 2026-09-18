@@ -121,8 +121,20 @@ def buat_file_docx(teks_konten):
   return buffer
 
 
-# AMBIL API KEY AMAN DARI SECRETS ATAU INPUT MANUAL
-raw_key = st.secrets.get("GEMINI_API_KEY", "")
+# --- PEMBERSIHAN ENVIRONMENT VARIABEL AGAR SDK TIDAK TERTUKAR KE VERTEX AI ---
+for var in [
+    "GOOGLE_GENAI_USE_VERTEXAI",
+    "VERTEXAI_PROJECT",
+    "VERTEXAI_LOCATION",
+    "GOOGLE_CLOUD_PROJECT",
+]:
+  if var in os.environ:
+    del os.environ[var]
+
+# AMBIL & BERSIHKAN API KEY DARI SECRETS ATAU INPUT MANUAL
+raw_key = st.secrets.get("GEMINI_API_KEY", "") or st.secrets.get(
+    "GOOGLE_API_KEY", ""
+)
 GEMINI_API_KEY = str(raw_key).strip().strip('"').strip("'")
 
 # --- HEADER UTAMA INSTANSI PENDIDIKAN ---
@@ -148,13 +160,12 @@ with st.expander("🔑 Pengaturan API Key & Keamanan", expanded=not GEMINI_API_K
     st.success("🔒 Sistem Keamanan Aktif & Terhubung")
 
 if not GEMINI_API_KEY:
-  st.warning("Mohon masukkan Google Gemini API Key untuk mulai menggunakan sistem.")
+  st.warning(
+      "Mohon masukkan Google Gemini API Key di menu di atas atau atur Secrets."
+  )
   st.stop()
 
-# Bersihkan environment variabel bawaan agar tidak konflik auth vertex
-if "GOOGLE_GENAI_USE_VERTEXAI" in os.environ:
-  del os.environ["GOOGLE_GENAI_USE_VERTEXAI"]
-
+# Inisialisasi Klien Gemini secara aman & eksplisit
 try:
   client = genai.Client(api_key=GEMINI_API_KEY)
 except Exception as e:
@@ -220,7 +231,7 @@ if menu_pilihan == "📖 1. Generator Modul Ajar":
                 Sertakan komponen Identitas Instansi, Profil Pelajar Pancasila, Tujuan Pembelajaran, Kegiatan Pembelajaran, dan Tabel Rubrik Penilaian.
                 """
         response = client.models.generate_content(
-            model="gemini-3.5-flash", contents=prompt_modul
+            model="gemini-2.5-flash", contents=prompt_modul
         )
         st.session_state.modul_hasil = response.text
         st.success("Modul Ajar berhasil disusun!")
@@ -270,7 +281,7 @@ elif menu_pilihan == "📝 2. Generator Soal & Kunci":
                 - Komposisi: {s_komposisi}
                 """
         response = client.models.generate_content(
-            model="gemini-3.5-flash", contents=prompt_soal
+            model="gemini-2.5-flash", contents=prompt_soal
         )
         st.session_state.soal_hasil = response.text
         st.success("Paket soal berhasil disusun!")
@@ -375,7 +386,7 @@ elif menu_pilihan == "🔍 4. Koreksi Siswa":
               payload.append(f"Jawaban Siswa: {teks_manual}")
 
             resp = client.models.generate_content(
-                model="gemini-3.5-flash", contents=payload
+                model="gemini-2.5-flash", contents=payload
             )
             hasil = resp.text
 
