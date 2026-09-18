@@ -1,4 +1,3 @@
-
 from io import BytesIO
 from docx import Document
 from google import genai
