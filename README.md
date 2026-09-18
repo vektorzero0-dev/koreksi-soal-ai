@@ -1,2 +1,1 @@
-# koreksi-soal-ai
-Aplikasi Koreksi Soal 
+Portal Asisten Akademik 
