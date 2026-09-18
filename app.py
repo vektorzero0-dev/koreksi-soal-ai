@@ -20,78 +20,76 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# Custom Styling CSS: Modern, Profesional, Khas Instansi Pendidikan (Navy & Soft Clean)
+# Custom Styling CSS: Warna Solid Profesional, Kontras Tinggi, Bebas Bentrok
 st.markdown(
     """
     <style>
-    /* Global Background Profesional */
+    /* Global Background Standar Profesional */
     .stApp {
-        background-color: #f1f5f9;
-        color: #1e293b;
+        background-color: #f8fafc;
+        color: #0f172a;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
     
-    /* Header Utama Khas Instansi */
+    /* Header Instansi dengan Warna Solid (Navy) agar Teks Jelas Terbaca */
     .instansi-header {
-        background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
-        color: white;
-        padding: 30px;
-        border-radius: 12px;
+        background-color: #1e3a8a;
+        color: #ffffff;
+        padding: 25px 30px;
+        border-radius: 10px;
         margin-bottom: 25px;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        border-bottom: 4px solid #3b82f6;
     }
     .instansi-title {
-        font-size: 2.2rem;
+        font-size: 2rem;
         font-weight: 700;
+        color: #ffffff !important;
         margin: 0;
-        letter-spacing: -0.5px;
     }
     .instansi-subtitle {
-        font-size: 1.05rem;
-        color: #93c5fd;
-        margin-top: 8px;
+        font-size: 1rem;
+        color: #e2e8f0 !important;
+        margin-top: 6px;
         font-weight: 400;
     }
 
     /* Kotak Kartu Konten Modern (Card Layout) */
     .card-box {
         background: #ffffff;
-        padding: 28px;
-        border-radius: 12px;
-        border: 1px solid #e2e8f0;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+        padding: 25px;
+        border-radius: 10px;
+        border: 1px solid #cbd5e1;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         margin-bottom: 20px;
-        transition: all 0.3s ease;
-    }
-    .card-box:hover {
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
-        border-color: #cbd5e1;
     }
 
-    /* Tombol Utama Khas Korporat/Instansi */
+    /* Memastikan Label Input Jelas dan Tidak Buram */
+    label, .stTextInput label, .stTextArea label, .stSelectbox label, .stRadio label {
+        color: #334155 !important;
+        font-weight: 600 !important;
+    }
+
+    /* Tombol Utama */
     .stButton>button {
         background-color: #1e3a8a;
         color: #ffffff;
         font-weight: 600;
-        border-radius: 8px;
-        padding: 0.55rem 1.2rem;
+        border-radius: 6px;
+        padding: 0.5rem 1.2rem;
         border: none;
-        transition: all 0.2s ease;
-        box-shadow: 0 2px 4px rgba(30, 58, 138, 0.2);
     }
     .stButton>button:hover {
         background-color: #1d4ed8;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 8px rgba(29, 78, 216, 0.3);
+        color: #ffffff;
     }
 
-    /* Sidebar Profesional */
+    /* Sidebar */
     section[data-testid="stSidebar"] {
         background-color: #ffffff;
-        border-right: 1px solid #e2e8f0;
+        border-right: 1px solid #cbd5e1;
     }
 
-    /* Footer Instansi */
+    /* Footer */
     .footer {
         position: fixed;
         left: 0;
@@ -100,10 +98,9 @@ st.markdown(
         background-color: #ffffff;
         color: #475569;
         text-align: center;
-        padding: 12px;
+        padding: 10px;
         font-size: 0.85rem;
-        border-top: 1px solid #e2e8f0;
-        box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.02);
+        border-top: 1px solid #cbd5e1;
         z-index: 1000;
     }
     .footer a {
@@ -138,7 +135,7 @@ def buat_file_docx(teks_konten):
 GEMINI_API_KEY = st.secrets.get("GEMINI_API_KEY", "")
 
 with st.sidebar:
-  st.image("https://img.icons8.com/color/96/school.png", width=65)
+  st.image("https://img.icons8.com/color/96/school.png", width=60)
   st.title("Panel Akademik AI")
   st.markdown("---")
   if not GEMINI_API_KEY:
@@ -165,17 +162,17 @@ if "kunci_isian" not in st.session_state:
 if "kunci_essai" not in st.session_state:
   st.session_state.kunci_essai = ""
 if "rekap_nilai" not in st.session_state:
-  st.session_state.rekap_nilai = []
+  st.session_state.rekap_nilai = ""
 if "modul_hasil" not in st.session_state:
   st.session_state.modul_hasil = ""
 if "soal_hasil" not in st.session_state:
   st.session_state.soal_hasil = ""
 
-# Header Instansi Pendidikan Modern
+# Header Instansi Pendidikan dengan Warna Solid yang Jelas & Kontras
 st.markdown(
     """
     <div class="instansi-header">
-        <p class="instansi-title">🏛️ PORTAL ASISTEN AKADEMIK & GURU PROFESIONAL</p>
+        <h1 class="instansi-title">🏛️ PORTAL ASISTEN AKADEMIK & GURU PROFESIONAL</h1>
         <p class="instansi-subtitle">Sistem Terintegrasi Kecerdasan Buatan untuk Penyusunan Perangkat Pembelajaran, Bank Soal, dan Penilaian Objektif.</p>
     </div>
     """,
