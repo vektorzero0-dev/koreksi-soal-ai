@@ -14,142 +14,108 @@ import streamlit as st
 
 # Konfigurasi Halaman & Responsif Mobile/Android
 st.set_page_config(
-    page_title="Smart Exam Grader Pro - Cyber Edition",
-    page_icon="🤖",
+    page_title="Sistem Akademik & Asisten Guru AI",
+    page_icon="🏛️",
     layout="centered",
     initial_sidebar_state="collapsed",
 )
 
-# Custom Styling CSS: Bumblebee Yellow + Hacker Matrix Glow + Transformer Mechanical Motion
+# Custom Styling CSS: Instansi Pendidikan Formal, Warna Kuning Bumblebee, Efek Transformer & Hacker Tipis
 st.markdown(
     """
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@500;700;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@500;700&display=swap');
 
-    /* Global Background Kuning Bumblebee dengan Tekstur Cyber */
+    /* Global Background Kuning Bumblebee */
     .stApp {
         background-color: #ffd700;
-        background-image: radial-gradient(#cca300 1px, transparent 1px);
-        background-size: 20px 20px;
         color: #111111;
-        font-family: 'Share Tech Mono', monospace, sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
     
-    /* Header Instansi Gaya Transformer Cybertron */
+    /* Header Instansi Khas Pendidikan Formal & Transformer */
     .instansi-header {
-        background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+        background-color: #111111;
         color: #ffd700;
         padding: 22px;
-        border-radius: 6px;
+        border-radius: 8px;
         margin-bottom: 20px;
         border-left: 8px solid #ffcc00;
-        border-right: 2px solid #ffcc00;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-        transform: skewX(-1deg);
-        animation: cyberGlitch 4s infinite alternate;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
-
-    @keyframes cyberGlitch {
-        0% { box-shadow: 0 8px 25px rgba(0,0,0,0.3); border-left-color: #ffd700; }
-        50% { box-shadow: 0 8px 30px rgba(0, 255, 65, 0.4); border-left-color: #00ff41; }
-        100% { box-shadow: 0 8px 25px rgba(0,0,0,0.3); border-left-color: #ffd700; }
-    }
-
     .instansi-title {
         font-family: 'Orbitron', sans-serif;
         font-size: 1.35rem;
-        font-weight: 900;
+        font-weight: 700;
         color: #ffd700 !important;
         margin: 0;
-        text-transform: uppercase;
-        letter-spacing: 1.5px;
-        text-shadow: 2px 2px #000000;
+        line-height: 1.3;
     }
-
-    /* Efek Teks Hacker Matrix Hijau Menyala */
-    .hacker-text {
-        font-family: 'Share Tech Mono', monospace;
-        color: #00ff41 !important;
-        background-color: #050505;
-        padding: 4px 8px;
-        border-radius: 4px;
-        border: 1px dashed #00ff41;
-        text-shadow: 0 0 8px rgba(0, 255, 65, 0.8);
-        display: inline-block;
-        font-size: 0.9rem;
-    }
-
     .instansi-subtitle {
         font-size: 0.85rem;
-        color: #f8fafc !important;
-        margin-top: 8px;
+        color: #ffffff !important;
+        margin-top: 6px;
         font-weight: 400;
     }
+    .system-status {
+        font-family: 'Share Tech Mono', monospace;
+        font-size: 0.8rem;
+        color: #00ff41;
+        margin-top: 8px;
+    }
 
-    /* Kotak Kartu Konten Transformer Armor */
+    /* Kotak Kartu Konten Putih Bersih */
     .card-box {
         background: #ffffff;
         padding: 20px;
         border-radius: 8px;
-        border: 3px solid #111111;
-        box-shadow: 5px 5px 0px #111111;
+        border: 2px solid #111111;
+        box-shadow: 4px 4px 0px #111111;
         margin-bottom: 20px;
-        transition: transform 0.2s ease;
-    }
-    .card-box:hover {
-        transform: translate(-2px, -2px);
-        box-shadow: 7px 7px 0px #00ff41;
     }
 
-    /* Label Input */
+    /* Label Input Jelas & Tebal */
     label, .stTextInput label, .stTextArea label, .stSelectbox label, .stRadio label {
         color: #111111 !important;
         font-weight: 700 !important;
         font-size: 0.95rem !important;
-        font-family: 'Orbitron', sans-serif;
     }
 
-    /* Tombol Transformer Bumblebee (Hitam Pekat dengan border kuning/hijau hacker) */
+    /* Tombol Utama Khas Bumblebee (Hitam dengan Teks Kuning) */
     .stButton>button {
         width: 100%;
         background-color: #111111;
         color: #ffd700;
-        font-family: 'Orbitron', sans-serif;
         font-weight: 700;
-        border-radius: 4px;
-        padding: 0.75rem 1rem;
-        border: 2px solid #ffd700;
+        border-radius: 6px;
+        padding: 0.7rem 1rem;
+        border: 2px solid #111111;
         font-size: 1rem;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        box-shadow: 3px 3px 0px #00ff41;
-        transition: all 0.15s ease;
+        transition: all 0.2s ease;
     }
     .stButton>button:hover {
-        background-color: #00ff41;
-        color: #000000;
-        border-color: #111111;
-        box-shadow: 3px 3px 0px #111111;
-        transform: translate(-2px, -2px);
+        background-color: #222222;
+        color: #ffffff;
+        border-color: #000000;
+        transform: translateY(-2px);
     }
 
-    /* Footer Cyber */
+    /* Footer Instansi */
     .footer {
         text-align: center;
         padding: 15px;
         font-size: 0.8rem;
-        color: #ffd700;
-        background-color: #111111;
-        border: 2px solid #ffd700;
+        color: #111111;
+        background-color: #ffcc00;
+        border: 2px solid #111111;
         border-radius: 6px;
         margin-top: 30px;
         margin-bottom: 20px;
         font-weight: 600;
-        box-shadow: 4px 4px 0px #00ff41;
     }
     .footer a {
-        color: #00ff41;
-        text-decoration: none;
+        color: #000000;
+        text-decoration: underline;
         font-weight: 700;
     }
     </style>
@@ -178,34 +144,31 @@ def buat_file_docx(teks_konten):
 # AMBIL API KEY DARI SECRETS ATAU INPUT MANUAL
 GEMINI_API_KEY = st.secrets.get("GEMINI_API_KEY", "")
 
-# --- HEADER UTAMA CYBERNETIC ---
+# --- HEADER UTAMA INSTANSI ---
 st.markdown(
     """
     <div class="instansi-header">
-        <h1 class="instansi-title">🐝 BUMBLEBEE CYBER-GRADER PRO</h1>
-        <p class="instansi-subtitle">Sistem Penilaian AI Autonomous & Administrasi Guru Berkecepatan Tinggi.</p>
-        <br>
-        <span class="hacker-text">SYSTEM STATUS: ONLINE // AI CORE: GEMINI-2.5-FLASH // SECURE PROTOCOL ACTIVE</span>
+        <h1 class="instansi-title">🏛️ PORTAL ASISTEN AKADEMIK & GURU</h1>
+        <p class="instansi-subtitle">Sistem Terintegrasi Kecerdasan Buatan untuk Administrasi Pembelajaran dan Penilaian.</p>
+        <div class="system-status">>> CORE ENGINE: GEMINI-3.5-FLASH // STATUS: ONLINE</div>
     </div>
     """,
     unsafe_allow_html=True,
 )
 
-with st.expander(
-    "🔑 Cyber Security & API Key Configuration", expanded=not GEMINI_API_KEY
-):
+with st.expander("🔑 Pengaturan API Key & Keamanan Sistem", expanded=not GEMINI_API_KEY):
   if not GEMINI_API_KEY:
     st.warning("⚠️ API Key belum terdeteksi di Secrets.")
     GEMINI_API_KEY = st.text_input(
         "Masukkan Gemini API Key", type="password", key="sidebar_key"
     )
   else:
-    st.success("🔒 Enkripsi Saraf Aktif & Terhubung")
+    st.success("🔒 Sistem Keamanan Aktif & Terhubung")
 
 if not GEMINI_API_KEY:
   st.warning(
-      "Mohon masukkan Google Gemini API Key di atas untuk menginisialisasi"
-      " sistem."
+      "Mohon masukkan Google Gemini API Key di atas untuk mulai menggunakan"
+      " aplikasi."
   )
   st.stop()
 
@@ -222,8 +185,8 @@ if "modul_hasil" not in st.session_state:
 if "soal_hasil" not in st.session_state:
   st.session_state.soal_hasil = ""
 
-# Menu Navigasi Dropdown Cyber
-st.markdown("### ⚡ SELECT OPERATION MODULE:")
+# Menu Navigasi Dropdown Ramah Android
+st.markdown("### 📌 Pilih Menu Layanan Akademik:")
 menu_pilihan = st.selectbox(
     "Navigasi Utama",
     [
@@ -244,7 +207,10 @@ st.markdown("---")
 if menu_pilihan == "📖 1. Generator Modul Ajar":
   st.markdown('<div class="card-box">', unsafe_allow_html=True)
   st.header("📖 Generator Modul Ajar / RPP")
-  st.markdown("Sintesis perangkat pembelajaran komprehensif berbasis AI.")
+  st.markdown(
+      "Penyusunan perangkat pembelajaran komprehensif berbasis kurikulum"
+      " nasional."
+  )
 
   nama_guru = st.text_input("Nama Guru & Gelar", "Ahmad Fauzi, S.Pd.")
   nama_sekolah = st.text_input("Nama Instansi / Sekolah", "SMP Negeri 1 Nusantara")
@@ -255,8 +221,8 @@ if menu_pilihan == "📖 1. Generator Modul Ajar":
   topik = st.text_input("Topik / Materi Pokok", "Sistem Pencernaan Manusia")
   alokasi_waktu = st.text_input("Alokasi Waktu", "2 Pertemuan (4 x 40 Menit)")
 
-  if st.button("⚡ EXECUTE: BUILD MODUL AJAR", type="primary"):
-    with st.spinner("AI Transformer sedang merakit Modul Ajar..."):
+  if st.button("🚀 Proses Pembuatan Modul Ajar", type="primary"):
+    with st.spinner("Sistem Gemini 3.5 Flash sedang merancang Modul Ajar..."):
       try:
         client = genai.Client(api_key=GEMINI_API_KEY)
         prompt_modul = f"""
@@ -268,10 +234,10 @@ if menu_pilihan == "📖 1. Generator Modul Ajar":
                 Sertakan komponen Identitas Instansi, Profil Pelajar Pancasila, Tujuan Pembelajaran, Kegiatan Pembelajaran, dan Tabel Rubrik Penilaian.
                 """
         response = client.models.generate_content(
-            model="gemini-2.5-flash", contents=prompt_modul
+            model="gemini-3.5-flash", contents=prompt_modul
         )
         st.session_state.modul_hasil = response.text
-        st.success("Modul Ajar berhasil disintesis!")
+        st.success("Modul Ajar berhasil disusun!")
       except Exception as e:
         st.error(f"Error sistem: {e}")
 
@@ -292,7 +258,7 @@ if menu_pilihan == "📖 1. Generator Modul Ajar":
 elif menu_pilihan == "📝 2. Generator Soal & Kunci":
   st.markdown('<div class="card-box">', unsafe_allow_html=True)
   st.header("📝 Generator Paket Soal")
-  st.markdown("Pembuatan naskah ujian otomatis berkecepatan tinggi.")
+  st.markdown("Pembuatan naskah ujian resmi lengkap dengan rubrik skor.")
 
   s_guru = st.text_input("Nama Pembuat Soal", "Ahmad Fauzi, S.Pd.", key="sg")
   s_sekolah = st.text_input("Instansi / Sekolah", "SMP Negeri 1 Nusantara", key="ss")
@@ -308,8 +274,8 @@ elif menu_pilihan == "📝 2. Generator Soal & Kunci":
       key="skom",
   )
 
-  if st.button("⚡ EXECUTE: GENERATE SOAL & KUNCI", type="primary"):
-    with st.spinner("AI Transformer sedang merakit naskah ujian..."):
+  if st.button("🚀 Proses Pembuatan Paket Soal", type="primary"):
+    with st.spinner("Sistem Gemini 3.5 Flash sedang menyusun naskah ujian..."):
       try:
         client = genai.Client(api_key=GEMINI_API_KEY)
         prompt_soal = f"""
@@ -319,10 +285,10 @@ elif menu_pilihan == "📝 2. Generator Soal & Kunci":
                 - Komposisi: {s_komposisi}
                 """
         response = client.models.generate_content(
-            model="gemini-2.5-flash", contents=prompt_soal
+            model="gemini-3.5-flash", contents=prompt_soal
         )
         st.session_state.soal_hasil = response.text
-        st.success("Paket soal berhasil disintesis!")
+        st.success("Paket soal berhasil disusun!")
       except Exception as e:
         st.error(f"Error sistem: {e}")
 
@@ -343,7 +309,7 @@ elif menu_pilihan == "📝 2. Generator Soal & Kunci":
 elif menu_pilihan == "⚙️ 3. Set Kunci Acuan":
   st.markdown('<div class="card-box">', unsafe_allow_html=True)
   st.header("⚙️ Konfigurasi Kunci Acuan")
-  st.markdown("Injeksi parameter kunci untuk validasi pemindaian AI.")
+  st.markdown("Pemisahan parameter kunci untuk akurasi penilaian.")
 
   kunci_pg_input = st.text_area(
       "Kunci Pilihan Ganda (Contoh: 1.A, 2.B, 3.C)",
@@ -361,26 +327,23 @@ elif menu_pilihan == "⚙️ 3. Set Kunci Acuan":
       height=150,
   )
 
-  if st.button("⚡ EXECUTE: SAVE MASTER KEYS", type="primary"):
+  if st.button("💾 Simpan Kunci Acuan", type="primary"):
     st.session_state.kunci_pg = kunci_pg_input
     st.session_state.kunci_isian = kunci_isian_input
     st.session_state.kunci_essai = kunci_essai_input
-    st.success("Master keys berhasil di-commit ke neural core!")
+    st.success("Kunci acuan berhasil disimpan!")
   st.markdown("</div>", unsafe_allow_html=True)
 
 # 4. KOREKSI SISWA
 elif menu_pilihan == "🔍 4. Koreksi Siswa":
   st.markdown('<div class="card-box">', unsafe_allow_html=True)
-  st.header("🔍 Sistem Koreksi Otomatis AI")
+  st.header("🔍 Koreksi Lembar Jawaban Siswa")
   if (
       not st.session_state.kunci_pg
       and not st.session_state.kunci_isian
       and not st.session_state.kunci_essai
   ):
-    st.warning(
-        "⚠️ Master keys belum dikonfigurasi! Harap isi di menu nomor 3 terlebih"
-        " dahulu."
-    )
+    st.warning("⚠️ Harap simpan Kunci Jawaban terlebih dahulu di menu nomor 3!")
   else:
     nama_siswa = st.text_input("Nama Lengkap / Nomor Induk Siswa")
     metode_siswa = st.radio(
@@ -398,11 +361,11 @@ elif menu_pilihan == "🔍 4. Koreksi Siswa":
     else:
       teks_manual = st.text_area("Masukkan teks jawaban siswa")
 
-    if st.button("⚡ EXECUTE: RUN AI VISION SCANNER", type="primary"):
+    if st.button("🚀 Jalankan Koreksi AI", type="primary"):
       if not nama_siswa:
         st.error("Masukkan nama atau identitas siswa!")
       else:
-        with st.spinner("AI Scanner sedang mendekripsi dan memindai jawaban..."):
+        with st.spinner("Sistem Gemini 3.5 Flash sedang menganalisis jawaban..."):
           try:
             client = genai.Client(api_key=GEMINI_API_KEY)
             payload = [f"""
@@ -428,7 +391,7 @@ elif menu_pilihan == "🔍 4. Koreksi Siswa":
               payload.append(f"Jawaban Siswa: {teks_manual}")
 
             resp = client.models.generate_content(
-                model="gemini-2.5-flash", contents=payload
+                model="gemini-3.5-flash", contents=payload
             )
             hasil = resp.text
 
@@ -441,10 +404,10 @@ elif menu_pilihan == "🔍 4. Koreksi Siswa":
                 {"Nama Siswa": nama_siswa, "Nilai Akhir": skor, "Detail": hasil}
             )
             st.success(
-                f"Scan Selesai! Siswa **{nama_siswa}** mendapat Nilai:"
+                f"Koreksi Selesai! Siswa **{nama_siswa}** mendapat Nilai:"
                 f" **{skor}**"
             )
-            with st.expander("Lihat Rincian Analisis Cyber"):
+            with st.expander("Lihat Rincian Analisis"):
               st.markdown(hasil)
           except Exception as e:
             st.error(f"Error: {e}")
@@ -466,7 +429,7 @@ elif menu_pilihan == "📊 5. Rekap Nilai":
         file_name="rekap_nilai_akademik.csv",
         mime="text/csv",
     )
-    if st.button("⚡ EXECUTE: PURGE DATABASE"):
+    if st.button("🗑️ Kosongkan Rekap"):
       st.session_state.rekap_nilai = []
       st.rerun()
   st.markdown("</div>", unsafe_allow_html=True)
@@ -475,7 +438,7 @@ elif menu_pilihan == "📊 5. Rekap Nilai":
 st.markdown(
     """
     <div class="footer">
-        <p>Bumblebee Cyber-System | Developed by <b>Zeeo</b><br>WhatsApp: <a href="https://wa.me/6282371729760" target="_blank">082371729760</a><br>© 2026 All Rights Reserved</p>
+        <p>Sistem Akademik Terintegrasi | Developed by <b>Zeeo</b><br>WhatsApp: <a href="https://wa.me/6282371729760" target="_blank">082371729760</a><br>© 2026 All Rights Reserved</p>
     </div>
     """,
     unsafe_allow_html=True,
