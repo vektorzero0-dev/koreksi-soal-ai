@@ -15,7 +15,7 @@ import pandas as pd
 import streamlit as st
 
 # ---------------------------------------------------------
-# KONFIGURASI HALAMAN (RAMAH ANDROID / MOBILE-FRIENDLY)
+# KONFIGURASI HALAMAN (RESPONSIF ANDROID & DESKTOP)
 # ---------------------------------------------------------
 st.set_page_config(
     page_title="Portal Akademik & Asesmen Elite",
@@ -25,14 +25,14 @@ st.set_page_config(
 )
 
 # ---------------------------------------------------------
-# CUSTOM CSS: SENI ESTETIKA LUXURY CYBER-VELVET & ANDROID-FRIENDLY
+# CUSTOM CSS: SENI VISUAL LUXURY CYBER-VELVET & PROFESIONAL
 # ---------------------------------------------------------
 st.markdown(
     """
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
-    /* Global Dark Art Background dengan Efek Glow Halus */
+    /* Global Dark Art Background */
     .stApp {
         background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #090d16 60%, #030712 100%);
         background-attachment: fixed;
@@ -40,7 +40,7 @@ st.markdown(
         color: #f8fafc;
     }
 
-    /* Sidebar Artsy */
+    /* Sidebar Artsy & Elegan */
     section[data-testid="stSidebar"] {
         background: linear-gradient(180deg, #090d16 0%, #111827 100%) !important;
         border-right: 1px solid rgba(139, 92, 246, 0.2);
@@ -54,7 +54,7 @@ st.markdown(
     /* Hero Banner Seni Visual Tinggi */
     .hero-banner {
         background: linear-gradient(135deg, #312e81 0%, #4c1d95 50%, #0f172a 100%);
-        padding: 28px 24px;
+        padding: 30px 24px;
         border-radius: 20px;
         color: #ffffff;
         margin-bottom: 24px;
@@ -94,9 +94,9 @@ st.markdown(
     .dashboard-card {
         background: rgba(15, 23, 42, 0.85);
         backdrop-filter: blur(20px);
-        padding: 22px;
+        padding: 24px;
         border-radius: 20px;
-        border: 1px solid rgba(139, 92, 246, 0.2);
+        border: 1px solid rgba(139, 92, 246, 0.25);
         box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.7);
         margin-bottom: 20px;
         transition: all 0.3s ease;
@@ -108,26 +108,26 @@ st.markdown(
 
     /* Judul Bagian dalam Kartu */
     .section-title {
-        font-size: 1.2rem;
+        font-size: 1.25rem;
         font-weight: 700;
         color: #f3f4f6;
         margin-bottom: 4px;
     }
     .section-desc {
-        font-size: 0.84rem;
+        font-size: 0.86rem;
         color: #94a3b8;
         margin-bottom: 20px;
     }
 
-    /* Label Formulir Responsif Mobile */
+    /* Label Formulir Responsif */
     label, .stTextInput label, .stTextArea label, .stSelectbox label, .stRadio label {
         color: #e2e8f0 !important;
         font-weight: 700 !important;
-        font-size: 0.85rem !important;
+        font-size: 0.88rem !important;
         margin-bottom: 6px !important;
     }
 
-    /* Input & Textarea Nyaman untuk Layar Sentuh Android */
+    /* Input & Textarea Nyaman & Kontras Terang */
     .stTextInput input, .stTextArea textarea {
         background-color: #030712 !important;
         color: #38bdf8 !important;
@@ -148,7 +148,7 @@ st.markdown(
         opacity: 1 !important;
     }
 
-    /* Tombol Utama Gradien Cyber (Nyaman Disentuh di HP) */
+    /* Tombol Utama Gradien Cyber */
     .stButton>button {
         width: 100%;
         background: linear-gradient(135deg, #7c3aed 0%, #06b6d4 100%);
@@ -183,7 +183,7 @@ st.markdown(
         margin-bottom: 12px;
     }
 
-    /* Footer Mobile Friendly */
+    /* Footer */
     .footer-container {
         text-align: center;
         padding: 20px;
@@ -206,12 +206,14 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+
 # ---------------------------------------------------------
-# FUNGSI PEMBENTUK DOKUMEN WORD (.DOCX) DENGAN SMART NUMBERING
+# FUNGSI PEMBENTUK DOKUMEN WORD (.DOCX) DENGAN PARSER TABEL PRESISI
 # ---------------------------------------------------------
 def buat_file_docx(teks_konten):
   doc = Document()
 
+  # Bersihkan tag HTML mentah
   teks_bersih = re.sub(
       r"<\s*br\s*/?>", "\n", teks_konten, flags=re.IGNORECASE
   )
@@ -223,6 +225,7 @@ def buat_file_docx(teks_konten):
   def flush_table():
     nonlocal table_rows
     if table_rows:
+      # Saring baris pemisah markdown (seperti |---|---|)
       filtered_rows = [
           row
           for row in table_rows
@@ -245,6 +248,8 @@ def buat_file_docx(teks_konten):
 
   for line in lines:
     stripped = line.strip()
+
+    # Deteksi baris tabel markdown yang diawali dan diakhiri karakter pipa (|)
     if stripped.startswith("|") and stripped.endswith("|"):
       cells = [c.strip() for c in stripped.split("|")[1:-1]]
       table_rows.append(cells)
@@ -255,6 +260,7 @@ def buat_file_docx(teks_konten):
     if not stripped:
       continue
 
+    # Format Dokumen (Heading & Penomoran)
     if stripped.startswith("# "):
       doc.add_heading(stripped.replace("# ", "").strip(), level=1)
     elif stripped.startswith("## "):
@@ -266,7 +272,7 @@ def buat_file_docx(teks_konten):
     else:
       doc.add_paragraph(stripped)
 
-  flush_table()
+  flush_table()  # Pastikan tabel terakhir ikut diproses
   buffer = BytesIO()
   doc.save(buffer)
   buffer.seek(0)
@@ -316,7 +322,7 @@ with st.sidebar:
   st.markdown("### ✨ Elite Academic AI")
   st.markdown(
       "<p style='color: #c084fc; font-size: 0.78rem; margin-top:"
-      " -10px;'>Mobile-Optimized Edition</p>",
+      " -10px;'>Mobile & Desktop Optimized</p>",
       unsafe_allow_html=True,
   )
   st.markdown("---")
@@ -437,7 +443,7 @@ if menu_pilihan == "📖 Generator Modul Ajar":
                 - Mapel: {mapel}, Kurikulum: {kurikulum_aktif}
                 - Kelas: {fase_kelas}, Kepala Sekolah: {nama_ks}
                 - Topik: {topik}, Waktu: {alokasi_waktu}
-                Sertakan komponen Identitas Instansi, Profil Pelajar Pancasila, Tujuan Pembelajaran, Kegiatan Pembelajaran, serta Tabel Rubrik Penilaian dalam bentuk tabel markdown standar (menggunakan garis vertikal |).
+                Sertakan komponen Identitas Instansi, Profil Pelajar Pancasila, Tujuan Pembelajaran, Kegiatan Pembelajaran, serta Tabel Rubrik Penilaian dalam bentuk tabel markdown standar lengkap menggunakan garis vertikal (|) untuk kolom dan barisnya.
                 PENTING: Gunakan teks bersih murni tanpa tag HTML sama sekali (seperti <br> atau <p>).
                 """
         response = generate_content_with_retry(
@@ -476,7 +482,8 @@ elif menu_pilihan == "📝 Generator Soal Asesmen":
   )
   st.markdown(
       '<div class="section-desc">Penyusunan naskah soal asesmen resmi lengkap'
-      ' dengan penomoran, kunci jawaban, dan rubrik bobot nilai.</div>',
+      ' dengan penomoran, kunci jawaban, dan rubrik bobot nilai berbentuk'
+      ' tabel.</div>',
       unsafe_allow_html=True,
   )
 
@@ -500,7 +507,13 @@ elif menu_pilihan == "📝 Generator Soal Asesmen":
     with st.spinner("Sistem Gemini sedang menyusun naskah asesmen..."):
       try:
         prompt_soal = f"""
-                Buatkan naskah soal asesmen resmi instansi pendidikan lengkap dengan Kop Soal, Petunjuk, Naskah Soal Asesmen (pastikan setiap nomor soal menggunakan penomoran tegas seperti 1., 2., 3. dan pilihan ganda menggunakan A., B., C., D.), Kunci Jawaban, & Rubrik Penilaian (gunakan tabel markdown standar dengan garis vertikal |) untuk:
+                Buatkan naskah soal asesmen resmi instansi pendidikan lengkap dengan Kop Soal, Petunjuk, Naskah Soal Asesmen (setiap nomor soal menggunakan penomoran tegas seperti 1., 2., 3. dan pilihan ganda menggunakan A., B., C., D.), Kunci Jawaban, & Tabel Rubrik Penilaian.
+                PENTING UNTUK TABEL: Buat tabel rubrik penilaian menggunakan format tabel markdown standar dengan garis vertikal (|), contoh:
+                | Jenis Soal | Jumlah Soal | Bobot per Soal | Skor Maksimal |
+                | :--- | :--- | :--- | :--- |
+                | Pilihan Ganda | 5 | 10 | 50 |
+                
+                Data Asesmen:
                 - Guru: {s_guru}, Sekolah: {s_sekolah}, Mapel: {s_mapel}
                 - Kurikulum: {s_kur}, Kelas: {s_kelas}, Materi: {s_materi}
                 - Komposisi: {s_komposisi}
