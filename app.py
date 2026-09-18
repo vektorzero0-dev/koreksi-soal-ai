@@ -12,111 +12,101 @@ except ImportError:
 import pandas as pd
 import streamlit as st
 
-# Konfigurasi Halaman & Responsif Mobile/Android
+# Konfigurasi Halaman Instansi Pendidikan Formal & Responsif Mobile
 st.set_page_config(
-    page_title="Sistem Akademik & Asisten Guru AI",
-    page_icon="🏛️",
+    page_title="Portal Akademik & Asisten Guru AI",
+    page_icon="🎓",
     layout="centered",
     initial_sidebar_state="collapsed",
 )
 
-# Custom Styling CSS: Instansi Pendidikan Formal, Warna Kuning Bumblebee, Efek Transformer & Hacker Tipis
+# Custom Styling CSS: Desain Instansi Pendidikan Formal, Modern, Bersih, dan Profesional
 st.markdown(
     """
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@500;700&display=swap');
-
-    /* Global Background Kuning Bumblebee */
+    /* Global Background Standar Instansi Korporat/Pendidikan */
     .stApp {
-        background-color: #ffd700;
-        color: #111111;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background-color: #f1f5f9;
+        color: #0f172a;
+        font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
     }
     
-    /* Header Instansi Khas Pendidikan Formal & Transformer */
+    /* Header Resmi Instansi Pendidikan */
     .instansi-header {
-        background-color: #111111;
-        color: #ffd700;
-        padding: 22px;
-        border-radius: 8px;
-        margin-bottom: 20px;
-        border-left: 8px solid #ffcc00;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        background-color: #1e3a8a;
+        color: #ffffff;
+        padding: 24px 28px;
+        border-radius: 12px;
+        margin-bottom: 24px;
+        border-left: 6px solid #3b82f6;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
     }
     .instansi-title {
-        font-family: 'Orbitron', sans-serif;
-        font-size: 1.35rem;
+        font-size: 1.5rem;
         font-weight: 700;
-        color: #ffd700 !important;
+        color: #ffffff !important;
         margin: 0;
-        line-height: 1.3;
+        letter-spacing: -0.3px;
     }
     .instansi-subtitle {
-        font-size: 0.85rem;
-        color: #ffffff !important;
+        font-size: 0.9rem;
+        color: #cbd5e1 !important;
         margin-top: 6px;
         font-weight: 400;
-    }
-    .system-status {
-        font-family: 'Share Tech Mono', monospace;
-        font-size: 0.8rem;
-        color: #00ff41;
-        margin-top: 8px;
+        line-height: 1.4;
     }
 
-    /* Kotak Kartu Konten Putih Bersih */
+    /* Kotak Kartu Konten Bersih & Elegan */
     .card-box {
         background: #ffffff;
-        padding: 20px;
-        border-radius: 8px;
-        border: 2px solid #111111;
-        box-shadow: 4px 4px 0px #111111;
+        padding: 24px;
+        border-radius: 12px;
+        border: 1px solid #cbd5e1;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
         margin-bottom: 20px;
     }
 
-    /* Label Input Jelas & Tebal */
+    /* Label Input Tegas & Profesional */
     label, .stTextInput label, .stTextArea label, .stSelectbox label, .stRadio label {
-        color: #111111 !important;
-        font-weight: 700 !important;
+        color: #1e293b !important;
+        font-weight: 600 !important;
         font-size: 0.95rem !important;
     }
 
-    /* Tombol Utama Khas Bumblebee (Hitam dengan Teks Kuning) */
+    /* Tombol Navigasi & Aksi Utama */
     .stButton>button {
         width: 100%;
-        background-color: #111111;
-        color: #ffd700;
-        font-weight: 700;
-        border-radius: 6px;
+        background-color: #1e3a8a;
+        color: #ffffff;
+        font-weight: 600;
+        border-radius: 8px;
         padding: 0.7rem 1rem;
-        border: 2px solid #111111;
-        font-size: 1rem;
-        transition: all 0.2s ease;
+        border: none;
+        font-size: 0.95rem;
+        transition: background-color 0.2s ease;
     }
     .stButton>button:hover {
-        background-color: #222222;
+        background-color: #1d4ed8;
         color: #ffffff;
-        border-color: #000000;
-        transform: translateY(-2px);
     }
 
-    /* Footer Instansi */
+    /* Footer Instansi Formal */
     .footer {
         text-align: center;
-        padding: 15px;
-        font-size: 0.8rem;
-        color: #111111;
-        background-color: #ffcc00;
-        border: 2px solid #111111;
-        border-radius: 6px;
+        padding: 16px;
+        font-size: 0.82rem;
+        color: #64748b;
+        background-color: #ffffff;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
         margin-top: 30px;
         margin-bottom: 20px;
-        font-weight: 600;
+        font-weight: 500;
     }
     .footer a {
-        color: #000000;
-        text-decoration: underline;
-        font-weight: 700;
+        color: #1e3a8a;
+        text-decoration: none;
+        font-weight: 600;
     }
     </style>
 """,
@@ -144,19 +134,18 @@ def buat_file_docx(teks_konten):
 # AMBIL API KEY DARI SECRETS ATAU INPUT MANUAL
 GEMINI_API_KEY = st.secrets.get("GEMINI_API_KEY", "")
 
-# --- HEADER UTAMA INSTANSI ---
+# --- HEADER UTAMA INSTANSI PENDIDIKAN ---
 st.markdown(
     """
     <div class="instansi-header">
         <h1 class="instansi-title">🏛️ PORTAL ASISTEN AKADEMIK & GURU</h1>
-        <p class="instansi-subtitle">Sistem Terintegrasi Kecerdasan Buatan untuk Administrasi Pembelajaran dan Penilaian.</p>
-        <div class="system-status">>> CORE ENGINE: GEMINI-3.5-FLASH // STATUS: ONLINE</div>
+        <p class="instansi-subtitle">Sistem Terintegrasi Kecerdasan Buatan untuk Penyusunan Perangkat Pembelajaran, Bank Soal, dan Penilaian Objektif.</p>
     </div>
     """,
     unsafe_allow_html=True,
 )
 
-with st.expander("🔑 Pengaturan API Key & Keamanan Sistem", expanded=not GEMINI_API_KEY):
+with st.expander("🔑 Pengaturan API Key & Keamanan", expanded=not GEMINI_API_KEY):
   if not GEMINI_API_KEY:
     st.warning("⚠️ API Key belum terdeteksi di Secrets.")
     GEMINI_API_KEY = st.text_input(
@@ -168,7 +157,7 @@ with st.expander("🔑 Pengaturan API Key & Keamanan Sistem", expanded=not GEMIN
 if not GEMINI_API_KEY:
   st.warning(
       "Mohon masukkan Google Gemini API Key di atas untuk mulai menggunakan"
-      " aplikasi."
+      " sistem."
   )
   st.stop()
 
@@ -185,7 +174,7 @@ if "modul_hasil" not in st.session_state:
 if "soal_hasil" not in st.session_state:
   st.session_state.soal_hasil = ""
 
-# Menu Navigasi Dropdown Ramah Android
+# Menu Navigasi Dropdown Formal & Ramah Android
 st.markdown("### 📌 Pilih Menu Layanan Akademik:")
 menu_pilihan = st.selectbox(
     "Navigasi Utama",
@@ -416,7 +405,7 @@ elif menu_pilihan == "🔍 4. Koreksi Siswa":
 # 5. REKAP NILAI
 elif menu_pilihan == "📊 5. Rekap Nilai":
   st.markdown('<div class="card-box">', unsafe_allow_html=True)
-  st.header("📊 Rekapitulasi Nilai")
+  st.header("📊 Rekapitulasi Nilai Akademik")
   if len(st.session_state.rekap_nilai) == 0:
     st.info("Belum ada data nilai siswa yang terekam.")
   else:
