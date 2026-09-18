@@ -286,7 +286,7 @@ if menu_pilihan == "📖 1. Generator Modul Ajar":
                 PENTING: Gunakan teks bersih murni tanpa tag HTML sama sekali (seperti <br> atau <p>).
                 """
         response = client.models.generate_content(
-            model="gemini-3.6-flash", contents=prompt_modul
+            model="gemini-3.5-flash", contents=prompt_modul
         )
         st.session_state.modul_hasil = response.text
         st.success("Modul Ajar berhasil disusun!")
