@@ -15,195 +15,189 @@ import pandas as pd
 import streamlit as st
 
 # ---------------------------------------------------------
-# KONFIGURASI HALAMAN STREAMLIT
+# KONFIGURASI HALAMAN (RAMAH ANDROID / MOBILE-FRIENDLY)
 # ---------------------------------------------------------
 st.set_page_config(
-    page_title="Portal Akademik & Asesmen Instansi Pendidikan",
-    page_icon="🏛️",
-    layout="wide",
-    initial_sidebar_state="expanded",
+    page_title="Portal Akademik & Asesmen Elite",
+    page_icon="✨",
+    layout="centered",
+    initial_sidebar_state="collapsed",
 )
 
 # ---------------------------------------------------------
-# CUSTOM CSS: TEMA DARK LUXURY ACADEMIC & ARTISTIC GLOW
+# CUSTOM CSS: SENI ESTETIKA LUXURY CYBER-VELVET & ANDROID-FRIENDLY
 # ---------------------------------------------------------
 st.markdown(
     """
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
-    /* Global Dark Artistic Background */
+    /* Global Dark Art Background dengan Efek Glow Halus */
     .stApp {
-        background: linear-gradient(135deg, #090d16 0%, #0f172a 50%, #111827 100%);
+        background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #090d16 60%, #030712 100%);
         background-attachment: fixed;
         font-family: 'Plus Jakarta Sans', sans-serif;
-        color: #f1f5f9;
+        color: #f8fafc;
     }
 
-    /* Sidebar Elegan Kelas Atas */
+    /* Sidebar Artsy */
     section[data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #090d16 0%, #0f172a 100%) !important;
-        border-right: 1px solid rgba(245, 158, 11, 0.2);
+        background: linear-gradient(180deg, #090d16 0%, #111827 100%) !important;
+        border-right: 1px solid rgba(139, 92, 246, 0.2);
     }
     section[data-testid="stSidebar"] .stMarkdown, 
     section[data-testid="stSidebar"] label,
     section[data-testid="stSidebar"] span {
-        color: #f8fafc !important;
+        color: #f3f4f6 !important;
     }
 
-    /* Hero Banner Mewah Berseni Tinggi */
+    /* Hero Banner Seni Visual Tinggi */
     .hero-banner {
-        background: linear-gradient(135deg, #1e293b 0%, #1e3a8a 50%, #0f172a 100%);
-        padding: 42px 48px;
-        border-radius: 24px;
+        background: linear-gradient(135deg, #312e81 0%, #4c1d95 50%, #0f172a 100%);
+        padding: 28px 24px;
+        border-radius: 20px;
         color: #ffffff;
-        margin-bottom: 32px;
-        box-shadow: 0 20px 40px -15px rgba(30, 58, 138, 0.5);
+        margin-bottom: 24px;
+        box-shadow: 0 20px 40px -15px rgba(109, 40, 217, 0.4);
         position: relative;
         overflow: hidden;
-        border-left: 8px solid #f59e0b;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(167, 139, 250, 0.3);
     }
-    .hero-banner::after {
+    .hero-banner::before {
         content: '';
         position: absolute;
-        top: -60px;
-        right: -60px;
-        width: 220px;
-        height: 220px;
-        background: rgba(245, 158, 11, 0.2);
+        top: -50px;
+        right: -50px;
+        width: 150px;
+        height: 150px;
+        background: rgba(6, 182, 212, 0.25);
         border-radius: 50%;
-        filter: blur(40px);
+        filter: blur(35px);
         pointer-events: none;
     }
     .hero-title {
-        font-size: 2.2rem;
+        font-size: 1.6rem;
         font-weight: 800;
         letter-spacing: -0.5px;
-        color: #ffffff !important;
+        color: #c084fc !important;
         margin: 0;
     }
     .hero-subtitle {
-        font-size: 1rem;
+        font-size: 0.88rem;
         color: #cbd5e1 !important;
-        margin-top: 10px;
+        margin-top: 8px;
         font-weight: 400;
-        max-width: 750px;
-        line-height: 1.6;
+        line-height: 1.5;
     }
 
-    /* Kartu Dashboard Glassmorphism Elegan */
+    /* Kartu Dashboard Glassmorphism Berpendar */
     .dashboard-card {
         background: rgba(15, 23, 42, 0.85);
-        backdrop-filter: blur(16px);
-        padding: 36px;
-        border-radius: 24px;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.6);
-        margin-bottom: 28px;
+        backdrop-filter: blur(20px);
+        padding: 22px;
+        border-radius: 20px;
+        border: 1px solid rgba(139, 92, 246, 0.2);
+        box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.7);
+        margin-bottom: 20px;
         transition: all 0.3s ease;
     }
     .dashboard-card:hover {
-        border-color: rgba(245, 158, 11, 0.4);
-        box-shadow: 0 20px 40px -10px rgba(30, 58, 138, 0.3);
+        border-color: rgba(6, 182, 212, 0.5);
+        box-shadow: 0 20px 40px -10px rgba(109, 40, 217, 0.3);
     }
 
     /* Judul Bagian dalam Kartu */
     .section-title {
-        font-size: 1.4rem;
+        font-size: 1.2rem;
         font-weight: 700;
-        color: #f8fafc;
-        margin-bottom: 6px;
-        letter-spacing: -0.3px;
+        color: #f3f4f6;
+        margin-bottom: 4px;
     }
     .section-desc {
-        font-size: 0.92rem;
+        font-size: 0.84rem;
         color: #94a3b8;
-        margin-bottom: 28px;
+        margin-bottom: 20px;
     }
 
-    /* Label Formulir & Kontras Tinggi */
+    /* Label Formulir Responsif Mobile */
     label, .stTextInput label, .stTextArea label, .stSelectbox label, .stRadio label {
         color: #e2e8f0 !important;
         font-weight: 700 !important;
-        font-size: 0.9rem !important;
-        letter-spacing: -0.2px;
-        margin-bottom: 8px !important;
+        font-size: 0.85rem !important;
+        margin-bottom: 6px !important;
     }
 
-    /* Input & Textarea Gelap & Kontras Terang */
+    /* Input & Textarea Nyaman untuk Layar Sentuh Android */
     .stTextInput input, .stTextArea textarea {
-        background-color: #0b0f19 !important;
-        color: #f8fafc !important;
+        background-color: #030712 !important;
+        color: #38bdf8 !important;
         font-weight: 600 !important;
         font-size: 0.95rem !important;
         border-radius: 12px !important;
         border: 1.5px solid #334155 !important;
-        padding: 14px 18px !important;
-        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5) !important;
-        transition: all 0.2s ease;
+        padding: 12px 14px !important;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6) !important;
     }
     .stTextInput input:focus, .stTextArea textarea:focus {
-        border-color: #f59e0b !important;
-        box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.2), inset 0 2px 4px rgba(0, 0, 0, 0.5) !important;
-        background-color: #0b0f19 !important;
+        border-color: #a855f7 !important;
+        box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.25), inset 0 2px 4px rgba(0, 0, 0, 0.6) !important;
+        background-color: #030712 !important;
     }
     .stTextInput input::placeholder, .stTextArea textarea::placeholder {
-        color: #64748b !important;
-        font-weight: 400 !important;
+        color: #475569 !important;
         opacity: 1 !important;
     }
 
-    /* Tombol Utama Mewah (Royal Navy & Gold Accent) */
+    /* Tombol Utama Gradien Cyber (Nyaman Disentuh di HP) */
     .stButton>button {
         width: 100%;
-        background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
-        color: #0f172a !important;
+        background: linear-gradient(135deg, #7c3aed 0%, #06b6d4 100%);
+        color: #ffffff !important;
         font-weight: 800 !important;
         border-radius: 12px !important;
-        padding: 0.9rem 1.5rem !important;
+        padding: 0.85rem 1rem !important;
         border: none !important;
-        font-size: 1rem !important;
-        box-shadow: 0 4px 20px rgba(245, 158, 11, 0.35) !important;
+        font-size: 0.95rem !important;
+        box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4) !important;
         transition: all 0.25s ease !important;
     }
     .stButton>button:hover {
-        background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%) !important;
-        box-shadow: 0 6px 25px rgba(245, 158, 11, 0.5) !important;
+        background: linear-gradient(135deg, #8b5cf6 0%, #22d3ee 100%) !important;
+        box-shadow: 0 8px 25px rgba(6, 182, 212, 0.6) !important;
         transform: translateY(-2px);
     }
 
-    /* Badge Akademik Eksklusif */
+    /* Badge Estetik */
     .status-badge {
         display: inline-flex;
         align-items: center;
-        padding: 6px 16px;
+        padding: 5px 14px;
         border-radius: 9999px;
-        font-size: 0.78rem;
+        font-size: 0.72rem;
         font-weight: 800;
         letter-spacing: 0.8px;
         text-transform: uppercase;
-        background: rgba(245, 158, 11, 0.15);
-        color: #fbbf24;
-        border: 1px solid rgba(245, 158, 11, 0.3);
-        margin-bottom: 16px;
+        background: rgba(168, 85, 247, 0.15);
+        color: #d8b4fe;
+        border: 1px solid rgba(168, 85, 247, 0.35);
+        margin-bottom: 12px;
     }
 
-    /* Footer Institusi */
+    /* Footer Mobile Friendly */
     .footer-container {
         text-align: center;
-        padding: 28px;
-        font-size: 0.85rem;
+        padding: 20px;
+        font-size: 0.8rem;
         color: #94a3b8;
         background: rgba(15, 23, 42, 0.6);
         border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 20px;
-        margin-top: 50px;
-        margin-bottom: 24px;
+        border-radius: 16px;
+        margin-top: 30px;
+        margin-bottom: 20px;
         font-weight: 500;
     }
     .footer-container a {
-        color: #fbbf24;
+        color: #38bdf8;
         text-decoration: none;
         font-weight: 700;
     }
@@ -213,7 +207,7 @@ st.markdown(
 )
 
 # ---------------------------------------------------------
-# FUNGSI PEMBENTUK DOKUMEN WORD (.DOCX)
+# FUNGSI PEMBENTUK DOKUMEN WORD (.DOCX) DENGAN SMART NUMBERING
 # ---------------------------------------------------------
 def buat_file_docx(teks_konten):
   doc = Document()
@@ -267,7 +261,7 @@ def buat_file_docx(teks_konten):
       doc.add_heading(stripped.replace("## ", "").strip(), level=2)
     elif stripped.startswith("### "):
       doc.add_heading(stripped.replace("### ", "").strip(), level=3)
-    elif re.match(r"^(\d+[\.\)]|[a-zA-Z][\.\)]|\•|\-)\s+", stripped):
+    elif re.match(r"^(\d+[\.\)]|[a-zA-Z][\.\)]|\•|\-|\*)\s+", stripped):
       doc.add_paragraph(stripped, style="List Bullet")
     else:
       doc.add_paragraph(stripped)
@@ -316,13 +310,13 @@ raw_key = st.secrets.get("GEMINI_API_KEY", "") or st.secrets.get(
 GEMINI_API_KEY = str(raw_key).strip().strip('"').strip("'")
 
 # ---------------------------------------------------------
-# NAVIGASI SIDEBAR INSTITUSI
+# NAVIGASI SIDEBAR
 # ---------------------------------------------------------
 with st.sidebar:
-  st.markdown("### 🏛️ Portal Akademik")
+  st.markdown("### ✨ Elite Academic AI")
   st.markdown(
-      "<p style='color: #fbbf24; font-size: 0.8rem; margin-top:"
-      " -10px;'>Instansi Pendidikan Formal</p>",
+      "<p style='color: #c084fc; font-size: 0.78rem; margin-top:"
+      " -10px;'>Mobile-Optimized Edition</p>",
       unsafe_allow_html=True,
   )
   st.markdown("---")
@@ -350,13 +344,10 @@ with st.sidebar:
   else:
     st.success("🔒 Sistem Aktif & Aman")
 
-  st.markdown("---")
-  st.caption("Edisi: **Instansi Modern Elite**")
-
 if not GEMINI_API_KEY:
   st.warning(
-      "Mohon masukkan Gemini API Key di panel sebelah kiri untuk mengakses"
-      " portal instansi."
+      "Mohon masukkan Gemini API Key di panel menu samping untuk mengakses"
+      " aplikasi."
   )
   st.stop()
 
@@ -385,8 +376,8 @@ if "soal_hasil" not in st.session_state:
 st.markdown(
     """
     <div class="hero-banner">
-        <h1 class="hero-title">Portal Asisten Akademik & Asesmen Instansi</h1>
-        <p class="hero-subtitle">Sistem Terintegrasi Kecerdasan Buatan untuk Penyusunan Perangkat Pembelajaran Formal, Naskah Soal Asesmen Standar Nasional, dan Penilaian Objektif.</p>
+        <h1 class="hero-title">Portal Akademik & Asesmen Elite</h1>
+        <p class="hero-subtitle">Sistem Kecerdasan Buatan Terintegrasi untuk Penyusunan Perangkat Pembelajaran, Naskah Soal Asesmen, dan Penilaian Objektif.</p>
     </div>
     """,
     unsafe_allow_html=True,
@@ -411,37 +402,33 @@ if menu_pilihan == "📖 Generator Modul Ajar":
       unsafe_allow_html=True,
   )
 
-  col1, col2 = st.columns(2)
-  with col1:
-    nama_guru = st.text_input(
-        "Nama Guru & Gelar", placeholder="Contoh: Ahmad Fauzi, S.Pd."
-    )
-    nama_sekolah = st.text_input(
-        "Nama Instansi / Sekolah", placeholder="Contoh: SMP Negeri 1 Nusantara"
-    )
-    mapel = st.text_input(
-        "Mata Pelajaran", placeholder="Contoh: Ilmu Pengetahuan Alam (IPA)"
-    )
-    kurikulum_aktif = st.text_input(
-        "Kurikulum", placeholder="Contoh: Kurikulum Merdeka"
-    )
-  with col2:
-    fase_kelas = st.text_input(
-        "Fase / Kelas", placeholder="Contoh: Fase D / Kelas VII"
-    )
-    nama_ks = st.text_input(
-        "Nama Kepala Sekolah",
-        placeholder="Contoh: Dra. Hj. Siti Aminah, M.Pd.",
-    )
-    topik = st.text_input(
-        "Topik / Materi Pokok", placeholder="Contoh: Sistem Pencernaan Manusia"
-    )
-    alokasi_waktu = st.text_input(
-        "Alokasi Waktu", placeholder="Contoh: 2 Pertemuan (4 x 40 Menit)"
-    )
+  nama_guru = st.text_input(
+      "Nama Guru & Gelar", placeholder="Contoh: Ahmad Fauzi, S.Pd."
+  )
+  nama_sekolah = st.text_input(
+      "Nama Instansi / Sekolah", placeholder="Contoh: SMP Negeri 1 Nusantara"
+  )
+  mapel = st.text_input(
+      "Mata Pelajaran", placeholder="Contoh: Ilmu Pengetahuan Alam (IPA)"
+  )
+  kurikulum_aktif = st.text_input(
+      "Kurikulum", placeholder="Contoh: Kurikulum Merdeka"
+  )
+  fase_kelas = st.text_input(
+      "Fase / Kelas", placeholder="Contoh: Fase D / Kelas VII"
+  )
+  nama_ks = st.text_input(
+      "Nama Kepala Sekolah", placeholder="Contoh: Dra. Hj. Siti Aminah, M.Pd."
+  )
+  topik = st.text_input(
+      "Topik / Materi Pokok", placeholder="Contoh: Sistem Pencernaan Manusia"
+  )
+  alokasi_waktu = st.text_input(
+      "Alokasi Waktu", placeholder="Contoh: 2 Pertemuan (4 x 40 Menit)"
+  )
 
   st.markdown("<br>", unsafe_allow_html=True)
-  if st.button("🚀 Buat Modul Ajar Sekarang", type="primary"):
+  if st.button("✨ Buat Modul Ajar Sekarang", type="primary"):
     with st.spinner("Sistem Gemini sedang merancang Modul Ajar..."):
       try:
         prompt_modul = f"""
@@ -489,34 +476,31 @@ elif menu_pilihan == "📝 Generator Soal Asesmen":
   )
   st.markdown(
       '<div class="section-desc">Penyusunan naskah soal asesmen resmi lengkap'
-      ' dengan KOP institusi, kisi-kisi, kunci jawaban, dan rubrik bobot nilai.</div>',
+      ' dengan penomoran, kunci jawaban, dan rubrik bobot nilai.</div>',
       unsafe_allow_html=True,
   )
 
-  col1, col2 = st.columns(2)
-  with col1:
-    s_guru = st.text_input("Nama Pembuat Asesmen", placeholder="Ahmad Fauzi, S.Pd.")
-    s_sekolah = st.text_input(
-        "Instansi / Sekolah", placeholder="SMP Negeri 1 Nusantara"
-    )
-    s_mapel = st.text_input("Mata Pelajaran", placeholder="Matematika")
-    s_kur = st.text_input("Kurikulum", placeholder="Kurikulum Merdeka")
-  with col2:
-    s_kelas = st.text_input("Kelas / Semester", placeholder="Kelas VII / Ganjil")
-    s_materi = st.text_input(
-        "Materi Asesmen", placeholder="Persamaan Linear Satu Variabel"
-    )
-    s_komposisi = st.text_input(
-        "Komposisi Soal Asesmen",
-        placeholder="5 Pilihan Ganda, 2 Isian Singkat, 1 Essai",
-    )
+  s_guru = st.text_input("Nama Pembuat Asesmen", placeholder="Ahmad Fauzi, S.Pd.")
+  s_sekolah = st.text_input(
+      "Instansi / Sekolah", placeholder="SMP Negeri 1 Nusantara"
+  )
+  s_mapel = st.text_input("Mata Pelajaran", placeholder="Matematika")
+  s_kur = st.text_input("Kurikulum", placeholder="Kurikulum Merdeka")
+  s_kelas = st.text_input("Kelas / Semester", placeholder="Kelas VII / Ganjil")
+  s_materi = st.text_input(
+      "Materi Asesmen", placeholder="Persamaan Linear Satu Variabel"
+  )
+  s_komposisi = st.text_input(
+      "Komposisi Soal Asesmen",
+      placeholder="5 Pilihan Ganda, 2 Isian Singkat, 1 Essai",
+  )
 
   st.markdown("<br>", unsafe_allow_html=True)
-  if st.button("🚀 Susun Naskah Soal Asesmen", type="primary"):
+  if st.button("✨ Susun Naskah Soal Asesmen", type="primary"):
     with st.spinner("Sistem Gemini sedang menyusun naskah asesmen..."):
       try:
         prompt_soal = f"""
-                Buatkan naskah soal asesmen resmi instansi pendidikan lengkap dengan Kop Soal, Petunjuk, Naskah Soal Asesmen, Kunci Jawaban, & Rubrik Penilaian (gunakan tabel markdown standar dengan garis vertikal |) untuk:
+                Buatkan naskah soal asesmen resmi instansi pendidikan lengkap dengan Kop Soal, Petunjuk, Naskah Soal Asesmen (pastikan setiap nomor soal menggunakan penomoran tegas seperti 1., 2., 3. dan pilihan ganda menggunakan A., B., C., D.), Kunci Jawaban, & Rubrik Penilaian (gunakan tabel markdown standar dengan garis vertikal |) untuk:
                 - Guru: {s_guru}, Sekolah: {s_sekolah}, Mapel: {s_mapel}
                 - Kurikulum: {s_kur}, Kelas: {s_kelas}, Materi: {s_materi}
                 - Komposisi: {s_komposisi}
@@ -722,7 +706,7 @@ elif menu_pilihan == "📊 Rekap Nilai":
 st.markdown(
     """
     <div class="footer-container">
-        <p>Sistem Portal Akademik Instansi Pendidikan | Developed by <b>Zeeo</b><br>
+        <p>Portal Akademik Elite | Developed by <b>Zeeo</b><br>
         WhatsApp Support: <a href="https://wa.me/6282371729760" target="_blank">082371729760</a><br>
         © 2026 All Rights Reserved</p>
     </div>
