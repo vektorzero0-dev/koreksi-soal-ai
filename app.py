@@ -15,7 +15,7 @@ import pandas as pd
 import streamlit as st
 
 # ---------------------------------------------------------
-# KONFIGURASI HALAMAN (RESPONSIF ANDROID & DESKTOP)
+# KONFIGURASI HALAMAN (STABIL & RESPONSIF)
 # ---------------------------------------------------------
 st.set_page_config(
     page_title="Portal Akademik & Asesmen Instansi Pendidikan",
@@ -38,8 +38,6 @@ st.markdown(
         background-attachment: fixed;
         font-family: 'Plus Jakarta Sans', sans-serif;
         color: #f8fafc;
-        position: relative;
-        overflow-x: hidden;
     }
 
     /* Efek Animasi Partikel Bergerak di Background */
@@ -55,18 +53,14 @@ st.markdown(
             radial-gradient(circle, rgba(59, 130, 246, 0.06) 1px, transparent 1px);
         background-size: 50px 50px;
         background-position: 0 0, 25px 25px;
-        animation: backgroundMove 30s linear infinite;
-        z-index: -1;
+        animation: backgroundMove 25s linear infinite;
+        z-index: 0;
         pointer-events: none;
     }
 
     @keyframes backgroundMove {
-        0% {
-            transform: translate(0, 0);
-        }
-        100% {
-            transform: translate(50px, 50px);
-        }
+        0% { transform: translate(0, 0); }
+        100% { transform: translate(50px, 50px); }
     }
 
     /* Sidebar Akademik */
@@ -92,15 +86,7 @@ st.markdown(
         overflow: hidden;
         border-left: 6px solid #d97706;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    .hero-banner::before {
-        content: '🏛️';
-        position: absolute;
-        right: 16px;
-        bottom: -10px;
-        font-size: 5rem;
-        opacity: 0.12;
-        pointer-events: none;
+        z-index: 1;
     }
     .hero-title {
         font-size: 1.55rem;
@@ -119,18 +105,15 @@ st.markdown(
 
     /* Kartu Dashboard Akademik */
     .dashboard-card {
-        background: rgba(15, 23, 42, 0.88);
+        background: rgba(15, 23, 42, 0.9);
         backdrop-filter: blur(20px);
         padding: 24px;
         border-radius: 20px;
         border: 1px solid rgba(217, 119, 6, 0.3);
         box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.7);
         margin-bottom: 20px;
-        transition: all 0.3s ease;
-    }
-    .dashboard-card:hover {
-        border-color: rgba(251, 191, 36, 0.6);
-        box-shadow: 0 20px 40px -10px rgba(217, 119, 6, 0.2);
+        position: relative;
+        z-index: 1;
     }
 
     /* Judul Bagian dengan Ikon */
@@ -166,16 +149,11 @@ st.markdown(
         border-radius: 12px !important;
         border: 1.5px solid #334155 !important;
         padding: 12px 14px !important;
-        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6) !important;
     }
     .stTextInput input:focus, .stTextArea textarea:focus {
         border-color: #d97706 !important;
-        box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.25), inset 0 2px 4px rgba(0, 0, 0, 0.6) !important;
+        box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.25) !important;
         background-color: #030712 !important;
-    }
-    .stTextInput input::placeholder, .stTextArea textarea::placeholder {
-        color: #475569 !important;
-        opacity: 1 !important;
     }
 
     /* Tombol Utama Emas Akademik */
@@ -193,7 +171,6 @@ st.markdown(
     }
     .stButton>button:hover {
         background: linear-gradient(135deg, #d97706 0%, #fbbf24 100%) !important;
-        box-shadow: 0 8px 25px rgba(217, 119, 6, 0.6) !important;
         transform: translateY(-2px);
     }
 
@@ -225,7 +202,8 @@ st.markdown(
         border-radius: 16px;
         margin-top: 30px;
         margin-bottom: 20px;
-        font-weight: 500;
+        position: relative;
+        z-index: 1;
     }
     .footer-container a {
         color: #fbbf24;
@@ -243,7 +221,6 @@ st.markdown(
 # ---------------------------------------------------------
 def buat_file_docx(teks_konten):
   doc = Document()
-
   teks_bersih = re.sub(
       r"<\s*br\s*/?>", "\n", teks_konten, flags=re.IGNORECASE
   )
