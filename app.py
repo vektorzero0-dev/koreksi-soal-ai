@@ -1,5 +1,6 @@
 from io import BytesIO
 import os
+import re
 from docx import Document
 from google import genai
 from PIL import Image
@@ -106,23 +107,69 @@ st.markdown(
 
 def buat_file_docx(teks_konten):
   doc = Document()
-  # Bersihkan tag HTML <br> atau <br/> agar menjadi newline di dokumen Word
-  teks_bersih = (
-      teks_konten.replace("<br>", "\n")
-      .replace("<br/>", "\n")
-      .replace("<br />", "\n")
-  )
 
-  for line in teks_bersih.split("\n"):
-    line_stripped = line.strip()
-    if line_stripped.startswith("# "):
-      doc.add_heading(line_stripped.replace("# ", ""), level=1)
-    elif line_stripped.startswith("## "):
-      doc.add_heading(line_stripped.replace("## ", ""), level=2)
-    elif line_stripped.startswith("### "):
-      doc.add_heading(line_stripped.replace("### ", ""), level=3)
+  # Bersihkan tag HTML mentah yang tidak sengaja terbawa
+  teks_bersih = re.sub(
+      r"<\s*br\s*/?>", "\n", teks_konten, flags=re.IGNORECASE
+  )
+  teks_bersih = re.sub(r"</?[a-zA-Z]+[^>]*>", "", teks_bersih)
+
+  lines = teks_bersih.split("\n")
+  table_rows = []
+
+  def flush_table():
+    nonlocal table_rows
+    if table_rows:
+      # Filter baris pemisah markdown (seperti |---|---|)
+      filtered_rows = [
+          row
+          for row in table_rows
+          if not all(
+              c in "-:| "
+              for c in "".join(
+                  [cell for cell in row if isinstance(cell, str)]
+              )
+          )
+      ]
+      if filtered_rows:
+        num_cols = max(len(row) for row in filtered_rows)
+        table = doc.add_table(rows=len(filtered_rows), cols=num_cols)
+        table.style = "Table Grid"
+        for r_idx, row_data in enumerate(filtered_rows):
+          for c_idx, cell_value in enumerate(row_data):
+            if c_idx < num_cols:
+              table.cell(r_idx, c_idx).text = str(cell_value).strip()
+      table_rows = []
+
+  for line in lines:
+    stripped = line.strip()
+
+    # Deteksi baris tabel markdown (mengandung karakter |)
+    if stripped.startswith("|") and stripped.endswith("|"):
+      cells = [c.strip() for c in stripped.split("|")[1:-1]]
+      table_rows.append(cells)
+      continue
     else:
-      doc.add_paragraph(line)
+      flush_table()
+
+    if not stripped:
+      continue
+
+    # Format Heading & Penomoran Dokumen Formal
+    if stripped.startswith("# "):
+      doc.add_heading(stripped.replace("# ", "").strip(), level=1)
+    elif stripped.startswith("## "):
+      doc.add_heading(stripped.replace("## ", "").strip(), level=2)
+    elif stripped.startswith("### "):
+      doc.add_heading(stripped.replace("### ", "").strip(), level=3)
+    elif re.match(
+        r"^(\d+[\.\)]|[a-zA-Z][\.\)]|\•|\-)\s+", stripped
+    ):  # Deteksi List / Penomoran
+      doc.add_paragraph(stripped, style="List Bullet")
+    else:
+      doc.add_paragraph(stripped)
+
+  flush_table()  # Tangkap tabel jika berada di baris akhir dokumen
 
   buffer = BytesIO()
   doc.save(buffer)
@@ -235,8 +282,8 @@ if menu_pilihan == "📖 1. Generator Modul Ajar":
                 - Mapel: {mapel}, Kurikulum: {kurikulum_aktif}
                 - Kelas: {fase_kelas}, Kepala Sekolah: {nama_ks}
                 - Topik: {topik}, Waktu: {alokasi_waktu}
-                Sertakan komponen Identitas Instansi, Profil Pelajar Pancasila, Tujuan Pembelajaran, Kegiatan Pembelajaran, dan Tabel Rubrik Penilaian.
-                PENTING: Jangan gunakan tag HTML seperti <br> pada bagian penandatanganan atau teks lainnya. Gunakan format teks baris baru biasa.
+                Sertakan komponen Identitas Instansi, Profil Pelajar Pancasila, Tujuan Pembelajaran, Kegiatan Pembelajaran, serta Tabel Rubrik Penilaian dalam bentuk tabel markdown standar (menggunakan garis vertikal |).
+                PENTING: Gunakan teks bersih murni tanpa tag HTML sama sekali (seperti <br> atau <p>).
                 """
         response = client.models.generate_content(
             model="gemini-3.6-flash", contents=prompt_modul
@@ -283,11 +330,11 @@ elif menu_pilihan == "📝 2. Generator Soal & Kunci":
     with st.spinner("Sistem Gemini sedang menyusun naskah ujian..."):
       try:
         prompt_soal = f"""
-                Buatkan naskah soal ujian resmi instansi pendidikan lengkap dengan Kop Ujian, Petunjuk, Naskah Soal, Kunci Jawaban, & Rubrik Penilaian (Tabel) untuk:
+                Buatkan naskah soal ujian resmi instansi pendidikan lengkap dengan Kop Ujian, Petunjuk, Naskah Soal, Kunci Jawaban, & Rubrik Penilaian (gunakan tabel markdown standar dengan garis vertikal |) untuk:
                 - Guru: {s_guru}, Sekolah: {s_sekolah}, Mapel: {s_mapel}
                 - Kurikulum: {s_kur}, Kelas: {s_kelas}, Materi: {s_materi}
                 - Komposisi: {s_komposisi}
-                PENTING: Jangan gunakan tag HTML seperti <br> pada bagian penandatanganan atau teks lainnya. Gunakan format teks baris baru biasa.
+                PENTING: Gunakan teks bersih murni tanpa tag HTML sama sekali (seperti <br> atau <p>).
                 """
         response = client.models.generate_content(
             model="gemini-3.6-flash", contents=prompt_soal
