@@ -211,7 +211,7 @@ if menu_pilihan == "📖 1. Generator Modul Ajar":
 
   if st.button("🚀 Proses Pembuatan Modul Ajar", type="primary"):
     with st.spinner(
-        "Sistem Gemini 3.5 Flash sedang merancang Modul Ajar..."
+        "Sistem Gemini 3.6 Flash sedang merancang Modul Ajar..."
     ):
       try:
         client = genai.Client(api_key=GEMINI_API_KEY)
@@ -224,7 +224,7 @@ if menu_pilihan == "📖 1. Generator Modul Ajar":
                 Sertakan komponen Identitas Instansi, Profil Pelajar Pancasila, Tujuan Pembelajaran, Kegiatan Pembelajaran, dan Tabel Rubrik Penilaian.
                 """
         response = client.models.generate_content(
-            model="gemini-3.5-flash", contents=prompt_modul
+            model="gemini-3.6-flash", contents=prompt_modul
         )
         st.session_state.modul_hasil = response.text
         st.success("Modul Ajar berhasil disusun!")
@@ -266,7 +266,7 @@ elif menu_pilihan == "📝 2. Generator Soal & Kunci":
 
   if st.button("🚀 Proses Pembuatan Paket Soal", type="primary"):
     with st.spinner(
-        "Sistem Gemini 3.5 Flash sedang menyusun naskah ujian..."
+        "Sistem Gemini 3.6 Flash sedang menyusun naskah ujian..."
     ):
       try:
         client = genai.Client(api_key=GEMINI_API_KEY)
@@ -277,7 +277,7 @@ elif menu_pilihan == "📝 2. Generator Soal & Kunci":
                 - Komposisi: {s_komposisi}
                 """
         response = client.models.generate_content(
-            model="gemini-3.5-flash", contents=prompt_soal
+            model="gemini-3.6-flash", contents=prompt_soal
         )
         st.session_state.soal_hasil = response.text
         st.success("Paket soal berhasil disusun!")
@@ -358,7 +358,7 @@ elif menu_pilihan == "🔍 4. Koreksi Siswa":
         st.error("Masukkan nama atau identitas siswa!")
       else:
         with st.spinner(
-            "Sistem Gemini 3.5 Flash sedang menganalisis jawaban..."
+            "Sistem Gemini 3.6 Flash sedang menganalisis jawaban..."
         ):
           try:
             client = genai.Client(api_key=GEMINI_API_KEY)
@@ -385,7 +385,7 @@ elif menu_pilihan == "🔍 4. Koreksi Siswa":
               payload.append(f"Jawaban Siswa: {teks_manual}")
 
             resp = client.models.generate_content(
-                model="gemini-3.5-flash", contents=payload
+                model="gemini-3.6-flash", contents=payload
             )
             hasil = resp.text
 
