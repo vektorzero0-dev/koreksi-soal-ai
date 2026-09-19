@@ -1,6 +1,8 @@
 streamlit
 google-genai
-pillow
-python-docx
 pandas
+python-docx
+Pillow
 pypdf
+gspread
+google-auth
