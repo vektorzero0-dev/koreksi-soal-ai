@@ -33,7 +33,6 @@ st.markdown(
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
-    /* Global Dynamic Animated Background */
     .stApp {
         background: linear-gradient(125deg, #030712 0%, #0f172a 35%, #1e1b4b 70%, #064e3b 100%);
         background-size: 400% 400%;
@@ -48,7 +47,6 @@ st.markdown(
         100% { background-position: 0% 50%; }
     }
 
-    /* Efek Lapisan Jaring Grid Neon Bergerak & Glowing Orbs */
     .stApp::before {
         content: '';
         position: fixed;
@@ -72,7 +70,6 @@ st.markdown(
         100% { transform: translate(60px, 60px) rotate(3deg); }
     }
 
-    /* Sidebar Akademik */
     section[data-testid="stSidebar"] {
         background: rgba(3, 7, 18, 0.95) !important;
         border-right: 1.5px solid rgba(251, 191, 36, 0.3);
@@ -84,7 +81,6 @@ st.markdown(
         color: #f3f4f6 !important;
     }
 
-    /* Hero Banner Instansi Pendidikan */
     .hero-banner {
         background: linear-gradient(135deg, rgba(30, 58, 138, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
         backdrop-filter: blur(12px);
@@ -114,7 +110,6 @@ st.markdown(
         line-height: 1.5;
     }
 
-    /* Kartu Dashboard Akademik */
     .dashboard-card {
         background: rgba(15, 23, 42, 0.88);
         backdrop-filter: blur(24px);
@@ -127,7 +122,6 @@ st.markdown(
         z-index: 1;
     }
 
-    /* Judul Bagian dengan Ikon */
     .section-title {
         font-size: 1.25rem;
         font-weight: 700;
@@ -143,7 +137,6 @@ st.markdown(
         margin-bottom: 20px;
     }
 
-    /* Label Formulir */
     label, .stTextInput label, .stTextArea label, .stSelectbox label, .stRadio label {
         color: #f1f5f9 !important;
         font-weight: 700 !important;
@@ -151,7 +144,6 @@ st.markdown(
         margin-bottom: 6px !important;
     }
 
-    /* Input & Textarea */
     .stTextInput input, .stTextArea textarea {
         background-color: #030712 !important;
         color: #fbbf24 !important;
@@ -167,7 +159,6 @@ st.markdown(
         background-color: #030712 !important;
     }
 
-    /* Tombol Utama Emas Akademik */
     .stButton>button {
         width: 100%;
         background: linear-gradient(135deg, #d97706 0%, #fbbf24 100%);
@@ -186,7 +177,6 @@ st.markdown(
         box-shadow: 0 8px 25px rgba(251, 191, 36, 0.6) !important;
     }
 
-    /* Badge Ikon Akademik */
     .status-badge {
         display: inline-flex;
         align-items: center;
@@ -203,7 +193,6 @@ st.markdown(
         margin-bottom: 12px;
     }
 
-    /* Footer */
     .footer-container {
         text-align: center;
         padding: 20px;
@@ -333,12 +322,17 @@ raw_key = st.secrets.get("GEMINI_API_KEY", "") or st.secrets.get(
 )
 GEMINI_API_KEY = str(raw_key).strip().strip('"').strip("'")
 
-# Daftar Token VIP Berbayar yang Valid (Atur sesuai keinginan Anda)
-VALID_TOKENS = ["VIP-ZEEO-2026", "GURU-MERDEKA-123", "SEKOLAH-PRO-999"]
+# ---------------------------------------------------------
+# SISTEM KUOTA TOKEN BERDASARKAN DATABASE SESSION
+# ---------------------------------------------------------
+if "user_quotas" not in st.session_state:
+  # Contoh database token awal: "KODE_TOKEN": Sisa Kuota
+  st.session_state.user_quotas = {
+      "VIP-SITI-10": 10,  # Contoh token Bu Siti sisa 10 kali
+      "VIP-BODI-25": 25,  # Contoh token Pak Bodi sisa 25 kali
+      "DEMO-FREE-3": 3,  # Contoh token uji coba sisa 3 kali
+  }
 
-# ---------------------------------------------------------
-# NAVIGASI SIDEBAR & SISTEM LISENSI
-# ---------------------------------------------------------
 with st.sidebar:
   st.markdown("### 🏛️ Portal Akademik Resmi")
   st.markdown(
@@ -348,25 +342,36 @@ with st.sidebar:
   )
   st.markdown("---")
 
-  # Input Token Lisensi Berbayar
-  st.markdown("### 🎟️ Aktivasi Lisensi VIP")
-  user_token = st.text_input(
-      "Masukkan Token Akses",
+  st.markdown("### 🎟️ Aktivasi Token Kuota")
+  input_token = st.text_input(
+      "Masukkan Token Anda",
       type="password",
-      placeholder="Minta token via WhatsApp",
+      placeholder="Contoh: VIP-SITI-10",
   )
 
-  is_vip = False
-  if user_token.strip() in VALID_TOKENS:
-    is_vip = True
-    st.success("✅ Akses VIP Aktif (Full Tanpa Batas)")
-  elif user_token.strip() != "":
-    st.error("❌ Token Salah / Tidak Valid")
+  token_aktif = False
+  sisa_kuota_sekarang = 0
+
+  cleaned_token = input_token.strip()
+  if cleaned_token in st.session_state.user_quotas:
+    sisa_kuota_sekarang = st.session_state.user_quotas[cleaned_token]
+    if sisa_kuota_sekarang > 0:
+      token_aktif = True
+      st.success(
+          f"✅ Token Aktif!\nSisa Kuota Anda: **{sisa_kuota_sekarang}x**"
+          " generate"
+      )
+    else:
+      st.error(
+          "❌ Kuota Anda sudah habis!\nSilakan lakukan isi ulang via WhatsApp."
+      )
+  elif cleaned_token != "":
+    st.error("❌ Token tidak terdaftar di sistem.")
   else:
-    st.warning("⚠️ Mode Trial (Akses Terbatas)")
+    st.warning("⚠️ Masukkan token untuk mulai menggunakan generator.")
     st.markdown(
-        "[Beli Akses Full via"
-        " WhatsApp](https://wa.me/6282371729760?text=Halo%20Admin,%20saya%20ingin%20membeli%20token%20akses%20full%20generator%20perangkat%20ajar)"
+        "[Beli Kuota via"
+        " WhatsApp](https://wa.me/6282371729760?text=Halo%20Admin,%20saya%20ingin%20membeli%20token%20kuota%20generator%20perangkat%20ajar)"
     )
 
   st.markdown("---")
@@ -387,15 +392,15 @@ with st.sidebar:
   )
 
   st.markdown("---")
-  st.markdown("### 🔑 Status Koneksi Sistem")
+  st.markdown("### 🔑 Status Koneksi")
 
   if not GEMINI_API_KEY:
     st.warning("⚠️ Belum terhubung")
-    input_manual = st.text_input("Gemini API Key", type="password")
-    if input_manual:
-      GEMINI_API_KEY = input_manual.strip().strip('"').strip("'")
+    key_manual = st.text_input("Gemini API Key", type="password")
+    if key_manual:
+      GEMINI_API_KEY = key_manual.strip().strip('"').strip("'")
   else:
-    st.success("🔒 Sistem AI Aktif")
+    st.success("🔒 Sistem AI Terhubung")
 
 if not GEMINI_API_KEY:
   st.warning(
@@ -442,26 +447,16 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# ---------------------------------------------------------
-# CEK AKSES VIP (JIKA BELUM MASUKKAN TOKEN, TAMPILKAN PERINGATAN)
-# ---------------------------------------------------------
-if not is_vip:
+if not token_aktif:
   st.markdown(
       '<div class="dashboard-card" style="border-color: #ef4444;">',
       unsafe_allow_html=True,
   )
+  st.markdown("### 🔒 Akses Terkunci (Token Diperlukan)")
   st.markdown(
-      "### 🔒 Akses Terbatas (Mode Trial / Belum Teraktivasi)"
-  )
-  st.markdown(
-      "Anda sedang menggunakan mode **Trial**. Beberapa fitur generator"
-      " dokumen Word dan unduhan penuh dikunci. Silakan masukkan **Token VIP"
-      " Berbayar** di panel menu samping (*sidebar*) atau hubungi admin via"
-      " WhatsApp untuk mengaktifkan akses penuh tanpa batas."
-  )
-  st.markdown(
-      "[Beli Token Akses Full via"
-      " WhatsApp](https://wa.me/6282371729760?text=Halo%20Admin,%20saya%20ingin%20membeli%20token%20akses%20full%20generator%20perangkat%20ajar)"
+      "Silakan masukkan **Token Kuota** yang valid di panel menu samping"
+      " (*sidebar*) untuk membuka akses seluruh fitur generator dokumen dan"
+      " unduhan."
   )
   st.markdown("</div>", unsafe_allow_html=True)
 
@@ -512,10 +507,9 @@ if menu_pilihan == "📖 Generator Modul Ajar":
 
   st.markdown("<br>", unsafe_allow_html=True)
   if st.button("🚀 Buat Modul Ajar Sekarang", type="primary"):
-    if not is_vip:
+    if not token_aktif:
       st.error(
-          "⚠️ Fitur ini memerlukan Token VIP yang aktif! Silakan masukkan token"
-          " di sidebar."
+          "⚠️ Masukkan Token Kuota yang aktif di sidebar terlebih dahulu!"
       )
     else:
       with st.spinner(
@@ -535,7 +529,14 @@ if menu_pilihan == "📖 Generator Modul Ajar":
               client, "gemini-3.5-flash", prompt_modul
           )
           st.session_state.modul_hasil = response.text
-          st.success("Modul Ajar berhasil disusun!")
+
+          # KURANGI KUOTA OTOMATIS SAAT BERHASIL GENERATE
+          st.session_state.user_quotas[cleaned_token] -= 1
+
+          st.success(
+              f"Modul Ajar berhasil disusun! Sisa kuota Anda sekarang:"
+              f" {st.session_state.user_quotas[cleaned_token]}x"
+          )
         except Exception as e:
           st.error(f"Error sistem: {e}")
 
@@ -543,7 +544,7 @@ if menu_pilihan == "📖 Generator Modul Ajar":
     st.markdown("---")
     st.subheader("📄 Pratinjau Dokumen Modul Ajar")
     st.markdown(st.session_state.modul_hasil)
-    if is_vip:
+    if token_aktif:
       file_docx = buat_file_docx(st.session_state.modul_hasil)
       st.download_button(
           "📥 Unduh Modul Ajar (.docx)",
@@ -552,9 +553,7 @@ if menu_pilihan == "📖 Generator Modul Ajar":
           mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       )
     else:
-      st.info(
-          "🔒 Tombol unduh dokumen Word terkunci khusus pengguna VIP berbayar."
-      )
+      st.info("🔒 Unduh dokumen Word dikunci. Masukkan token kuota yang valid.")
   st.markdown("</div>", unsafe_allow_html=True)
 
 # ---------------------------------------------------------
@@ -610,10 +609,9 @@ elif menu_pilihan == "🎯 Generator CP & ATP":
 
   st.markdown("<br>", unsafe_allow_html=True)
   if st.button("🚀 Susun Dokumen CP & ATP", type="primary"):
-    if not is_vip:
+    if not token_aktif:
       st.error(
-          "⚠️ Fitur ini memerlukan Token VIP yang aktif! Silakan masukkan token"
-          " di sidebar."
+          "⚠️ Masukkan Token Kuota yang aktif di sidebar terlebih dahulu!"
       )
     else:
       with st.spinner(
@@ -633,7 +631,12 @@ elif menu_pilihan == "🎯 Generator CP & ATP":
               client, "gemini-3.5-flash", prompt_cpatp
           )
           st.session_state.cpatp_hasil = response.text
-          st.success("Dokumen CP & ATP berhasil disusun!")
+
+          st.session_state.user_quotas[cleaned_token] -= 1
+          st.success(
+              f"Dokumen CP & ATP berhasil disusun! Sisa kuota Anda:"
+              f" {st.session_state.user_quotas[cleaned_token]}x"
+          )
         except Exception as e:
           st.error(f"Error sistem: {e}")
 
@@ -641,7 +644,7 @@ elif menu_pilihan == "🎯 Generator CP & ATP":
     st.markdown("---")
     st.subheader("📄 Pratinjau Dokumen CP & ATP")
     st.markdown(st.session_state.cpatp_hasil)
-    if is_vip:
+    if token_aktif:
       file_docx_cpatp = buat_file_docx(st.session_state.cpatp_hasil)
       st.download_button(
           "📥 Unduh Dokumen CP & ATP (.docx)",
@@ -650,7 +653,7 @@ elif menu_pilihan == "🎯 Generator CP & ATP":
           mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       )
     else:
-      st.info("🔒 Tombol unduh dokumen Word terkunci khusus pengguna VIP.")
+      st.info("🔒 Unduh dokumen Word dikunci.")
   st.markdown("</div>", unsafe_allow_html=True)
 
 # ---------------------------------------------------------
@@ -706,10 +709,9 @@ elif menu_pilihan == "📊 Generator KKTP":
 
   st.markdown("<br>", unsafe_allow_html=True)
   if st.button("🚀 Susun Dokumen KKTP", type="primary"):
-    if not is_vip:
+    if not token_aktif:
       st.error(
-          "⚠️ Fitur ini memerlukan Token VIP yang aktif! Silakan masukkan token"
-          " di sidebar."
+          "⚠️ Masukkan Token Kuota yang aktif di sidebar terlebih dahulu!"
       )
     else:
       with st.spinner("Sistem Asesor Pintar sedang menyusun dokumen KKTP..."):
@@ -727,7 +729,12 @@ elif menu_pilihan == "📊 Generator KKTP":
               client, "gemini-3.5-flash", prompt_kktp
           )
           st.session_state.kktp_hasil = response.text
-          st.success("Dokumen KKTP berhasil disusun!")
+
+          st.session_state.user_quotas[cleaned_token] -= 1
+          st.success(
+              f"Dokumen KKTP berhasil disusun! Sisa kuota Anda:"
+              f" {st.session_state.user_quotas[cleaned_token]}x"
+          )
         except Exception as e:
           st.error(f"Error sistem: {e}")
 
@@ -735,7 +742,7 @@ elif menu_pilihan == "📊 Generator KKTP":
     st.markdown("---")
     st.subheader("📄 Pratinjau Dokumen KKTP")
     st.markdown(st.session_state.kktp_hasil)
-    if is_vip:
+    if token_aktif:
       file_docx_kktp = buat_file_docx(st.session_state.kktp_hasil)
       st.download_button(
           "📥 Unduh Dokumen KKTP (.docx)",
@@ -744,7 +751,7 @@ elif menu_pilihan == "📊 Generator KKTP":
           mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       )
     else:
-      st.info("🔒 Tombol unduh dokumen Word terkunci khusus pengguna VIP.")
+      st.info("🔒 Unduh dokumen Word dikunci.")
   st.markdown("</div>", unsafe_allow_html=True)
 
 # ---------------------------------------------------------
@@ -798,10 +805,9 @@ elif menu_pilihan == "📅 Generator Prosem & Prota":
 
   st.markdown("<br>", unsafe_allow_html=True)
   if st.button("🚀 Susun Dokumen Prosem & Prota", type="primary"):
-    if not is_vip:
+    if not token_aktif:
       st.error(
-          "⚠️ Fitur ini memerlukan Token VIP yang aktif! Silakan masukkan token"
-          " di sidebar."
+          "⚠️ Masukkan Token Kuota yang aktif di sidebar terlebih dahulu!"
       )
     else:
       with st.spinner(
@@ -820,7 +826,12 @@ elif menu_pilihan == "📅 Generator Prosem & Prota":
               client, "gemini-3.5-flash", prompt_prosemprota
           )
           st.session_state.prosemprota_hasil = response.text
-          st.success("Dokumen Prosem & Prota berhasil disusun!")
+
+          st.session_state.user_quotas[cleaned_token] -= 1
+          st.success(
+              f"Dokumen Prosem & Prota berhasil disusun! Sisa kuota Anda:"
+              f" {st.session_state.user_quotas[cleaned_token]}x"
+          )
         except Exception as e:
           st.error(f"Error sistem: {e}")
 
@@ -828,7 +839,7 @@ elif menu_pilihan == "📅 Generator Prosem & Prota":
     st.markdown("---")
     st.subheader("📄 Pratinjau Dokumen Prosem & Prota")
     st.markdown(st.session_state.prosemprota_hasil)
-    if is_vip:
+    if token_aktif:
       file_docx_pr = buat_file_docx(st.session_state.prosemprota_hasil)
       st.download_button(
           "📥 Unduh Dokumen Prosem & Prota (.docx)",
@@ -837,7 +848,7 @@ elif menu_pilihan == "📅 Generator Prosem & Prota":
           mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       )
     else:
-      st.info("🔒 Tombol unduh dokumen Word terkunci khusus pengguna VIP.")
+      st.info("🔒 Unduh dokumen Word dikunci.")
   st.markdown("</div>", unsafe_allow_html=True)
 
 # ---------------------------------------------------------
@@ -892,10 +903,9 @@ elif menu_pilihan == "📝 Generator Soal Asesmen":
 
   st.markdown("<br>", unsafe_allow_html=True)
   if st.button("🚀 Susun Naskah Soal Asesmen", type="primary"):
-    if not is_vip:
+    if not token_aktif:
       st.error(
-          "⚠️ Fitur ini memerlukan Token VIP yang aktif! Silakan masukkan token"
-          " di sidebar."
+          "⚠️ Masukkan Token Kuota yang aktif di sidebar terlebih dahulu!"
       )
     else:
       with st.spinner("Sistem Asesor Pintar sedang menyusun naskah asesmen..."):
@@ -917,7 +927,12 @@ elif menu_pilihan == "📝 Generator Soal Asesmen":
               client, "gemini-3.5-flash", prompt_soal
           )
           st.session_state.soal_hasil = response.text
-          st.success("Paket soal asesmen berhasil disusun!")
+
+          st.session_state.user_quotas[cleaned_token] -= 1
+          st.success(
+              f"Paket soal asesmen berhasil disusun! Sisa kuota Anda:"
+              f" {st.session_state.user_quotas[cleaned_token]}x"
+          )
         except Exception as e:
           st.error(f"Error sistem: {e}")
 
@@ -925,7 +940,7 @@ elif menu_pilihan == "📝 Generator Soal Asesmen":
     st.markdown("---")
     st.subheader("📄 Pratinjau Naskah Soal Asesmen")
     st.markdown(st.session_state.soal_hasil)
-    if is_vip:
+    if token_aktif:
       file_docx_soal = buat_file_docx(st.session_state.soal_hasil)
       st.download_button(
           "📥 Unduh Soal Asesmen (.docx)",
@@ -934,7 +949,7 @@ elif menu_pilihan == "📝 Generator Soal Asesmen":
           mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       )
     else:
-      st.info("🔒 Tombol unduh dokumen Word terkunci khusus pengguna VIP.")
+      st.info("🔒 Unduh dokumen Word dikunci.")
   st.markdown("</div>", unsafe_allow_html=True)
 
 # ---------------------------------------------------------
@@ -1031,9 +1046,9 @@ elif menu_pilihan == "🔍 Koreksi Siswa":
 
     st.markdown("<br>", unsafe_allow_html=True)
     if st.button("🚀 Jalankan Analisis & Koreksi AI", type="primary"):
-      if not is_vip:
+      if not token_aktif:
         st.error(
-            "⚠️ Fitur koreksi otomatis memerlukan Token VIP aktif di panel"
+            "⚠️ Fitur koreksi otomatis memerlukan Token Kuota aktif di"
             " sidebar!"
         )
       elif not nama_siswa:
@@ -1076,9 +1091,12 @@ elif menu_pilihan == "🔍 Koreksi Siswa":
                 "Nilai Akhir": skor,
                 "Detail": hasil,
             })
+
+            st.session_state.user_quotas[cleaned_token] -= 1
             st.success(
                 f"Koreksi Selesai! Siswa **{nama_siswa}** mendapat Nilai:"
-                f" **{skor}**"
+                f" **{skor}**. Sisa kuota Anda:"
+                f" {st.session_state.user_quotas[cleaned_token]}x"
             )
             with st.expander("📊 Lihat Rincian Analisis Penilaian"):
               st.markdown(hasil)
