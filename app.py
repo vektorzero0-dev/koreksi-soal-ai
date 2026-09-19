@@ -333,8 +333,11 @@ raw_key = st.secrets.get("GEMINI_API_KEY", "") or st.secrets.get(
 )
 GEMINI_API_KEY = str(raw_key).strip().strip('"').strip("'")
 
+# Daftar Token VIP Berbayar yang Valid (Atur sesuai keinginan Anda)
+VALID_TOKENS = ["VIP-ZEEO-2026", "GURU-MERDEKA-123", "SEKOLAH-PRO-999"]
+
 # ---------------------------------------------------------
-# NAVIGASI SIDEBAR
+# NAVIGASI SIDEBAR & SISTEM LISENSI
 # ---------------------------------------------------------
 with st.sidebar:
   st.markdown("### 🏛️ Portal Akademik Resmi")
@@ -343,6 +346,29 @@ with st.sidebar:
       " -10px;'>Instansi Pendidikan Formal</p>",
       unsafe_allow_html=True,
   )
+  st.markdown("---")
+
+  # Input Token Lisensi Berbayar
+  st.markdown("### 🎟️ Aktivasi Lisensi VIP")
+  user_token = st.text_input(
+      "Masukkan Token Akses",
+      type="password",
+      placeholder="Minta token via WhatsApp",
+  )
+
+  is_vip = False
+  if user_token.strip() in VALID_TOKENS:
+    is_vip = True
+    st.success("✅ Akses VIP Aktif (Full Tanpa Batas)")
+  elif user_token.strip() != "":
+    st.error("❌ Token Salah / Tidak Valid")
+  else:
+    st.warning("⚠️ Mode Trial (Akses Terbatas)")
+    st.markdown(
+        "[Beli Akses Full via"
+        " WhatsApp](https://wa.me/6282371729760?text=Halo%20Admin,%20saya%20ingin%20membeli%20token%20akses%20full%20generator%20perangkat%20ajar)"
+    )
+
   st.markdown("---")
 
   menu_pilihan = st.radio(
@@ -361,7 +387,7 @@ with st.sidebar:
   )
 
   st.markdown("---")
-  st.markdown("### 🔑 Status Koneksi")
+  st.markdown("### 🔑 Status Koneksi Sistem")
 
   if not GEMINI_API_KEY:
     st.warning("⚠️ Belum terhubung")
@@ -369,7 +395,7 @@ with st.sidebar:
     if input_manual:
       GEMINI_API_KEY = input_manual.strip().strip('"').strip("'")
   else:
-    st.success("🔒 Sistem Aktif & Aman")
+    st.success("🔒 Sistem AI Aktif")
 
 if not GEMINI_API_KEY:
   st.warning(
@@ -415,6 +441,29 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
+
+# ---------------------------------------------------------
+# CEK AKSES VIP (JIKA BELUM MASUKKAN TOKEN, TAMPILKAN PERINGATAN)
+# ---------------------------------------------------------
+if not is_vip:
+  st.markdown(
+      '<div class="dashboard-card" style="border-color: #ef4444;">',
+      unsafe_allow_html=True,
+  )
+  st.markdown(
+      "### 🔒 Akses Terbatas (Mode Trial / Belum Teraktivasi)"
+  )
+  st.markdown(
+      "Anda sedang menggunakan mode **Trial**. Beberapa fitur generator"
+      " dokumen Word dan unduhan penuh dikunci. Silakan masukkan **Token VIP"
+      " Berbayar** di panel menu samping (*sidebar*) atau hubungi admin via"
+      " WhatsApp untuk mengaktifkan akses penuh tanpa batas."
+  )
+  st.markdown(
+      "[Beli Token Akses Full via"
+      " WhatsApp](https://wa.me/6282371729760?text=Halo%20Admin,%20saya%20ingin%20membeli%20token%20akses%20full%20generator%20perangkat%20ajar)"
+  )
+  st.markdown("</div>", unsafe_allow_html=True)
 
 # ---------------------------------------------------------
 # MENU 1: MODUL AJAR
@@ -463,38 +512,49 @@ if menu_pilihan == "📖 Generator Modul Ajar":
 
   st.markdown("<br>", unsafe_allow_html=True)
   if st.button("🚀 Buat Modul Ajar Sekarang", type="primary"):
-    with st.spinner(
-        "Sistem AI Akademik sedang merancang Modul Ajar formal..."
-    ):
-      try:
-        prompt_modul = f"""
-                Buatkan Modul Ajar / RPP formal, sangat terstruktur, dan profesional untuk instansi pendidikan:
-                - Guru: {nama_guru}, Sekolah: {nama_sekolah}
-                - Mapel: {mapel}, Kurikulum: {kurikulum_aktif}
-                - Kelas: {fase_kelas}, Kepala Sekolah: {nama_ks}
-                - Topik: {topik}, Waktu: {alokasi_waktu}
-                Sertakan komponen Identitas Instansi, Profil Pelajar Pancasila, Tujuan Pembelajaran, Kegiatan Pembelajaran, serta Tabel Rubrik Penilaian dalam bentuk tabel markdown standar lengkap menggunakan garis vertikal (|) untuk kolom dan barisnya.
-                PENTING: Gunakan teks bersih murni tanpa tag HTML sama sekali (seperti <br> atau <p>).
-                """
-        response = generate_content_with_retry(
-            client, "gemini-3.5-flash", prompt_modul
-        )
-        st.session_state.modul_hasil = response.text
-        st.success("Modul Ajar berhasil disusun!")
-      except Exception as e:
-        st.error(f"Error sistem: {e}")
+    if not is_vip:
+      st.error(
+          "⚠️ Fitur ini memerlukan Token VIP yang aktif! Silakan masukkan token"
+          " di sidebar."
+      )
+    else:
+      with st.spinner(
+          "Sistem AI Akademik sedang merancang Modul Ajar formal..."
+      ):
+        try:
+          prompt_modul = f"""
+                    Buatkan Modul Ajar / RPP formal, sangat terstruktur, dan profesional untuk instansi pendidikan:
+                    - Guru: {nama_guru}, Sekolah: {nama_sekolah}
+                    - Mapel: {mapel}, Kurikulum: {kurikulum_aktif}
+                    - Kelas: {fase_kelas}, Kepala Sekolah: {nama_ks}
+                    - Topik: {topik}, Waktu: {alokasi_waktu}
+                    Sertakan komponen Identitas Instansi, Profil Pelajar Pancasila, Tujuan Pembelajaran, Kegiatan Pembelajaran, serta Tabel Rubrik Penilaian dalam bentuk tabel markdown standar lengkap menggunakan garis vertikal (|) untuk kolom dan barisnya.
+                    PENTING: Gunakan teks bersih murni tanpa tag HTML sama sekali (seperti <br> atau <p>).
+                    """
+          response = generate_content_with_retry(
+              client, "gemini-3.5-flash", prompt_modul
+          )
+          st.session_state.modul_hasil = response.text
+          st.success("Modul Ajar berhasil disusun!")
+        except Exception as e:
+          st.error(f"Error sistem: {e}")
 
   if st.session_state.modul_hasil:
     st.markdown("---")
     st.subheader("📄 Pratinjau Dokumen Modul Ajar")
     st.markdown(st.session_state.modul_hasil)
-    file_docx = buat_file_docx(st.session_state.modul_hasil)
-    st.download_button(
-        "📥 Unduh Modul Ajar (.docx)",
-        data=file_docx,
-        file_name=f"Modul_Ajar_{mapel}.docx",
-        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-    )
+    if is_vip:
+      file_docx = buat_file_docx(st.session_state.modul_hasil)
+      st.download_button(
+          "📥 Unduh Modul Ajar (.docx)",
+          data=file_docx,
+          file_name=f"Modul_Ajar_{mapel}.docx",
+          mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      )
+    else:
+      st.info(
+          "🔒 Tombol unduh dokumen Word terkunci khusus pengguna VIP berbayar."
+      )
   st.markdown("</div>", unsafe_allow_html=True)
 
 # ---------------------------------------------------------
@@ -550,36 +610,47 @@ elif menu_pilihan == "🎯 Generator CP & ATP":
 
   st.markdown("<br>", unsafe_allow_html=True)
   if st.button("🚀 Susun Dokumen CP & ATP", type="primary"):
-    with st.spinner("Sistem Asesor Pintar sedang menyusun dokumen CP & ATP..."):
-      try:
-        prompt_cpatp = f"""
-                Buatkan dokumen Capaian Pembelajaran (CP) dan Alur Tujuan Pembelajaran (ATP) formal, sangat terstruktur, dan profesional untuk instansi pendidikan:
-                - Guru: {cp_guru}, Sekolah: {cp_sekolah}
-                - Mapel: {cp_mapel}, Kurikulum: {cp_kur}
-                - Fase/Kelas: {cp_fase}, Kepala Sekolah: {cp_ks}
-                - Lingkup Materi/Elemen: {cp_materi}
-                Sertakan komponen Identitas Instansi, Rasional, Capaian Pembelajaran (CP) per Elemen, serta Tabel Alur Tujuan Pembelajaran (ATP) yang merinci Tujuan Pembelajaran, Kelas/Semester, dan Estimasi Jam Pelajaran dalam bentuk tabel markdown standar lengkap menggunakan garis vertikal (|) untuk kolom dan barisnya.
-                PENTING: Gunakan teks bersih murni tanpa tag HTML sama sekali (seperti <br> atau <p>).
-                """
-        response = generate_content_with_retry(
-            client, "gemini-3.5-flash", prompt_cpatp
-        )
-        st.session_state.cpatp_hasil = response.text
-        st.success("Dokumen CP & ATP berhasil disusun!")
-      except Exception as e:
-        st.error(f"Error sistem: {e}")
+    if not is_vip:
+      st.error(
+          "⚠️ Fitur ini memerlukan Token VIP yang aktif! Silakan masukkan token"
+          " di sidebar."
+      )
+    else:
+      with st.spinner(
+          "Sistem Asesor Pintar sedang menyusun dokumen CP & ATP..."
+      ):
+        try:
+          prompt_cpatp = f"""
+                    Buatkan dokumen Capaian Pembelajaran (CP) dan Alur Tujuan Pembelajaran (ATP) formal, sangat terstruktur, dan profesional untuk instansi pendidikan:
+                    - Guru: {cp_guru}, Sekolah: {cp_sekolah}
+                    - Mapel: {cp_mapel}, Kurikulum: {cp_kur}
+                    - Fase/Kelas: {cp_fase}, Kepala Sekolah: {cp_ks}
+                    - Lingkup Materi/Elemen: {cp_materi}
+                    Sertakan komponen Identitas Instansi, Rasional, Capaian Pembelajaran (CP) per Elemen, serta Tabel Alur Tujuan Pembelajaran (ATP) yang merinci Tujuan Pembelajaran, Kelas/Semester, dan Estimasi Jam Pelajaran dalam bentuk tabel markdown standar lengkap menggunakan garis vertikal (|) untuk kolom dan barisnya.
+                    PENTING: Gunakan teks bersih murni tanpa tag HTML sama sekali (seperti <br> atau <p>).
+                    """
+          response = generate_content_with_retry(
+              client, "gemini-3.5-flash", prompt_cpatp
+          )
+          st.session_state.cpatp_hasil = response.text
+          st.success("Dokumen CP & ATP berhasil disusun!")
+        except Exception as e:
+          st.error(f"Error sistem: {e}")
 
   if st.session_state.cpatp_hasil:
     st.markdown("---")
     st.subheader("📄 Pratinjau Dokumen CP & ATP")
     st.markdown(st.session_state.cpatp_hasil)
-    file_docx_cpatp = buat_file_docx(st.session_state.cpatp_hasil)
-    st.download_button(
-        "📥 Unduh Dokumen CP & ATP (.docx)",
-        data=file_docx_cpatp,
-        file_name=f"CP_ATP_{cp_mapel}.docx",
-        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-    )
+    if is_vip:
+      file_docx_cpatp = buat_file_docx(st.session_state.cpatp_hasil)
+      st.download_button(
+          "📥 Unduh Dokumen CP & ATP (.docx)",
+          data=file_docx_cpatp,
+          file_name=f"CP_ATP_{cp_mapel}.docx",
+          mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      )
+    else:
+      st.info("🔒 Tombol unduh dokumen Word terkunci khusus pengguna VIP.")
   st.markdown("</div>", unsafe_allow_html=True)
 
 # ---------------------------------------------------------
@@ -635,36 +706,45 @@ elif menu_pilihan == "📊 Generator KKTP":
 
   st.markdown("<br>", unsafe_allow_html=True)
   if st.button("🚀 Susun Dokumen KKTP", type="primary"):
-    with st.spinner("Sistem Asesor Pintar sedang menyusun dokumen KKTP..."):
-      try:
-        prompt_kktp = f"""
-                Buatkan dokumen Kriteria Ketercapaian Tujuan Pembelajaran (KKTP) formal, sangat terstruktur, dan profesional untuk instansi pendidikan:
-                - Guru: {kktp_guru}, Sekolah: {kktp_sekolah}
-                - Mapel: {kktp_mapel}, Kurikulum: {kktp_kur}
-                - Fase/Kelas: {kktp_fase}, Kepala Sekolah: {kktp_ks}
-                - Tujuan Pembelajaran: {kktp_tujuan}
-                Sertakan komponen Identitas Instansi, Pendekatan KKTP (Deskripsi Kriteria, Rubrik Interval Nilai, atau Kriteria Ceklis), serta Tabel Interval Ketercapaian (Baru Berkembang, Layak, Cakap, Mahir) dalam bentuk tabel markdown standar lengkap menggunakan garis vertikal (|) untuk kolom dan barisnya.
-                PENTING: Gunakan teks bersih murni tanpa tag HTML sama sekali (seperti <br> atau <p>).
-                """
-        response = generate_content_with_retry(
-            client, "gemini-3.5-flash", prompt_kktp
-        )
-        st.session_state.kktp_hasil = response.text
-        st.success("Dokumen KKTP berhasil disusun!")
-      except Exception as e:
-        st.error(f"Error sistem: {e}")
+    if not is_vip:
+      st.error(
+          "⚠️ Fitur ini memerlukan Token VIP yang aktif! Silakan masukkan token"
+          " di sidebar."
+      )
+    else:
+      with st.spinner("Sistem Asesor Pintar sedang menyusun dokumen KKTP..."):
+        try:
+          prompt_kktp = f"""
+                    Buatkan dokumen Kriteria Ketercapaian Tujuan Pembelajaran (KKTP) formal, sangat terstruktur, dan profesional untuk instansi pendidikan:
+                    - Guru: {kktp_guru}, Sekolah: {kktp_sekolah}
+                    - Mapel: {kktp_mapel}, Kurikulum: {kktp_kur}
+                    - Fase/Kelas: {kktp_fase}, Kepala Sekolah: {kktp_ks}
+                    - Tujuan Pembelajaran: {kktp_tujuan}
+                    Sertakan komponen Identitas Instansi, Pendekatan KKTP (Deskripsi Kriteria, Rubrik Interval Nilai, atau Kriteria Ceklis), serta Tabel Interval Ketercapaian (Baru Berkembang, Layak, Cakap, Mahir) dalam bentuk tabel markdown standar lengkap menggunakan garis vertikal (|) untuk kolom dan barisnya.
+                    PENTING: Gunakan teks bersih murni tanpa tag HTML sama sekali (seperti <br> atau <p>).
+                    """
+          response = generate_content_with_retry(
+              client, "gemini-3.5-flash", prompt_kktp
+          )
+          st.session_state.kktp_hasil = response.text
+          st.success("Dokumen KKTP berhasil disusun!")
+        except Exception as e:
+          st.error(f"Error sistem: {e}")
 
   if st.session_state.kktp_hasil:
     st.markdown("---")
     st.subheader("📄 Pratinjau Dokumen KKTP")
     st.markdown(st.session_state.kktp_hasil)
-    file_docx_kktp = buat_file_docx(st.session_state.kktp_hasil)
-    st.download_button(
-        "📥 Unduh Dokumen KKTP (.docx)",
-        data=file_docx_kktp,
-        file_name=f"KKTP_{kktp_mapel}.docx",
-        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-    )
+    if is_vip:
+      file_docx_kktp = buat_file_docx(st.session_state.kktp_hasil)
+      st.download_button(
+          "📥 Unduh Dokumen KKTP (.docx)",
+          data=file_docx_kktp,
+          file_name=f"KKTP_{kktp_mapel}.docx",
+          mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      )
+    else:
+      st.info("🔒 Tombol unduh dokumen Word terkunci khusus pengguna VIP.")
   st.markdown("</div>", unsafe_allow_html=True)
 
 # ---------------------------------------------------------
@@ -718,37 +798,46 @@ elif menu_pilihan == "📅 Generator Prosem & Prota":
 
   st.markdown("<br>", unsafe_allow_html=True)
   if st.button("🚀 Susun Dokumen Prosem & Prota", type="primary"):
-    with st.spinner(
-        "Sistem Asesor Pintar sedang menyusun dokumen Prosem & Prota..."
-    ):
-      try:
-        prompt_prosemprota = f"""
-                Buatkan dokumen Program Tahunan (Prota) dan Program Semester (Prosem) formal, sangat terstruktur, dan profesional untuk instansi pendidikan:
-                - Guru: {pr_guru}, Sekolah: {pr_sekolah}
-                - Mapel: {pr_mapel}, Kurikulum: {pr_kur}
-                - Fase/Kelas: {pr_fase}, Kepala Sekolah: {pr_ks}, Tahun Pelajaran: {pr_Tahun}
-                Sertakan komponen Identitas Instansi, Tabel Program Tahunan (Alokasi waktu per unit/bab), serta Tabel Program Semester (distribusi alokasi waktu per bulan dalam semester ganjil dan genap) dalam bentuk tabel markdown standar lengkap menggunakan garis vertikal (|) untuk kolom dan barisnya.
-                PENTING: Gunakan teks bersih murni tanpa tag HTML sama sekali (seperti <br> atau <p>).
-                """
-        response = generate_content_with_retry(
-            client, "gemini-3.5-flash", prompt_prosemprota
-        )
-        st.session_state.prosemprota_hasil = response.text
-        st.success("Dokumen Prosem & Prota berhasil disusun!")
-      except Exception as e:
-        st.error(f"Error sistem: {e}")
+    if not is_vip:
+      st.error(
+          "⚠️ Fitur ini memerlukan Token VIP yang aktif! Silakan masukkan token"
+          " di sidebar."
+      )
+    else:
+      with st.spinner(
+          "Sistem Asesor Pintar sedang menyusun dokumen Prosem & Prota..."
+      ):
+        try:
+          prompt_prosemprota = f"""
+                    Buatkan dokumen Program Tahunan (Prota) dan Program Semester (Prosem) formal, sangat terstruktur, dan profesional untuk instansi pendidikan:
+                    - Guru: {pr_guru}, Sekolah: {pr_sekolah}
+                    - Mapel: {pr_mapel}, Kurikulum: {pr_kur}
+                    - Fase/Kelas: {pr_fase}, Kepala Sekolah: {pr_ks}, Tahun Pelajaran: {pr_Tahun}
+                    Sertakan komponen Identitas Instansi, Tabel Program Tahunan (Alokasi waktu per unit/bab), serta Tabel Program Semester (distribusi alokasi waktu per bulan dalam semester ganjil dan genap) dalam bentuk tabel markdown standar lengkap menggunakan garis vertikal (|) untuk kolom dan barisnya.
+                    PENTING: Gunakan teks bersih murni tanpa tag HTML sama sekali (seperti <br> atau <p>).
+                    """
+          response = generate_content_with_retry(
+              client, "gemini-3.5-flash", prompt_prosemprota
+          )
+          st.session_state.prosemprota_hasil = response.text
+          st.success("Dokumen Prosem & Prota berhasil disusun!")
+        except Exception as e:
+          st.error(f"Error sistem: {e}")
 
   if st.session_state.prosemprota_hasil:
     st.markdown("---")
     st.subheader("📄 Pratinjau Dokumen Prosem & Prota")
     st.markdown(st.session_state.prosemprota_hasil)
-    file_docx_pr = buat_file_docx(st.session_state.prosemprota_hasil)
-    st.download_button(
-        "📥 Unduh Dokumen Prosem & Prota (.docx)",
-        data=file_docx_pr,
-        file_name=f"Prosem_Prota_{pr_mapel}.docx",
-        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-    )
+    if is_vip:
+      file_docx_pr = buat_file_docx(st.session_state.prosemprota_hasil)
+      st.download_button(
+          "📥 Unduh Dokumen Prosem & Prota (.docx)",
+          data=file_docx_pr,
+          file_name=f"Prosem_Prota_{pr_mapel}.docx",
+          mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      )
+    else:
+      st.info("🔒 Tombol unduh dokumen Word terkunci khusus pengguna VIP.")
   st.markdown("</div>", unsafe_allow_html=True)
 
 # ---------------------------------------------------------
@@ -803,40 +892,49 @@ elif menu_pilihan == "📝 Generator Soal Asesmen":
 
   st.markdown("<br>", unsafe_allow_html=True)
   if st.button("🚀 Susun Naskah Soal Asesmen", type="primary"):
-    with st.spinner("Sistem Asesor Pintar sedang menyusun naskah asesmen..."):
-      try:
-        prompt_soal = f"""
-                Buatkan naskah soal asesmen resmi instansi pendidikan lengkap dengan Kop Soal, Petunjuk, Naskah Soal Asesmen (setiap nomor soal menggunakan penomoran tegas seperti 1., 2., 3. dan pilihan ganda ditulis tepat di bawah pertanyaan dengan format terindentasi A., B., C., D.), Kunci Jawaban, & Tabel Rubrik Penilaian.
-                PENTING UNTUK TABEL: Buat tabel rubrik penilaian menggunakan format tabel markdown standar dengan garis vertikal (|), contoh:
-                | Jenis Soal | Jumlah Soal | Bobot per Soal | Skor Maksimal |
-                | :--- | :--- | :--- | :--- |
-                | Pilihan Ganda | 5 | 10 | 50 |
-                
-                Data Asesmen:
-                - Guru: {s_guru}, Sekolah: {s_sekolah}, Mapel: {s_mapel}
-                - Kurikulum: {s_kur}, Kelas: {s_kelas}, Materi: {s_materi}
-                - Komposisi: {s_komposisi}
-                PENTING: Gunakan teks bersih murni tanpa tag HTML sama sekali (seperti <br> atau <p>).
-                """
-        response = generate_content_with_retry(
-            client, "gemini-3.5-flash", prompt_soal
-        )
-        st.session_state.soal_hasil = response.text
-        st.success("Paket soal asesmen berhasil disusun!")
-      except Exception as e:
-        st.error(f"Error sistem: {e}")
+    if not is_vip:
+      st.error(
+          "⚠️ Fitur ini memerlukan Token VIP yang aktif! Silakan masukkan token"
+          " di sidebar."
+      )
+    else:
+      with st.spinner("Sistem Asesor Pintar sedang menyusun naskah asesmen..."):
+        try:
+          prompt_soal = f"""
+                    Buatkan naskah soal asesmen resmi instansi pendidikan lengkap dengan Kop Soal, Petunjuk, Naskah Soal Asesmen (setiap nomor soal menggunakan penomoran tegas seperti 1., 2., 3. dan pilihan ganda ditulis tepat di bawah pertanyaan dengan format terindentasi A., B., C., D.), Kunci Jawaban, & Tabel Rubrik Penilaian.
+                    PENTING UNTUK TABEL: Buat tabel rubrik penilaian menggunakan format tabel markdown standar dengan garis vertikal (|), contoh:
+                    | Jenis Soal | Jumlah Soal | Bobot per Soal | Skor Maksimal |
+                    | :--- | :--- | :--- | :--- |
+                    | Pilihan Ganda | 5 | 10 | 50 |
+                    
+                    Data Asesmen:
+                    - Guru: {s_guru}, Sekolah: {s_sekolah}, Mapel: {s_mapel}
+                    - Kurikulum: {s_kur}, Kelas: {s_kelas}, Materi: {s_materi}
+                    - Komposisi: {s_komposisi}
+                    PENTING: Gunakan teks bersih murni tanpa tag HTML sama sekali (seperti <br> atau <p>).
+                    """
+          response = generate_content_with_retry(
+              client, "gemini-3.5-flash", prompt_soal
+          )
+          st.session_state.soal_hasil = response.text
+          st.success("Paket soal asesmen berhasil disusun!")
+        except Exception as e:
+          st.error(f"Error sistem: {e}")
 
   if st.session_state.soal_hasil:
     st.markdown("---")
     st.subheader("📄 Pratinjau Naskah Soal Asesmen")
     st.markdown(st.session_state.soal_hasil)
-    file_docx_soal = buat_file_docx(st.session_state.soal_hasil)
-    st.download_button(
-        "📥 Unduh Soal Asesmen (.docx)",
-        data=file_docx_soal,
-        file_name=f"Soal_Asesmen_{s_mapel}.docx",
-        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-    )
+    if is_vip:
+      file_docx_soal = buat_file_docx(st.session_state.soal_hasil)
+      st.download_button(
+          "📥 Unduh Soal Asesmen (.docx)",
+          data=file_docx_soal,
+          file_name=f"Soal_Asesmen_{s_mapel}.docx",
+          mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      )
+    else:
+      st.info("🔒 Tombol unduh dokumen Word terkunci khusus pengguna VIP.")
   st.markdown("</div>", unsafe_allow_html=True)
 
 # ---------------------------------------------------------
@@ -933,7 +1031,12 @@ elif menu_pilihan == "🔍 Koreksi Siswa":
 
     st.markdown("<br>", unsafe_allow_html=True)
     if st.button("🚀 Jalankan Analisis & Koreksi AI", type="primary"):
-      if not nama_siswa:
+      if not is_vip:
+        st.error(
+            "⚠️ Fitur koreksi otomatis memerlukan Token VIP aktif di panel"
+            " sidebar!"
+        )
+      elif not nama_siswa:
         st.error("Masukkan identitas atau nama siswa!")
       else:
         with st.spinner("Sistem Asesor Pintar sedang menganalisis asesmen..."):
