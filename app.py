@@ -29,7 +29,7 @@ st.set_page_config(
 
 
 # ---------------------------------------------------------
-# FUNGSI KONEKSI GOOGLE SHEETS (HARDCODED SERVICE ACCOUNT)
+# FUNGSI KONEKSI GOOGLE SHEETS (CLEAN PEM STRING)
 # ---------------------------------------------------------
 def get_google_sheet_data():
   try:
@@ -38,38 +38,42 @@ def get_google_sheet_data():
         "https://www.googleapis.com/auth/drive",
     ]
 
+    raw_private_key = (
+        "-----BEGIN PRIVATE KEY-----\n"
+        "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQD10EbEvwaHzJFX\n"
+        "K+zs8Ee15BmMT8m6RnZL4fExow0KBVtBd3nrQtO6WYp/wjYFaMWwAGAPGVQ1jPJM\n"
+        "jOasWRssjOU2U6JyoEljr5+DJMAX5dPaf15PVNKjwAuKGqn3UInrjMjglY41zbhW\n"
+        "nn4NWDLYrJTO1G0Zxfuwnb6e+Krj9oRBJBYkleYAcyuKs2CP6W++yQCZwWLxmKCJO\n"
+        "rommmrzuvkywyu40FktUTNdDgY9/Zk5uNS6XkD0eaNmrhzKr9F/PHQe/xgUID0Ov\n"
+        "XFa71J6//Nmk/L0kFPdFH/UkWryoo0035BUMUsjJyGKH2NCeVKkWmpV49bZcn+7T\n"
+        "DBIBiIL9AgMBAAECggEAGCtBFg2xOu90d+V3/2j1qA70Kx1aOJA+h+IAiNCfEtXp\n"
+        "fdOdP3I75qXwrfSewqPlUhOLXlivdK910GyHLrl5KEV3MQMCpTIY3S4SqT6XC5J7\n"
+        "pM9iqrqsllCm4c6S2SAIW4plYt2ZlLU0M4IuE+seizn2bk9u+vBPkGYUUGibdUZs\n"
+        "QbNZbJ7KlZqIMpOpD3nV4kjUwxk6b7sW0AtBHUDYQg/Yo241LJFFBla5tpt1v/Dj\n"
+        "LJiYq4Fbfz/PHobcR6eC/oBpYwK2jbIIUZGbfhRtELmW5ONuySPsjZZCmfv0b7Qa\n"
+        "4fvf82pUX05/Opoy0VZ4qhCFTjqmys/g0lsBjLzPcQKBgQD+GkDt6tm+ZxJDPhAj\n"
+        "rb1Iw65mcZ+vZAvx2M/peG2joDYLwhWa9q6Z2udlHh6AfHb2u2+iGs/77jHnEwTC\n"
+        "LsWyORo/e4ooPm3GDbqOmyEwpmWUiw3a5qm/tMV6CcEhT5URlwMoAXrh3PHoZ5KQ\n"
+        "bz4GfK3yRn9ypXPiwV6RXE3bMQKBgQD3pi1vTO4nD6vv/NsQu0R7689B9ZsGUM0Z\n"
+        "JP1mJZObj2J+ZrREqJWqUZu2fE5L2XuZY9IQBikbl1FNgDnxVmz01p95wZ9ozdvF\n"
+        "k1UpvjKQr/8dg0eo8E676KMtKC9WInofOBWtjgP1mXFvtA6dPw7E02yEvEBzlvck\n"
+        "uJ+XZm8ZjQKBgQDpt04XRxbF6VnD3XbMykW6grmLYmEE2lmeNdRuIqV9haOQRxDG\n"
+        "OrS3sL96oyxc854cLKRuDolUaG8f4b9Tt9+AoMMCtueJQnqHWyNHfWoWrEXsTcYN\n"
+        "nnHFvcZ7dM9GeiOtMhYCSsGHNEwKxx2noTVlYcB8yIyOgWIvxefg4bRTzUQKBgQDl\n"
+        "nrGx+yK4l89bV33+baNH+y5eP6KQ5mz5bj36i+T6ICtahu8Z71o3XQ5BSEb7bgXur\n"
+        "qnPrAIunVxLD+aPDOxAZkeKdHQEmRaUI+7cD260xmsfTKymOeC/M/dg3zQj5rUft\n"
+        "JCqWpxrs773QhwD2vMCJsjr2b1Cm4t+aYs8/rnRjEQKBgEWnBVEJ8sBgXO5BQg2i\n"
+        "6zWbownr4WgH1GWWfPkMF6h1Nuu3GMdFOINC/6BgAXMoSfXpjoRKmwQ7SVMDE4S1\n"
+        "YeTHVd7RfdQ/xPqkUmU5ZSeoVBvHLqL+li1RLZ0MgJqhR2Kdhf6fHYrziA9Glw5t\n"
+        "fg38cGt8VuHOP9xdfzI+zY/I=\n"
+        "-----END PRIVATE KEY-----"
+    )
+
     creds_dict = {
         "type": "service_account",
         "project_id": "cedar-router-509114-q4",
         "private_key_id": "f5b6dfe116cf51f4d5259b723fafe06b3a121daa",
-        "private_key": r"""-----BEGIN PRIVATE KEY-----
-MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQD10EbEvwaHzJFX
-K+zs8Ee15BmMT8m6RnZL4fExow0KBVtBd3nrQtO6WYp/wjYFaMWwAGAPGVQ1jPJM
-jOasWRssjOU2U6JyoEljr5+DJMAX5dPaf15PVNKjwAuKGqn3UInrjMjglY41zbhW
-nn4NWDLYrJTO1G0Zxfuwnb6e+Krj9oRBJBYkleYAcyuKs2CP6W++yQCZwWLxmKCJO
-rommmrzuvkywyu40FktUTNdDgY9/Zk5uNS6XkD0eaNmrhzKr9F/PHQe/xgUID0Ov
-XFa71J6//Nmk/L0kFPdFH/UkWryoo0035BUMUsjJyGKH2NCeVKkWmpV49bZcn+7T
-DBIBiIL9AgMBAAECggEAGCtBFg2xOu90d+V3/2j1qA70Kx1aOJA+h+IAiNCfEtXp
-fdOdP3I75qXwrfSewqPlUhOLXlivdK910GyHLrl5KEV3MQMCpTIY3S4SqT6XC5J7
-pM9iqrqsllCm4c6S2SAIW4plYt2ZlLU0M4IuE+seizn2bk9u+vBPkGYUUGibdUZs
-QbNZbJ7KlZqIMpOpD3nV4kjUwxk6b7sW0AtBHUDYQg/Yo241LJFFBla5tpt1v/Dj
-LJiYq4Fbfz/PHobcR6eC/oBpYwK2jbIIUZGbfhRtELmW5ONuySPsjZZCmfv0b7Qa
-4fvf82pUX05/Opoy0VZ4qhCFTjqmys/g0lsBjLzPcQKBgQD+GkDt6tm+ZxJDPhAj
-rb1Iw65mcZ+vZAvx2M/peG2joDYLwhWa9q6Z2udlHh6AfHb2u2+iGs/77jHnEwTC
-LsWyORo/e4ooPm3GDbqOmyEwpmWUiw3a5qm/tMV6CcEhT5URlwMoAXrh3PHoZ5KQ
-bz4GfK3yRn9ypXPiwV6RXE3bMQKBgQD3pi1vTO4nD6vv/NsQu0R7689B9ZsGUM0Z
-JP1mJZObj2J+ZrREqJWqUZu2fE5L2XuZY9IQBikbl1FNgDnxVmz01p95wZ9ozdvF
-k1UpvjKQr/8dg0eo8E676KMtKC9WInofOBWtjgP1mXFvtA6dPw7E02yEvEBzlvck
-uJ+XZm8ZjQKBgQDpt04XRxbF6VnD3XbMykW6grmLYmEE2lmeNdRuIqV9haOQRxDG
-OrS3sL96oyxc854cLKRuDolUaG8f4b9Tt9+AoMMCtueJQnqHWyNHfWoWrEXsTcYN
-nnHFvcZ7dM9GeiOtMhYCSsGHNEwKxx2noTVlYcB8yIyOgWIvxefg4bRTzUQKBgQDl
-nrGx+yK4l89bV33+baNH+y5eP6KQ5mz5bj36i+T6ICtahu8Z71o3XQ5BSEb7bgXur
-qnPrAIunVxLD+aPDOxAZkeKdHQEmRaUI+7cD260xmsfTKymOeC/M/dg3zQj5rUft
-JCqWpxrs773QhwD2vMCJsjr2b1Cm4t+aYs8/rnRjEQKBgEWnBVEJ8sBgXO5BQg2i
-6zWbownr4WgH1GWWfPkMF6h1Nuu3GMdFOINC/6BgAXMoSfXpjoRKmwQ7SVMDE4S1
-YeTHVd7RfdQ/xPqkUmU5ZSeoVBvHLqL+li1RLZ0MgJqhR2Kdhf6fHYrziA9Glw5t
-fg38cGt8VuHOP9xdfzI+zY/I=
------END PRIVATE KEY-----""",
+        "private_key": raw_private_key,
         "client_email": (
             "bot-kuota@cedar-router-509114-q4.iam.gserviceaccount.com"
         ),
