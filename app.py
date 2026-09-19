@@ -29,7 +29,7 @@ st.set_page_config(
 
 
 # ---------------------------------------------------------
-# FUNGSI KONEKSI GOOGLE SHEETS (SERVICE ACCOUNT)
+# FUNGSI KONEKSI GOOGLE SHEETS (HARDCODED SERVICE ACCOUNT)
 # ---------------------------------------------------------
 def get_google_sheet_data():
   try:
@@ -37,7 +37,30 @@ def get_google_sheet_data():
         "https://www.googleapis.com/auth/spreadsheets",
         "https://www.googleapis.com/auth/drive",
     ]
-    creds_dict = dict(st.secrets["gcp_service_account"])
+
+    creds_dict = {
+        "type": "service_account",
+        "project_id": "cedar-router-509114-q4",
+        "private_key_id": "f5b6dfe116cf51f4d5259b723fafe06b3a121daa",
+        "private_key": (
+            "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSk"
+            "AgEAAoIBAQD10EbEvwaHzJFX\nK+zs8Ee15BmMT8m6RnZL4fExow0KBVtBd3nrQtO6WYp/wjYFaMWwAGAPGVQ1jPJM\njOasWRssjOU2U6JyoEljr5+DJMAX5dPaf15PVNKjwAuKGqn3UInrjMjglY41zbhW\nn4NWDLYrJTO1G0Zxfuwnb6e+Krj9oRBJBYkleYAcyuKs2CP6W++yQCZwWLxmKCJO\nrommmrzuvkywyu40FktUTNdDgY9/Zk5uNS6XkD0eaNmrhzKr9F/PHQe/xgUID0Ov\nXFa71J6//Nmk/L0kFPdFH/UkWryoo0035BUMUsjJyGKH2NCeVKkWmpV49bZcn+7T\nDBIBiIL9AgMBAAECggEAGCtBFg2xOu90d+V3/2j1qA70Kx1aOJA+h+IAiNCfEtXp\nfdOdP3I75qXwrfSewqPlUhOLXlivdK910GyHLrl5KEV3MQMCpTIY3S4SqT6XC5J7\npM9iqrqsllCm4c6S2SAIW4plYt2ZlLU0M4IuE+seizn2bk9u+vBPkGYUUGibdUZs\QbNZbJ7KlZqIMpOpD3nV4kjUwxk6b7sW0AtBHUDYQg/Yo241LJFFBla5tpt1v/Dj\nLJiYq4Fbfz/PHobcR6eC/oBpYwK2jbIIUZGbfhRtELmW5ONuySPsjZZCmfv0b7Qa\n4fvf82pUX05/Opoy0VZ4qhCFTjqmys/g0lsBjLzPcQKBgQD+GkDt6tm+ZxJDPhAj\nrb1Iw65mcZ+vZAvx2M/peG2joDYLwhWa9q6Z2udlHh6AfHb2u2+iGs/77jHnEwTC\nLsWyORo/e4ooPm3GDbqOmyEwpmWUiw3a5qm/tMV6CcEhT5URlwMoAXrh3PHoZ5KQ\nbz4GfK3yRn9ypXPiwV6RXE3bMQKBgQD3pi1vTO4nD6vv/NsQu0R7689B9ZsGUM0Z\JP1mJZObj2J+ZrREqJWqUZu2fE5L2XuZY9IQBikbl1FNgDnxVmz01p95wZ9ozdvF\nk1UpvjKQr/8dg0eo8E676KMtKC9WInofOBWtjgP1mXFvtA6dPw7E02yEvEBzlvck\nuJ+XZm8ZjQKBgQDpt04XRxbF6VnD3XbMykW6grmLYmEE2lmeNdRuIqV9haOQRxDG\nOrS3sL96oyxc854cLKRuDolUaG8f4b9Tt9+AoMMCtueJQnqHWyNHfWoWrEXsTcYN\nnHFvcZ7dM9GeiOtMhYCSsGHNEwKxx2noTVlYcB8yIyOgWIvxefg4bRTzUQKBgQDl\nrGx+yK4l89bV33+baNH+y5eP6KQ5mz5bj36i+T6ICtahu8Z71o3XQ5BSEb7bgXur\nqnPrAIunVxLD+aPDOxAZkeKdHQEmRaUI+7cD260xmsfTKymOeC/M/dg3zQj5rUft\nJCqWpxrs773QhwD2vMCJsjr2b1Cm4t+aYs8/rnRjEQKBgEWnBVEJ8sBgXO5BQg2i\n6zWbownr4WgH1GWWfPkMF6h1Nuu3GMdFOINC/6BgAXMoSfXpjoRKmwQ7SVMDE4S1\nYeTHVd7RfdQ/xPqkUmU5ZSeoVBvHLqL+li1RLZ0MgJqhR2Kdhf6fHYrziA9Glw5t\nfg38cGt8VuHOP9xdfzI+zY/I=\n-----END PRIVATE KEY-----"
+        ),
+        "client_email": (
+            "bot-kuota@cedar-router-509114-q4.iam.gserviceaccount.com"
+        ),
+        "client_id": "108263579617939653999",
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": (
+            "https://www.googleapis.com/oauth2/v1/certs"
+        ),
+        "client_x509_cert_url": (
+            "https://www.googleapis.com/robot/v1/metadata/x509/bot-kuota%40cedar-router-509114-q4.iam.gserviceaccount.com"
+        ),
+        "universe_domain": "googleapis.com",
+    }
+
     creds = Credentials.from_service_account_info(creds_dict, scopes=scope)
     client = gspread.authorize(creds)
     sheet_name = st.secrets["sheet_config"]["sheet_name"]
@@ -56,7 +79,6 @@ st.markdown(
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
-    /* Global Dynamic Animated Background */
     .stApp {
         background: linear-gradient(125deg, #030712 0%, #0f172a 35%, #1e1b4b 70%, #064e3b 100%);
         background-size: 400% 400%;
@@ -71,7 +93,6 @@ st.markdown(
         100% { background-position: 0% 50%; }
     }
 
-    /* Efek Lapisan Jaring Grid Neon Bergerak & Glowing Orbs */
     .stApp::before {
         content: '';
         position: fixed;
@@ -95,7 +116,6 @@ st.markdown(
         100% { transform: translate(60px, 60px) rotate(3deg); }
     }
 
-    /* Sidebar Akademik */
     section[data-testid="stSidebar"] {
         background: rgba(3, 7, 18, 0.95) !important;
         border-right: 1.5px solid rgba(251, 191, 36, 0.3);
@@ -107,7 +127,6 @@ st.markdown(
         color: #f3f4f6 !important;
     }
 
-    /* Hero Banner Instansi Pendidikan */
     .hero-banner {
         background: linear-gradient(135deg, rgba(30, 58, 138, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
         backdrop-filter: blur(12px);
@@ -137,7 +156,6 @@ st.markdown(
         line-height: 1.5;
     }
 
-    /* Kartu Dashboard Akademik */
     .dashboard-card {
         background: rgba(15, 23, 42, 0.88);
         backdrop-filter: blur(24px);
@@ -150,7 +168,6 @@ st.markdown(
         z-index: 1;
     }
 
-    /* Judul Bagian dengan Ikon */
     .section-title {
         font-size: 1.25rem;
         font-weight: 700;
@@ -166,7 +183,6 @@ st.markdown(
         margin-bottom: 20px;
     }
 
-    /* Label Formulir */
     label, .stTextInput label, .stTextArea label, .stSelectbox label, .stRadio label {
         color: #f1f5f9 !important;
         font-weight: 700 !important;
@@ -174,7 +190,6 @@ st.markdown(
         margin-bottom: 6px !important;
     }
 
-    /* Input & Textarea */
     .stTextInput input, .stTextArea textarea {
         background-color: #030712 !important;
         color: #fbbf24 !important;
@@ -190,7 +205,6 @@ st.markdown(
         background-color: #030712 !important;
     }
 
-    /* Tombol Utama Emas Akademik */
     .stButton>button {
         width: 100%;
         background: linear-gradient(135deg, #d97706 0%, #fbbf24 100%);
@@ -209,7 +223,6 @@ st.markdown(
         box-shadow: 0 8px 25px rgba(251, 191, 36, 0.6) !important;
     }
 
-    /* Badge Ikon Akademik */
     .status-badge {
         display: inline-flex;
         align-items: center;
@@ -226,7 +239,6 @@ st.markdown(
         margin-bottom: 12px;
     }
 
-    /* Footer */
     .footer-container {
         text-align: center;
         padding: 20px;
@@ -539,9 +551,8 @@ if menu_pilihan == "📖 Generator Modul Ajar":
         )
         st.session_state.modul_hasil = response.text
 
-        # KURANGI KUOTA OTOMATIS DI GOOGLE SHEETS
         new_quota = sisa_kuota_sekarang - 1
-        sheet.update_cell(row_index, 3, new_quota)  # Kolom 3 adalah kolom 'kuota'
+        sheet.update_cell(row_index, 3, new_quota)
 
         st.success(
             f"Modul Ajar berhasil disusun! Sisa kuota Anda diperbarui di Sheets"
@@ -633,7 +644,6 @@ elif menu_pilihan == "🎯 Generator CP & ATP":
         )
         st.session_state.cpatp_hasil = response.text
 
-        # KURANGI KUOTA OTOMATIS DI GOOGLE SHEETS
         new_quota = sisa_kuota_sekarang - 1
         sheet.update_cell(row_index, 3, new_quota)
 
@@ -727,7 +737,6 @@ elif menu_pilihan == "📊 Generator KKTP":
         )
         st.session_state.kktp_hasil = response.text
 
-        # KURANGI KUOTA OTOMATIS DI GOOGLE SHEETS
         new_quota = sisa_kuota_sekarang - 1
         sheet.update_cell(row_index, 3, new_quota)
 
@@ -820,7 +829,6 @@ elif menu_pilihan == "📅 Generator Prosem & Prota":
         )
         st.session_state.prosemprota_hasil = response.text
 
-        # KURANGI KUOTA OTOMATIS DI GOOGLE SHEETS
         new_quota = sisa_kuota_sekarang - 1
         sheet.update_cell(row_index, 3, new_quota)
 
@@ -916,7 +924,6 @@ elif menu_pilihan == "📝 Generator Soal Asesmen":
         )
         st.session_state.soal_hasil = response.text
 
-        # KURANGI KUOTA OTOMATIS DI GOOGLE SHEETS
         new_quota = sisa_kuota_sekarang - 1
         sheet.update_cell(row_index, 3, new_quota)
 
@@ -1075,7 +1082,6 @@ elif menu_pilihan == "🔍 Koreksi Siswa":
                 "Detail": hasil,
             })
 
-            # KURANGI KUOTA OTOMATIS DI GOOGLE SHEETS
             new_quota = sisa_kuota_sekarang - 1
             sheet.update_cell(row_index, 3, new_quota)
 
