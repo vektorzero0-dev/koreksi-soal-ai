@@ -1,6 +1,7 @@
 from io import BytesIO
 import os
 import re
+import docx
 from docx import Document
 from google import genai
 from PIL import Image
@@ -281,8 +282,11 @@ def buat_file_docx(teks_konten):
       doc.add_heading(stripped.replace("## ", "").strip(), level=2)
     elif stripped.startswith("### "):
       doc.add_heading(stripped.replace("### ", "").strip(), level=3)
-    elif re.match(r"^(\d+[\.\)]|[a-zA-Z][\.\)]|\•|\-|\*)\s+", stripped):
-      doc.add_paragraph(stripped, style="List Bullet")
+    elif re.match(r"^([a-zA-Z][\.\)]|\•|\-|\*)", stripped):
+      p = doc.add_paragraph(stripped, style="List Bullet")
+      p.paragraph_format.left_indent = docx.shared.Inches(0.4)
+    elif re.match(r"^\d+[\.\)]", stripped):
+      doc.add_paragraph(stripped)
     else:
       doc.add_paragraph(stripped)
 
@@ -345,6 +349,9 @@ with st.sidebar:
       "NAVIGASI UTAMA:",
       [
           "📖 Generator Modul Ajar",
+          "🎯 Generator CP & ATP",
+          "📊 Generator KKTP",
+          "📅 Generator Prosem & Prota",
           "📝 Generator Soal Asesmen",
           "⚙️ Set Kunci Acuan",
           "🔍 Koreksi Siswa",
@@ -387,6 +394,12 @@ if "rekap_nilai" not in st.session_state:
   st.session_state.rekap_nilai = []
 if "modul_hasil" not in st.session_state:
   st.session_state.modul_hasil = ""
+if "cpatp_hasil" not in st.session_state:
+  st.session_state.cpatp_hasil = ""
+if "kktp_hasil" not in st.session_state:
+  st.session_state.kktp_hasil = ""
+if "prosemprota_hasil" not in st.session_state:
+  st.session_state.prosemprota_hasil = ""
 if "soal_hasil" not in st.session_state:
   st.session_state.soal_hasil = ""
 
@@ -397,7 +410,7 @@ st.markdown(
     """
     <div class="hero-banner">
         <h1 class="hero-title">🏛️ Portal Asisten Akademik & Asesmen</h1>
-        <p class="hero-subtitle">Sistem Terintegrasi Resmi Instansi Pendidikan untuk Penyusunan Perangkat Pembelajaran, Naskah Asesmen, dan Evaluasi Objektif.</p>
+        <p class="hero-subtitle">Sistem Terintegrasi Resmi Instansi Pendidikan untuk Penyusunan Perangkat Pembelajaran, CP/ATP/KKTP/Prosem/Prota, Naskah Asesmen, dan Evaluasi.</p>
     </div>
     """,
     unsafe_allow_html=True,
@@ -450,7 +463,9 @@ if menu_pilihan == "📖 Generator Modul Ajar":
 
   st.markdown("<br>", unsafe_allow_html=True)
   if st.button("🚀 Buat Modul Ajar Sekarang", type="primary"):
-    with st.spinner("Sistem Gemini sedang merancang Modul Ajar..."):
+    with st.spinner(
+        "Sistem AI Akademik sedang merancang Modul Ajar formal..."
+    ):
       try:
         prompt_modul = f"""
                 Buatkan Modul Ajar / RPP formal, sangat terstruktur, dan profesional untuk instansi pendidikan:
@@ -483,7 +498,261 @@ if menu_pilihan == "📖 Generator Modul Ajar":
   st.markdown("</div>", unsafe_allow_html=True)
 
 # ---------------------------------------------------------
-# MENU 2: GENERATOR SOAL ASESMEN
+# MENU 2: GENERATOR CP & ATP
+# ---------------------------------------------------------
+elif menu_pilihan == "🎯 Generator CP & ATP":
+  st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
+  st.markdown(
+      '<div class="status-badge">🎯 Capaian & Alur Pembelajaran</div>',
+      unsafe_allow_html=True,
+  )
+  st.markdown(
+      '<div class="section-title">🎯 Generator CP & ATP (Capaian Pembelajaran & Alur Tujuan Pembelajaran)</div>',
+      unsafe_allow_html=True,
+  )
+  st.markdown(
+      '<div class="section-desc">Susun Capaian Pembelajaran (CP) dan Alur'
+      ' Tujuan Pembelajaran (ATP) resmi instansi pendidikan.</div>',
+      unsafe_allow_html=True,
+  )
+
+  cp_guru = st.text_input(
+      "👤 Nama Guru & Gelar",
+      placeholder="Contoh: Ahmad Fauzi, S.Pd.",
+      key="cp_guru",
+  )
+  cp_sekolah = st.text_input(
+      "🏫 Nama Instansi / Sekolah",
+      placeholder="Contoh: SMP Negeri 1 Nusantara",
+      key="cp_sekolah",
+  )
+  cp_mapel = st.text_input(
+      "📚 Mata Pelajaran",
+      placeholder="Contoh: Ilmu Pengetahuan Alam (IPA)",
+      key="cp_mapel",
+  )
+  cp_kur = st.text_input(
+      "📑 Kurikulum", placeholder="Contoh: Kurikulum Merdeka", key="cp_kur"
+  )
+  cp_fase = st.text_input(
+      "🎓 Fase / Kelas", placeholder="Contoh: Fase D / Kelas VII", key="cp_fase"
+  )
+  cp_ks = st.text_input(
+      "✍️ Nama Kepala Sekolah",
+      placeholder="Contoh: Dra. Hj. Siti Aminah, M.Pd.",
+      key="cp_ks",
+  )
+  cp_materi = st.text_input(
+      "💡 Lingkup Materi / Elemen",
+      placeholder="Contoh: Pemahaman Sains & Keterampilan Proses",
+      key="cp_materi",
+  )
+
+  st.markdown("<br>", unsafe_allow_html=True)
+  if st.button("🚀 Susun Dokumen CP & ATP", type="primary"):
+    with st.spinner("Sistem Asesor Pintar sedang menyusun dokumen CP & ATP..."):
+      try:
+        prompt_cpatp = f"""
+                Buatkan dokumen Capaian Pembelajaran (CP) dan Alur Tujuan Pembelajaran (ATP) formal, sangat terstruktur, dan profesional untuk instansi pendidikan:
+                - Guru: {cp_guru}, Sekolah: {cp_sekolah}
+                - Mapel: {cp_mapel}, Kurikulum: {cp_kur}
+                - Fase/Kelas: {cp_fase}, Kepala Sekolah: {cp_ks}
+                - Lingkup Materi/Elemen: {cp_materi}
+                Sertakan komponen Identitas Instansi, Rasional, Capaian Pembelajaran (CP) per Elemen, serta Tabel Alur Tujuan Pembelajaran (ATP) yang merinci Tujuan Pembelajaran, Kelas/Semester, dan Estimasi Jam Pelajaran dalam bentuk tabel markdown standar lengkap menggunakan garis vertikal (|) untuk kolom dan barisnya.
+                PENTING: Gunakan teks bersih murni tanpa tag HTML sama sekali (seperti <br> atau <p>).
+                """
+        response = generate_content_with_retry(
+            client, "gemini-3.5-flash", prompt_cpatp
+        )
+        st.session_state.cpatp_hasil = response.text
+        st.success("Dokumen CP & ATP berhasil disusun!")
+      except Exception as e:
+        st.error(f"Error sistem: {e}")
+
+  if st.session_state.cpatp_hasil:
+    st.markdown("---")
+    st.subheader("📄 Pratinjau Dokumen CP & ATP")
+    st.markdown(st.session_state.cpatp_hasil)
+    file_docx_cpatp = buat_file_docx(st.session_state.cpatp_hasil)
+    st.download_button(
+        "📥 Unduh Dokumen CP & ATP (.docx)",
+        data=file_docx_cpatp,
+        file_name=f"CP_ATP_{cp_mapel}.docx",
+        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    )
+  st.markdown("</div>", unsafe_allow_html=True)
+
+# ---------------------------------------------------------
+# MENU 3: GENERATOR KKTP
+# ---------------------------------------------------------
+elif menu_pilihan == "📊 Generator KKTP":
+  st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
+  st.markdown(
+      '<div class="status-badge">📊 Kriteria Ketercapaian</div>',
+      unsafe_allow_html=True,
+  )
+  st.markdown(
+      '<div class="section-title">📊 Generator KKTP (Kriteria Ketercapaian Tujuan Pembelajaran)</div>',
+      unsafe_allow_html=True,
+  )
+  st.markdown(
+      '<div class="section-desc">Rancang instrumen dan rubrik Kriteria'
+      ' Ketercapaian Tujuan Pembelajaran (KKTP) asesmen formatif & sumatif.</div>',
+      unsafe_allow_html=True,
+  )
+
+  kktp_guru = st.text_input(
+      "👤 Nama Guru & Gelar",
+      placeholder="Contoh: Ahmad Fauzi, S.Pd.",
+      key="kktp_guru",
+  )
+  kktp_sekolah = st.text_input(
+      "🏫 Nama Instansi / Sekolah",
+      placeholder="Contoh: SMP Negeri 1 Nusantara",
+      key="kktp_sekolah",
+  )
+  kktp_mapel = st.text_input(
+      "📚 Mata Pelajaran", placeholder="Contoh: Matematika", key="kktp_mapel"
+  )
+  kktp_kur = st.text_input(
+      "📑 Kurikulum", placeholder="Contoh: Kurikulum Merdeka", key="kktp_kur"
+  )
+  kktp_fase = st.text_input(
+      "🎓 Fase / Kelas", placeholder="Contoh: Fase D / Kelas VII", key="kktp_fase"
+  )
+  kktp_ks = st.text_input(
+      "✍️ Nama Kepala Sekolah",
+      placeholder="Contoh: Dra. Hj. Siti Aminah, M.Pd.",
+      key="kktp_ks",
+  )
+  kktp_tujuan = st.text_input(
+      "💡 Tujuan Pembelajaran",
+      placeholder=(
+          "Contoh: Memahami dan menyelesaikan persamaan linear satu variabel"
+      ),
+      key="kktp_tujuan",
+  )
+
+  st.markdown("<br>", unsafe_allow_html=True)
+  if st.button("🚀 Susun Dokumen KKTP", type="primary"):
+    with st.spinner("Sistem Asesor Pintar sedang menyusun dokumen KKTP..."):
+      try:
+        prompt_kktp = f"""
+                Buatkan dokumen Kriteria Ketercapaian Tujuan Pembelajaran (KKTP) formal, sangat terstruktur, dan profesional untuk instansi pendidikan:
+                - Guru: {kktp_guru}, Sekolah: {kktp_sekolah}
+                - Mapel: {kktp_mapel}, Kurikulum: {kktp_kur}
+                - Fase/Kelas: {kktp_fase}, Kepala Sekolah: {kktp_ks}
+                - Tujuan Pembelajaran: {kktp_tujuan}
+                Sertakan komponen Identitas Instansi, Pendekatan KKTP (Deskripsi Kriteria, Rubrik Interval Nilai, atau Kriteria Ceklis), serta Tabel Interval Ketercapaian (Baru Berkembang, Layak, Cakap, Mahir) dalam bentuk tabel markdown standar lengkap menggunakan garis vertikal (|) untuk kolom dan barisnya.
+                PENTING: Gunakan teks bersih murni tanpa tag HTML sama sekali (seperti <br> atau <p>).
+                """
+        response = generate_content_with_retry(
+            client, "gemini-3.5-flash", prompt_kktp
+        )
+        st.session_state.kktp_hasil = response.text
+        st.success("Dokumen KKTP berhasil disusun!")
+      except Exception as e:
+        st.error(f"Error sistem: {e}")
+
+  if st.session_state.kktp_hasil:
+    st.markdown("---")
+    st.subheader("📄 Pratinjau Dokumen KKTP")
+    st.markdown(st.session_state.kktp_hasil)
+    file_docx_kktp = buat_file_docx(st.session_state.kktp_hasil)
+    st.download_button(
+        "📥 Unduh Dokumen KKTP (.docx)",
+        data=file_docx_kktp,
+        file_name=f"KKTP_{kktp_mapel}.docx",
+        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    )
+  st.markdown("</div>", unsafe_allow_html=True)
+
+# ---------------------------------------------------------
+# MENU 4: GENERATOR PROSEM & PROTA
+# ---------------------------------------------------------
+elif menu_pilihan == "📅 Generator Prosem & Prota":
+  st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
+  st.markdown(
+      '<div class="status-badge">📅 Program Semester & Tahunan</div>',
+      unsafe_allow_html=True,
+  )
+  st.markdown(
+      '<div class="section-title">📅 Generator Prosem & Prota (Program Semester & Program Tahunan)</div>',
+      unsafe_allow_html=True,
+  )
+  st.markdown(
+      '<div class="section-desc">Penyusunan Program Semester (Prosem) dan'
+      ' Program Tahunan (Prota) resmi instansi pendidikan secara terintegrasi.</div>',
+      unsafe_allow_html=True,
+  )
+
+  pr_guru = st.text_input(
+      "👤 Nama Guru & Gelar",
+      placeholder="Contoh: Ahmad Fauzi, S.Pd.",
+      key="pr_guru",
+  )
+  pr_sekolah = st.text_input(
+      "🏫 Nama Instansi / Sekolah",
+      placeholder="Contoh: SMP Negeri 1 Nusantara",
+      key="pr_sekolah",
+  )
+  pr_mapel = st.text_input(
+      "📚 Mata Pelajaran",
+      placeholder="Contoh: Ilmu Pengetahuan Alam (IPA)",
+      key="pr_mapel",
+  )
+  pr_kur = st.text_input(
+      "📑 Kurikulum", placeholder="Contoh: Kurikulum Merdeka", key="pr_kur"
+  )
+  pr_fase = st.text_input(
+      "🎓 Fase / Kelas", placeholder="Contoh: Fase D / Kelas VII", key="pr_fase"
+  )
+  pr_ks = st.text_input(
+      "✍️ Nama Kepala Sekolah",
+      placeholder="Contoh: Dra. Hj. Siti Aminah, M.Pd.",
+      key="pr_ks",
+  )
+  pr_Tahun = st.text_input(
+      "📅 Tahun Pelajaran", placeholder="Contoh: 2026/2027", key="pr_Tahun"
+  )
+
+  st.markdown("<br>", unsafe_allow_html=True)
+  if st.button("🚀 Susun Dokumen Prosem & Prota", type="primary"):
+    with st.spinner(
+        "Sistem Asesor Pintar sedang menyusun dokumen Prosem & Prota..."
+    ):
+      try:
+        prompt_prosemprota = f"""
+                Buatkan dokumen Program Tahunan (Prota) dan Program Semester (Prosem) formal, sangat terstruktur, dan profesional untuk instansi pendidikan:
+                - Guru: {pr_guru}, Sekolah: {pr_sekolah}
+                - Mapel: {pr_mapel}, Kurikulum: {pr_kur}
+                - Fase/Kelas: {pr_fase}, Kepala Sekolah: {pr_ks}, Tahun Pelajaran: {pr_Tahun}
+                Sertakan komponen Identitas Instansi, Tabel Program Tahunan (Alokasi waktu per unit/bab), serta Tabel Program Semester (distribusi alokasi waktu per bulan dalam semester ganjil dan genap) dalam bentuk tabel markdown standar lengkap menggunakan garis vertikal (|) untuk kolom dan barisnya.
+                PENTING: Gunakan teks bersih murni tanpa tag HTML sama sekali (seperti <br> atau <p>).
+                """
+        response = generate_content_with_retry(
+            client, "gemini-3.5-flash", prompt_prosemprota
+        )
+        st.session_state.prosemprota_hasil = response.text
+        st.success("Dokumen Prosem & Prota berhasil disusun!")
+      except Exception as e:
+        st.error(f"Error sistem: {e}")
+
+  if st.session_state.prosemprota_hasil:
+    st.markdown("---")
+    st.subheader("📄 Pratinjau Dokumen Prosem & Prota")
+    st.markdown(st.session_state.prosemprota_hasil)
+    file_docx_pr = buat_file_docx(st.session_state.prosemprota_hasil)
+    st.download_button(
+        "📥 Unduh Dokumen Prosem & Prota (.docx)",
+        data=file_docx_pr,
+        file_name=f"Prosem_Prota_{pr_mapel}.docx",
+        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    )
+  st.markdown("</div>", unsafe_allow_html=True)
+
+# ---------------------------------------------------------
+# MENU 5: GENERATOR SOAL ASESMEN
 # ---------------------------------------------------------
 elif menu_pilihan == "📝 Generator Soal Asesmen":
   st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
@@ -503,28 +772,41 @@ elif menu_pilihan == "📝 Generator Soal Asesmen":
   )
 
   s_guru = st.text_input(
-      "👤 Nama Pembuat Asesmen", placeholder="Ahmad Fauzi, S.Pd."
+      "👤 Nama Pembuat Asesmen",
+      placeholder="Ahmad Fauzi, S.Pd.",
+      key="s_guru",
   )
   s_sekolah = st.text_input(
-      "🏫 Instansi / Sekolah", placeholder="SMP Negeri 1 Nusantara"
+      "🏫 Instansi / Sekolah",
+      placeholder="SMP Negeri 1 Nusantara",
+      key="s_sekolah",
   )
-  s_mapel = st.text_input("📚 Mata Pelajaran", placeholder="Matematika")
-  s_kur = st.text_input("📑 Kurikulum", placeholder="Kurikulum Merdeka")
-  s_kelas = st.text_input("🎓 Kelas / Semester", placeholder="Kelas VII / Ganjil")
+  s_mapel = st.text_input(
+      "📚 Mata Pelajaran", placeholder="Matematika", key="s_mapel"
+  )
+  s_kur = st.text_input(
+      "📑 Kurikulum", placeholder="Kurikulum Merdeka", key="s_kur"
+  )
+  s_kelas = st.text_input(
+      "🎓 Kelas / Semester", placeholder="Kelas VII / Ganjil", key="s_kelas"
+  )
   s_materi = st.text_input(
-      "💡 Materi Asesmen", placeholder="Persamaan Linear Satu Variabel"
+      "💡 Materi Asesmen",
+      placeholder="Persamaan Linear Satu Variabel",
+      key="s_materi",
   )
   s_komposisi = st.text_input(
       "📊 Komposisi Soal Asesmen",
       placeholder="5 Pilihan Ganda, 2 Isian Singkat, 1 Essai",
+      key="s_komposisi",
   )
 
   st.markdown("<br>", unsafe_allow_html=True)
   if st.button("🚀 Susun Naskah Soal Asesmen", type="primary"):
-    with st.spinner("Sistem Gemini sedang menyusun naskah asesmen..."):
+    with st.spinner("Sistem Asesor Pintar sedang menyusun naskah asesmen..."):
       try:
         prompt_soal = f"""
-                Buatkan naskah soal asesmen resmi instansi pendidikan lengkap dengan Kop Soal, Petunjuk, Naskah Soal Asesmen (setiap nomor soal menggunakan penomoran tegas seperti 1., 2., 3. dan pilihan ganda menggunakan A., B., C., D.), Kunci Jawaban, & Tabel Rubrik Penilaian.
+                Buatkan naskah soal asesmen resmi instansi pendidikan lengkap dengan Kop Soal, Petunjuk, Naskah Soal Asesmen (setiap nomor soal menggunakan penomoran tegas seperti 1., 2., 3. dan pilihan ganda ditulis tepat di bawah pertanyaan dengan format terindentasi A., B., C., D.), Kunci Jawaban, & Tabel Rubrik Penilaian.
                 PENTING UNTUK TABEL: Buat tabel rubrik penilaian menggunakan format tabel markdown standar dengan garis vertikal (|), contoh:
                 | Jenis Soal | Jumlah Soal | Bobot per Soal | Skor Maksimal |
                 | :--- | :--- | :--- | :--- |
@@ -558,7 +840,7 @@ elif menu_pilihan == "📝 Generator Soal Asesmen":
   st.markdown("</div>", unsafe_allow_html=True)
 
 # ---------------------------------------------------------
-# MENU 3: SET KUNCI ACUAN
+# MENU 6: SET KUNCI ACUAN
 # ---------------------------------------------------------
 elif menu_pilihan == "⚙️ Set Kunci Acuan":
   st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
@@ -577,9 +859,10 @@ elif menu_pilihan == "⚙️ Set Kunci Acuan":
   )
 
   kunci_pg_input = st.text_area(
-      "🎯 Kunci Pilihan Ganda",
+      "🎯 Kunci Pilihan Ganda (Cukup ketik huruf abjadnya saja secara berurutan,"
+      " contoh: A,B,C,D,A atau ABCD)",
       value=st.session_state.kunci_pg,
-      placeholder="Contoh: 1.A, 2.B, 3.C, 4.D, 5.B",
+      placeholder="Contoh: A B C D A B C D A B",
       height=100,
   )
   kunci_isian_input = st.text_area(
@@ -607,7 +890,7 @@ elif menu_pilihan == "⚙️ Set Kunci Acuan":
   st.markdown("</div>", unsafe_allow_html=True)
 
 # ---------------------------------------------------------
-# MENU 4: KOREKSI SISWA
+# MENU 7: KOREKSI SISWA
 # ---------------------------------------------------------
 elif menu_pilihan == "🔍 Koreksi Siswa":
   st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
@@ -625,7 +908,7 @@ elif menu_pilihan == "🔍 Koreksi Siswa":
       and not st.session_state.kunci_isian
       and not st.session_state.kunci_essai
   ):
-    st.warning("⚠️ Harap simpan Kunci Jawaban terlebih dahulu pada Menu 3!")
+    st.warning("⚠️ Harap simpan Kunci Jawaban terlebih dahulu pada Menu Lainnya!")
   else:
     nama_siswa = st.text_input(
         "👤 Identitas Siswa", placeholder="Masukkan Nama Lengkap / NISN Siswa"
@@ -653,13 +936,13 @@ elif menu_pilihan == "🔍 Koreksi Siswa":
       if not nama_siswa:
         st.error("Masukkan identitas atau nama siswa!")
       else:
-        with st.spinner("Sistem Gemini sedang menganalisis lembar asesmen..."):
+        with st.spinner("Sistem Asesor Pintar sedang menganalisis asesmen..."):
           try:
             payload = [f"""
                         Koreksi lembar jawaban siswa berdasarkan acuan berikut:
-                        - Kunci PG: {st.session_state.kunci_pg}
-                        - Kunci Isian: {st.session_state.kunci_isian}
-                        - Kunci Essai: {st.session_state.kunci_essai}
+                        - Kunci Pilihan Ganda (Hanya huruf abjad jawaban benar): {st.session_state.kunci_pg}
+                        - Kunci Isian Singkat: {st.session_state.kunci_isian}
+                        - Rubrik Kunci Essai: {st.session_state.kunci_essai}
                         
                         Format baris pertama WAJIB persis seperti ini:
                         NILAI_AKHIR: [Angka total nilai 0-100]
@@ -701,7 +984,7 @@ elif menu_pilihan == "🔍 Koreksi Siswa":
   st.markdown("</div>", unsafe_allow_html=True)
 
 # ---------------------------------------------------------
-# MENU 5: REKAP NILAI
+# MENU 8: REKAP NILAI
 # ---------------------------------------------------------
 elif menu_pilihan == "📊 Rekap Nilai":
   st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
